@@ -1,19 +1,48 @@
 <script lang="ts">
+	import { onMount } from "svelte";
+	import mermaid from "mermaid";
+
+	onMount(() => {
+		var script = document.createElement("script");
+		script.innerHTML += `var click_alpha = () => {
+			alert("料理を開始しましょう！");
+		};`;
+		document.getElementById("hoge").appendChild(script);
+
+		document.getElementById("hoge").innerHTML = `flowchart TB
+		alpha{"料理開始"} --> A
+		alpha --> B
+		A["<じゃがいも>・<にんじん>を洗う"] --> C
+		B["<たまねぎ>を皮をむいて洗う"] --> E
+		C["ピーラーで<じゃがいも>・<にんじん>を皮をむく"] --> D
+		D["<にんじん>を1cm幅の<<いちょう切り>>にする"] --> G
+		E["<たまねぎ>を薄切りにする"] --> G
+		F["厚手の鍋にサラダ油を入れて熱する"] --> G
+		G["豚コマ肉・じゃがいも・にんじん・たまねぎをいれ、焦がさないように炒める。"] --> H
+		
+		click alpha call click_alpha()
+		`;
+		mermaid.initialize({ startOnLoad: true });
+	});
+
 	export let name: string;
 </script>
 
 <main>
 	<h1>Hello {name}!</h1>
-	
+
+	<div id="hoge" class="mermaid" />
 </main>
 
 <style>
+	main * {
+		width: 100%;
+	}
+
 	main {
 		text-align: center;
 		padding: 1em;
-		max-width: 240px;
+		width: 80vh;
 		margin: 0 auto;
 	}
-
-	
 </style>
