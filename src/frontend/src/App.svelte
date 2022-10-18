@@ -2,13 +2,11 @@
 	import { onMount } from "svelte";
 	import mermaid from "mermaid";
 
-	onMount(() => {
-		var script = document.createElement("script");
-		script.innerHTML += `var click_alpha = () => {
-			alert("料理を開始しましょう！");
-		};`;
-		document.getElementById("hoge").appendChild(script);
+	globalThis["click_alpha"] = () => {
+		alert("料理を開始しましょう！");
+	};
 
+	onMount(() => {
 		document.getElementById("hoge").innerHTML = `flowchart TB
 		alpha{"料理開始"} --> A
 		alpha --> B
@@ -22,7 +20,7 @@
 		
 		click alpha call click_alpha()
 		`;
-		mermaid.initialize({ startOnLoad: true });
+		mermaid.initialize({ startOnLoad: true, securityLevel: "loose" });
 	});
 
 	export let name: string;
