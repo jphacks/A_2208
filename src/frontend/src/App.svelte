@@ -7,7 +7,7 @@
 	};
 
 	onMount(() => {
-		document.getElementById("hoge").innerHTML = `flowchart TB
+		document.getElementById("preview").innerHTML = `flowchart TB
 		alpha{"料理開始"} --> A
 		alpha --> B
 		A["<じゃがいも>・<にんじん>を洗う"] --> C
@@ -23,13 +23,20 @@
 		mermaid.initialize({ startOnLoad: true, securityLevel: "loose" });
 	});
 
-	export let name: string;
+	// export let name: string;
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
+	<div id="makingNode">
+		<p>料理工程の作成</p>
+		<textarea>料理の工程を書き込んでください</textarea>
+		<button>登録する</button>
+	</div>
+	<div id="makingEdge">
+		
+	</div>
 
-	<div id="hoge" class="mermaid" />
+	<div id="preview" class="mermaid" />
 </main>
 
 <style>
