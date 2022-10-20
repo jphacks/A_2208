@@ -1,10 +1,40 @@
 <script lang="ts">
+
 	import { onMount } from "svelte";
 	import mermaid from "mermaid";
 
+	let add = '/img/add.png'
+	let edit = '/img/edit.png'
+	let del = '/img/del.png'
+	let register = '/img/register.png'
+
 	globalThis["click_alpha"] = () => {
-		alert("料理を開始しましょう！");
+		alert("料理を開始しましょう！")
 	};
+
+	function editing() {
+		alert("編集します")
+	}
+
+	function adding() {
+		alert("追加します")
+	}
+
+	function deleting() {
+		alert("削除します")
+	}
+
+	// globalThis["editing"] = () => {
+	// 	alert("編集します");
+	// }
+
+	// globalThis["adding"] = () => {
+	// 	alert("追加します");
+	// }
+
+	// globalThis["deleting"] = () => {
+	// 	alert("削除します");
+	// }
 
 	onMount(() => {
 		document.getElementById("preview").innerHTML = `flowchart TB
@@ -56,23 +86,27 @@
 		mermaid.initialize({ startOnLoad: true, securityLevel: "loose" });
 	});
 
-	// export let name: string;
+	export {add, edit, del, register}
+	// export {editing, adding, deleting}
 </script>
 
 <main>
 	<div id="makeFlowChart">
+		<h2>フローチャートの作成</h2>
 		<div id="preview" class="mermaid" />
 		<div class="nodeButtonArea">
+			<!-- ボタンを縦並びにする -->
 			<!-- ボタン用のいい感じの画像を作成する -->
-			<button class="nodeButton">矢印を追加する</button>
-			<button class="nodeButton">矢印を編集する</button>
-			<button class="nodeButton">矢印を削除する</button>
+			<!-- ↑うまく乗せられない、なんで？？？？？？？ -->
+			<button class="nodeButton" on:click={adding}><img src={add} alt=""></button>
+			<button class="nodeButton" on:click={editing}><img src={edit} alt=""></button>
+			<button class="nodeButton" on:click={deleting}><img src={del} alt=""></button>
 		</div>
 	</div>
 	<div id="makeNode">
-		<p>料理工程の作成</p>
+		<h2>料理の工程を書き込んでください</h2>
 		<textarea placeholder="料理の工程を書き込んでください"></textarea>
-		<button>登録する</button>
+		<button id="registerButton"><img src={register} alt=""></button>
 	</div>
 </main>
 
@@ -85,6 +119,10 @@
 		text-align: center;
 	}
 
+	#makeFlowChart {
+		background-color: #5670a0;
+	}
+
 	.nodeButtonArea {
 		text-align: right;
 	}
@@ -92,6 +130,15 @@
 		width: 100px;
 		display: inline-flex;
 		flex-direction: column;
+	}
+
+	#makeNode {
+		background-color: #6B6766;
+	}
+
+	#registerButton {
+		width: 100px;
+		text-align: center;
 	}
 
 	/* main {
