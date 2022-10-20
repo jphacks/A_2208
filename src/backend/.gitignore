@@ -4,3 +4,5 @@ __pycache__/
 # Environments
 .env
 .venv
+
+account_key.json
