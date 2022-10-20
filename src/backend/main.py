@@ -5,8 +5,9 @@ from sqlalchemy.orm import Session
 import firebase_admin
 from fb_setting import get_current_user
 
-from . import crud, models, schemas
-from .database import SessionLocal, engine
+
+from db import crud, database, models, schemas
+from db.database import SessionLocal, engine
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -25,15 +26,15 @@ default_app = firebase_admin.initialize_app()
 
 origins = [
     "http://localhost:3000",
-    "http://localhost"
+    "http://localhost",
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_creditionals=True,
+    allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"]
+    allow_headers=["*"],
 )
 
 
