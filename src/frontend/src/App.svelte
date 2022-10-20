@@ -21,15 +21,18 @@
 		`;
 
 	function Render(graph: string) {
-		mermaid.mermaidAPI.render("graph1", graph, (svg) => {
-			document.getElementById("preview").innerHTML = svg;
+		mermaid.mermaidAPI.render("graph1", graph, (svg, bf) => {
+			const elem = document.getElementById("preview");
+			elem.innerHTML = svg;
+			bf(elem);
 		});
 	}
 
 	onMount(() => {
 		mermaid.mermaidAPI.initialize({
 			startOnLoad: false,
-			securityLevel: "antiscript",
+			securityLevel: "loose",
+			logLevel: "info",
 			flowchart: {
 				useMaxWidth: false,
 			},
@@ -47,9 +50,7 @@
 	</div>
 	<div id="makingEdge" />
 
-	<div id="preview">
-		<p>hoge</p>
-	</div>
+	<div id="preview" />
 </main>
 
 <style>
