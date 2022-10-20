@@ -6,8 +6,7 @@
 		alert("料理を開始しましょう！");
 	};
 
-	onMount(() => {
-		document.getElementById("preview").innerHTML = `flowchart TB
+	const sample = `flowchart TB
 		alpha{"料理開始"} --> A
 		alpha --> B
 		A["<じゃがいも>・<にんじん>を洗う"] --> C
@@ -20,10 +19,24 @@
 		
 		click alpha call click_alpha()
 		`;
-		mermaid.initialize({ startOnLoad: true, securityLevel: "loose" });
-	});
 
-	// export let name: string;
+	function Render(graph: string) {
+		mermaid.mermaidAPI.render("graph1", graph, (svg) => {
+			document.getElementById("preview").innerHTML = svg;
+		});
+	}
+
+	onMount(() => {
+		mermaid.mermaidAPI.initialize({
+			startOnLoad: false,
+			securityLevel: "antiscript",
+			flowchart: {
+				useMaxWidth: false,
+			},
+		});
+
+		Render(sample);
+	});
 </script>
 
 <main>
@@ -32,11 +45,11 @@
 		<textarea>料理の工程を書き込んでください</textarea>
 		<button>登録する</button>
 	</div>
-	<div id="makingEdge">
-		
-	</div>
+	<div id="makingEdge" />
 
-	<div id="preview" class="mermaid" />
+	<div id="preview">
+		<p>hoge</p>
+	</div>
 </main>
 
 <style>
@@ -47,7 +60,7 @@
 	main {
 		text-align: center;
 		padding: 1em;
-		width: 80vh;
+		width: 80vw;
 		margin: 0 auto;
 	}
 </style>
