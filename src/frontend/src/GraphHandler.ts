@@ -380,8 +380,8 @@ export class GraphHandler {
                             const _edge = new Edge();
                             _edge.fromNode = froms[0];
                             _edge.toNode = tos[0];
-                            _edge.edgeLength = obj.arrowLength;
-                            _edge.edgeText = obj.arrowName;
+                            _edge.arrowLength = obj.arrowLength;
+                            _edge.content = obj.arrowName;
                             _edges.push(_edge);
                             continue;
                         }
@@ -390,22 +390,102 @@ export class GraphHandler {
                 }
             }
         }
+
+        for (let i = 0; i < _edges.length; i++) {
+            const edge = _edges[i];
+            edge.toNode.incommingEdges.push(edge);
+            edge.fromNode.outgoingEdges.push(edge);
+        }
         this.nodes = _nodes;
         this.edges = _edges;
         return;
     }
+
+    public getNodeById(id: string) {
+        const match = this.nodes.filter(x => x.id == id);
+        if (match.length === 0) {
+            throw new Error(`id ${id} をもつ要素が見つかりません`);
+        }
+        if (match.length > 0) {
+            throw new Error("内部エラー : IDが重複しています");
+        }
+        return match[0];
+    }
+
+    private getEndType(nodeType: string): string {
+        let result = "";
+        for (let i = 0; i < nodeType.length; i++) {
+            const index = this.validStartChars.indexOf(nodeType[i]);
+            if (index === -1) {
+                throw new Error("不正なノードです");
+            }
+            result += this.validEndChars[index];
+        }
+        return result;
+    }
+
+    public toMermaidString(): string {
+        let result = "flowchart TB\n";
+
+        for (let i = 0; i < this.nodes.length; i++) {
+            const node = this.nodes[i];
+            if (node.content === undefined) {
+                result += node.id;
+                result += "\n";
+                continue;
+            } else {
+                result += node.id;
+                result += node.type;
+                result += '"';
+                result += node.content;
+                result += '"';
+                result += this.getEndType(ensureNotNull(node.type).split("").reverse().join(""));
+                result += "\n";
+            }
+        }
+        for (let i = 0; i < this.edges.length; i++) {
+            const edge = this.edges[i];
+            if (edge.content === undefined) {
+                result += edge.fromNode.id;
+                result += " ";
+                result += "-->";
+                result += " ";
+                result += edge.toNode.id;
+                result += "\n";
+            } else {
+                result += edge.fromNode.id;
+                result += " ";
+                result += "--";
+                result += edge.content;
+                result += "-->";
+                result += " ";
+                result += edge.toNode.id;
+                result += "\n";
+            }
+        }
+
+        return result;
+    }
 }
 
 export class Edge {
+    arrowLength: number;
+    content: string | undefined;
+
     fromNode: Node;
     toNode: Node;
-
-    edgeLength: number;
-    edgeText: string | undefined;
 }
 
 export class Node {
+    constructor() {
+        this.incommingEdges = [];
+        this.outgoingEdges = [];
+    }
+
     id: string;
     content: string | undefined;
     type: string | undefined;
+
+    incommingEdges: Edge[];
+    outgoingEdges: Edge[];
 }

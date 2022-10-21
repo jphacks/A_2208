@@ -63,6 +63,7 @@
 		});
 		const handler = new GraphHandler();
 		handler.parse(graph);
+		console.log(handler.toMermaidString());
 	}
 
 	onMount(() => {
