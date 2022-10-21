@@ -1,6 +1,19 @@
 type ParseMode = "Default" | "NodeId" | "NodeTypeStart" | "NodeName" | "NodeTypeEnd" | "Arrow" | "ArrowName";
 
+function ensureNotNull<T>(param: T | undefined): T {
+    if (param === undefined) {
+        throw new Error();
+    }
+    return param;
+}
+
+function getNodeType(nodeStart: string): string {
+    // 仮
+    return nodeStart.replace('\n', "");
+}
+
 class ParsingNode {
+
     public nodeId: string | undefined;
     public nodeStart: string | undefined;
     public nodeName: string | undefined;
@@ -56,11 +69,11 @@ export class GraphHandler {
     public nodes: Node[];
     public edges: Edge[];
 
-    private validStartChars = ["(", "{"];
-    private validEndChars = [")", "}"];
+    private validStartChars = ["(", "{", "["];
+    private validEndChars = [")", "}", "]"];
     private validArrowChars = ["-", ">"];
     private validArrowNameChars = ["|"];
-    private whiteSpaces = [" "];
+    private whiteSpaces = [" ", "\t"];
 
     public parse(input: string) {
         const _edges: Edge[] = [];
@@ -69,16 +82,17 @@ export class GraphHandler {
         const lines = input.split("\n");
 
         function graphSyntaxError(i: number, j: number, msg: string) {
-            const message = `構文解析エラー。\n${msg}\n行:${i + 1},列:{j + 1}`;
+            const message = `構文解析エラー。\n${msg}\n行:${i + 1},列:${j + 1}`;
             console.error(message);
             return new Error(message);
         }
 
         for (let i = 0; i < lines.length; i++) {
+            parseMode = "Default";
             const line = lines[i];
             let buffer: string[] = [];
-            let parsingNodes: ParsingNode[] = [];
-            let parsingEdges: ParsingEdge[] = [];
+            let parsingObjects: (ParsingNode | ParsingEdge)[] = [];
+
             let j = 0;
 
             let _nodeId: string | undefined;
@@ -129,9 +143,7 @@ export class GraphHandler {
             for (; j < line.length; j++) {
                 const val = lines[i][j];
                 if (this.whiteSpaces.includes(val)) {
-                    if (buffer.length === 0) {
-                        continue;
-                    }
+                    continue;
                 }
 
                 if (parseMode === "Default") {
@@ -146,7 +158,7 @@ export class GraphHandler {
                         if (buffer.length === 0) {
                             throw graphSyntaxError(i, j, "ノードIDがありません");
                         }
-                        _nodeId = buffer.join();
+                        _nodeId = buffer.join("");
                         buffer = [];
                         buffer.push(val);
                         parseMode = "NodeTypeStart";
@@ -156,11 +168,11 @@ export class GraphHandler {
                         if (buffer.length === 0) {
                             throw graphSyntaxError(i, j, "ノードIDがありません");
                         }
-                        _nodeId = buffer.join();
-                        parsingNodes.push(genNode());
+                        _nodeId = buffer.join("");
+                        parsingObjects.push(genNode());
                         resetLocals();
                         buffer = [];
-                        buffer.push(val);
+                        _arrowLength++;
                         parseMode = "Arrow"
                         continue;
                     }
@@ -176,13 +188,13 @@ export class GraphHandler {
                     if (val === '"') {
                         _isQuoted = true;
                         buffer.push(val);
-                        _nodeStart = buffer.join();
+                        _nodeStart = buffer.join("");
                         buffer = [];
                         parseMode = "NodeName"
                         continue;
                     }
                     if (buffer.length !== 0) {
-                        _nodeStart = buffer.join();
+                        _nodeStart = buffer.join("");
                         buffer = [];
                     }
                     parseMode = "NodeName";
@@ -192,7 +204,7 @@ export class GraphHandler {
                 if (parseMode === "NodeName") {
                     if (_isQuoted) {
                         if (val === '"') {
-                            _nodeName = buffer.join();
+                            _nodeName = buffer.join("");
                             buffer = [];
                             buffer.push(val);
                             parseMode = "NodeTypeEnd";
@@ -203,7 +215,7 @@ export class GraphHandler {
                         }
                     } else {
                         if (this.validEndChars.includes(val)) {
-                            _nodeName = buffer.join();
+                            _nodeName = buffer.join("");
                             buffer = [];
                             buffer.push(val);
                             parseMode = "NodeTypeEnd";
@@ -220,11 +232,11 @@ export class GraphHandler {
                         buffer.push(val);
                         continue;
                     } else {
-                        _nodeEnd = buffer.join();
-                        parsingNodes.push(genNode());
+                        _nodeEnd = buffer.join("");
+                        parsingObjects.push(genNode());
                         resetLocals();
                         buffer = [];
-                        buffer.push(val);
+                        _arrowLength++;
                         parseMode = "Arrow";
                         continue;
                     }
@@ -241,8 +253,10 @@ export class GraphHandler {
                         continue;
                     } else {
                         parseMode = "NodeId";
-                        parsingEdges.push(genEdge());
+                        parsingObjects.push(genEdge());
                         resetLocals();
+                        buffer = [];
+                        buffer.push(val);
                         continue;
                     }
                 }
@@ -252,7 +266,7 @@ export class GraphHandler {
                         if (buffer.length === 0) {
                             throw graphSyntaxError(i, j, "矢印名がありません");
                         }
-                        _arrowName = buffer.join();
+                        _arrowName = buffer.join("");
                         buffer = [];
                         _arrowLength++;
                         parseMode = "Arrow";
@@ -262,7 +276,7 @@ export class GraphHandler {
                         if (buffer.length === 0) {
                             throw graphSyntaxError(i, j, "矢印名がありません");
                         }
-                        _arrowName = buffer.join();
+                        _arrowName = buffer.join("");
                         buffer = [];
                         _arrowLength++;
                         parseMode = "Arrow";
@@ -281,8 +295,8 @@ export class GraphHandler {
             if (buffer.length !== 0) {
                 const j = line.length;
                 if (parseMode === "NodeId") {
-                    _nodeId = buffer.join();
-                    parsingNodes.push(genNode());
+                    _nodeId = buffer.join("");
+                    parsingObjects.push(genNode());
                 }
                 else if (parseMode === "NodeTypeStart") {
                     throw graphSyntaxError(i, j, "ノード名が閉じられていません");
@@ -290,8 +304,8 @@ export class GraphHandler {
                     throw graphSyntaxError(i, j, "ノードが閉じられていません");
                 }
                 else if (parseMode === "NodeTypeEnd") {
-                    _nodeEnd = buffer.join();
-                    parsingNodes.push(genNode());
+                    _nodeEnd = buffer.join("");
+                    parsingObjects.push(genNode());
                 }
                 else if (parseMode === "Arrow") {
                     throw graphSyntaxError(i, j, "終わりノードがありません");
@@ -302,7 +316,69 @@ export class GraphHandler {
             }
 
             // finalize
+            for (let k = 0; k < parsingObjects.length; k++) {
+                const obj = parsingObjects[k];
+                if (obj instanceof ParsingNode) {
+                    const exists = _nodes.filter(x => x.id === obj.nodeId);
+                    if (exists.length > 0) {
+                        if (exists.length > 1) {
+                            throw new Error("内部エラー : ノードのIDが重複しています");
+                        }
+                        if (obj.nodeName === undefined) {
+                            continue;
+                        }
+                        exists[0].content = ensureNotNull(obj.nodeName);
+                        exists[0].type = getNodeType(ensureNotNull(obj.nodeStart));
+                        continue;
+                    }
+                    const node = new Node();
+                    if (obj.nodeName === undefined) {
+                        node.id = ensureNotNull(obj.nodeId);
+
+                    } else {
+                        node.id = ensureNotNull(obj.nodeId);
+                        node.content = ensureNotNull(obj.nodeName);
+                        node.type = getNodeType(ensureNotNull(obj.nodeStart));
+                    }
+
+                    _nodes.push(node);
+                    continue;
+                }
+            }
+            for (let k = 0; k < parsingObjects.length; k++) {
+                const obj = parsingObjects[k];
+                if (obj instanceof ParsingEdge) {
+                    if (k === 0 || k === parsingObjects.length - 1) {
+                        throw new Error("内部エラー : 末端のエッジ宣言");
+                    }
+                    const from = parsingObjects[k - 1];
+                    const to = parsingObjects[k + 1];
+                    if (from instanceof ParsingNode) {
+                        if (to instanceof ParsingNode) {
+                            let froms = _nodes.filter(x => x.id === from.nodeId);
+                            if (froms.length !== 1) {
+                                throw new Error("内部エラー : ノードのIDが重複しています");
+                            }
+                            let tos = _nodes.filter(x => x.id === to.nodeId);
+                            if (tos.length !== 1) {
+                                throw new Error("内部エラー : ノードのIDが重複しています");
+                            }
+                            const _edge = new Edge();
+                            _edge.fromNode = froms[0];
+                            _edge.toNode = tos[0];
+                            _edge.edgeLength = obj.arrowLength;
+                            _edge.edgeText = obj.arrowName;
+                            _edges.push(_edge);
+                            continue;
+                        }
+                    }
+                    throw new Error("内部エラー : ノードに挟まれないエッジ");
+                }
+            }
         }
+        this.nodes = _nodes;
+        this.edges = _edges;
+        return;
     }
 }
 
@@ -310,11 +386,12 @@ export class Edge {
     fromNode: Node;
     toNode: Node;
 
-    edgeType: any;
-    edgeText: string;
+    edgeLength: number;
+    edgeText: string | undefined;
 }
 
 export class Node {
     id: string;
-    content: string;
+    content: string | undefined;
+    type: string | undefined;
 }
