@@ -9,7 +9,7 @@ function ensureNotNull<T>(param: T | undefined): T {
 
 function getNodeType(nodeStart: string): string {
     // 仮
-    return nodeStart.replace('\n', "");
+    return nodeStart.replace('\"', "");
 }
 
 class ParsingNode {
@@ -69,9 +69,10 @@ export class GraphHandler {
     public nodes: Node[];
     public edges: Edge[];
 
-    private validStartChars = ["(", "{", "["];
-    private validEndChars = [")", "}", "]"];
-    private validArrowChars = ["-", ">"];
+    private validStartChars = ["(", "{", "[", "\\", "/"];
+    private validEndChars = [")", "}", "]", "\\", "/"];
+    private validArrowChars = ["-"];
+    private validArrowEnds = [">"];
     private validArrowNameChars = ["|"];
     private whiteSpaces = [" ", "\t"];
 
@@ -90,6 +91,12 @@ export class GraphHandler {
         for (let i = 0; i < lines.length; i++) {
             parseMode = "Default";
             const line = lines[i];
+
+
+            if (line.includes("flowchart") || line.includes("click")) {
+                continue;
+            }
+
             let buffer: string[] = [];
             let parsingObjects: (ParsingNode | ParsingEdge)[] = [];
 
@@ -197,7 +204,8 @@ export class GraphHandler {
                         _nodeStart = buffer.join("");
                         buffer = [];
                     }
-                    parseMode = "NodeName";
+                    buffer.push(val);
+                    parseMode = "Arrow";
                     continue;
                 }
 
@@ -251,12 +259,18 @@ export class GraphHandler {
                         _arrowNameSigned = true;
                         parseMode = "ArrowName";
                         continue;
-                    } else {
+                    }
+                    if (this.validArrowEnds.includes(val)) {
+                        _arrowLength++;
                         parseMode = "NodeId";
                         parsingObjects.push(genEdge());
                         resetLocals();
                         buffer = [];
+                        continue;
+                    }
+                    else {
                         buffer.push(val);
+                        parseMode = "ArrowName";
                         continue;
                     }
                 }
