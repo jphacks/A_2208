@@ -72,14 +72,14 @@ GUI上での直感的なレシピ作成を可能にすることを両立した�
   ![image](https://user-images.githubusercontent.com/96977103/197335472-f23caf21-8108-4f67-8eef-22ddbbbace16.png)
   
   2. 画面上部の【フローチャートの作成】の部分に1で登録したノードが追加されているのを確認します。
-  ![image](https://user-images.githubusercontent.com/96977103/197335675-90c2fa66-b297-41f2-bfa3-523bec7e7818.png)
+  ![image](https://user-images.githubusercontent.com/96977103/197337177-b707d7da-ea63-45d0-b1b8-55872206a417.png)
   
   3. セクション下部の**ADD**ボタンを押下した後に「再度火をつけて5分煮込む」をクリック、続いて「福神漬けを添える」をクリックするとエッジが繋がります。
-  ![image](https://user-images.githubusercontent.com/96977103/197335848-280e84bd-c47c-43ad-b511-a933ec910794.png)
+  ![image](https://user-images.githubusercontent.com/96977103/197337379-7c11d03a-5a70-472b-a4d0-20ea7f1f8f30.png)
   
   4. このレシピをmarkdownファイルとして出力するために、画面最下部の**レシピを保存する**ボタンを押下すると、markdownファイルがダウンロードできます。
-  ![image](https://user-images.githubusercontent.com/96977103/197336041-d2f5c84a-291b-4bc0-9484-b67a7db6f4c2.png)
-  
+  ![image](https://user-images.githubusercontent.com/96977103/197337462-dd22fca1-2373-4d8f-9d72-3176c71944ab.png)
+  ![image](https://user-images.githubusercontent.com/96977103/197337471-e9e58ffb-f2db-4fee-894e-06ee560ec7f7.png)
   5. ダウンロードされたmarkdownファイルはただのテキストとして保存されるので、これをフローチャートとして保存するために、**flowchart TB**テキストの上部に「&#96;&#96;&#96;mermaid」を追加します。加えて、mermaid記法の終了を示すために末尾に「&#96;&#96;&#96;」を追加して、テキスト全体を囲んでください。
   ![image](https://user-images.githubusercontent.com/96977103/197336359-3abe2b37-8379-4141-80fc-dc0fc01c00f1.png)
   ![image](https://user-images.githubusercontent.com/96977103/197336364-d26edcca-d727-4b0c-92f7-3a60900ffe11.png)
