@@ -22,6 +22,9 @@
 	let delImageResourceURL: string = "/img/del.png";
 	let registerImageResourceURL: string = "/img/register.png";
 	let confirmb: string = "img/confirm.png";
+	let startImageResourceURL: string = "/img/start.png";
+	let operateImageResourceURL: string = "/img/operate.png";
+	let decideImageResourceURL: string = "/img/decide.png"
 
 	const handler = new GraphHandler();
 	let prevNode: Node | undefined = undefined;
@@ -230,13 +233,13 @@
 			<div class="registerAndSelect">
 				<div id="selectObjectArea">
 					<button class="nodeButton" on:click={adding}
-						><img src={addImageResourceURL} alt="" /></button
+						><img src={startImageResourceURL} alt="" /></button
 					>
 					<button class="nodeButton" on:click={editing}
-						><img src={editImageResourceURL} alt="" /></button
+						><img src={operateImageResourceURL} alt="" /></button
 					>
 					<button class="nodeButton" on:click={deleting}
-						><img src={delImageResourceURL} alt="" /></button
+						><img src={decideImageResourceURL} alt="" /></button
 					>
 				</div>
 				<div class="registerButtonDiv">
