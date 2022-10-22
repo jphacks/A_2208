@@ -487,9 +487,10 @@ export class GraphHandler {
         return result;
     }
 
-    public addNode(id: string, content: string | undefined, type: string | undefined): void {
+    public addNode(content: string | undefined, type: string | undefined): void {
         const node = new Node();
-        node.id = id;
+        node.id = this.getUniqueNodeId();
+        console.debug(node.id);
         node.content = content;
         node.type = type;
 
@@ -505,6 +506,46 @@ export class GraphHandler {
         }
 
         this.nodes.push(node);
+    }
+
+    private getUniqueNodeId(): string {
+        const exists = this.nodes.map(x => x.id).filter(x => x !== "alpha");
+
+        let maxLength = 0;
+        for (let i = 0; i < exists.length; i++) {
+            if (exists[i].length > maxLength) {
+                maxLength = exists[i].length;
+            }
+        }
+
+        const maxLengthNodes = exists.filter(x => x.length === maxLength).sort();
+        var latest = maxLengthNodes[maxLengthNodes.length - 1];
+
+        for (let i = latest.length - 1; i >= 0; i--) {
+            const val = latest[i];
+            if (val !== 'Z') {
+                let charCode = val.charCodeAt(0);
+                charCode++;
+                let nextChar = String.fromCharCode(charCode);
+                let result = "";
+                for (let j = 0; j < latest.length; j++) {
+                    if (i === j) {
+                        result += nextChar;
+                    } else if (j < i) {
+                        result += latest[j];
+                    } else {
+                        result += "A";
+                    }
+                }
+                return result;
+            }
+        }
+
+        let result = "";
+        for (let i = 0; i < latest.length + 1; i++) {
+            result += "A";
+        }
+        return result;
     }
 
     public deleteNode(node: Node) {
