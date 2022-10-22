@@ -17,9 +17,12 @@
 		foodEscape = undefined;
 	}
 
-	
+
+	let addPushedImageResourceURL: string = "./img/addPushed.png";
 	let addImageResourceURL: string = "./img/add.png";
+	let editPushedImageResourceURL: string = "./img/editPushed.png";
 	let editImageResourceURL: string = "./img/edit.png";
+	let delPushedImageResourceURL: string = "./img/delPushed.png";
 	let delImageResourceURL: string = "./img/del.png";
 	let registerImageResourceURL: string = "./img/register.png";
 	let confirmImageResourceURL: string = "./img/confirm.png";
@@ -81,12 +84,14 @@
 					}
 				case "editNode":
 				// edit node here!
+
+				case undefined:
 			}
 		}
 	};
 
-	type editingMode = "editNode" | "addEdge" | "deleteEdge";
-	let mode: editingMode = "editNode";
+	type editingMode = "editNode" | "addEdge" | "deleteEdge" | undefined;
+	let mode: editingMode = undefined;
 
 	function enterGraphNodeEditMode() {
 		mode = "editNode";
@@ -191,13 +196,37 @@
 		<div class="nodeButtonArea">
 			<!-- ボタンを縦並びにする -->
 			<button class="nodeButton" on:click={enterGraphEdgeAddMode}
-				><img src={addImageResourceURL} alt="" /></button
-			>
-			<button class="nodeButton" on:click={enterGraphNodeEditMode}
-				><img src={editImageResourceURL} alt="" /></button
+				>
+
+				{#if mode !== "addEdge"}
+					<img src={addImageResourceURL} alt="" />
+				{/if}
+				{#if mode  === "addEdge"}
+					<img src={addPushedImageResourceURL} alt="" />
+				{/if}
+				
+				</button
 			>
 			<button class="nodeButton" on:click={enterGraphEdgeDeleteMode}
-				><img src={delImageResourceURL} alt="" /></button
+				>
+				{#if mode !== "deleteEdge"}
+					<img src={delImageResourceURL} alt="" />
+				{/if}
+				{#if mode  === "deleteEdge"}
+					<img src={delPushedImageResourceURL} alt="" />
+				{/if}
+				</button
+			>
+
+			<button class="nodeButton" on:click={enterGraphNodeEditMode}
+				>
+				{#if mode !== "editNode"}
+					<img src={editImageResourceURL} alt="" />
+				{/if}
+				{#if mode  === "editNode"}
+					<img src={editPushedImageResourceURL} alt="" />
+				{/if}
+				</button
 			>
 		</div>
 	</div>
