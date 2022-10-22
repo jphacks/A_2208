@@ -18,14 +18,29 @@
 	}
 
 	let recipeContent: string;
+	type addNodeModes = "[" | '[/' | "{";
+	let addNodeMode: addNodeModes = "[";
+
 	function addNode() {
 		if (recipeContent === undefined) {
 			alert("登録する工程内容を書いてください！");
 			return;
 		}
 
-		handler.addNode(recipeContent, "[");
+		handler.addNode(recipeContent, addNodeMode);
 		Render(handler.toInternalMermaidString());
+	}
+
+	function enterAddNodeProcedureMode() {
+		addNodeMode = "[";
+	}
+
+	function enterAddNodeDecisionMode() {
+		addNodeMode = '[/';
+	}
+
+	function enterAddNodeStartMode() {
+		addNodeMode = "{";
 	}
 
 	let addImageResourceURL: string = "./img/add.png";
@@ -247,15 +262,17 @@
 			/>
 			<div class="registerAndSelect">
 				<div id="selectObjectArea">
-					<button class="nodeButton" on:click={enterGraphEdgeAddMode}
+					<button class="nodeButton" on:click={enterAddNodeStartMode}
 						><img src={startImageResourceURL} alt="" /></button
 					>
-					<button class="nodeButton" on:click={enterGraphNodeEditMode}
+					<button
+						class="nodeButton"
+						on:click={enterAddNodeProcedureMode}
 						><img src={operateImageResourceURL} alt="" /></button
 					>
 					<button
 						class="nodeButton"
-						on:click={enterGraphEdgeDeleteMode}
+						on:click={enterAddNodeDecisionMode}
 						><img src={decideImageResourceURL} alt="" /></button
 					>
 				</div>
