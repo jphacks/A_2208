@@ -96,9 +96,16 @@
 		</div>
 		<div id="makeNode">
 			<h2 id="makeNodeTitle">料理工程の追加</h2>
-			<textarea id="makeNodeBox" placeholder="料理の工程を書き込んでください"></textarea>
-			<div class="registerButtonDiv">
-				<button id="registerButton"><img src={register} alt=""></button>
+			<textarea id="makeNodeBox" placeholder="料理の工程を書き込んで、下からオブジェクトの形を選んでください"></textarea>
+			<div class="registerAndSelect">
+				<div id="selectObjectAraa">
+					<button class="nodeButton" on:click={adding}><img src={add} alt=""></button>
+					<button class="nodeButton" on:click={editing}><img src={edit} alt=""></button>
+					<button class="nodeButton" on:click={deleting}><img src={del} alt=""></button>
+				</div>
+				<div class="registerButtonDiv">
+					<button id="registerButton"><img src={register} alt=""></button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -140,6 +147,7 @@
 
 	#makeFoodNode {
 		display: flex;
+		height: 300px;
 	}
 
 	#makeNode {
@@ -160,6 +168,9 @@
 	}
 
 	/* ボタンを右寄せしたいとき→divで囲む→class指定→textalign right　なんで？？？ */
+	.registerAndSelect {
+		display: flex;
+	}
 	
 	.registerButtonDiv {
 		text-align: right;
