@@ -291,16 +291,20 @@
 			/>
 			<div class="registerAndSelect">
 				<div id="selectObjectArea">
-					<button class="nodeButton" on:click={enterAddNodeStartMode}
+					<button class="shapeButton"
+					id="startButton"
+					on:click={enterAddNodeStartMode}
 						><img src={startImageResourceURL} alt="" /></button
 					>
 					<button
-						class="nodeButton"
+						class="shapeButton"
+						id="operateButton"
 						on:click={enterAddNodeProcedureMode}
 						><img src={operateImageResourceURL} alt="" /></button
 					>
 					<button
-						class="nodeButton"
+						class="shapeButton"
+						id="dicideButton"
 						on:click={enterAddNodeDecisionMode}
 						><img src={decideImageResourceURL} alt="" /></button
 					>
@@ -425,7 +429,50 @@
 	}
 
 	#selectObjectArea {
+		text-align: left;
+		margin-top: 0;
 		margin-left: 10%;
+		padding: 0;
+		height: 65px;
+		position: relative;
+		background-color: aqua;
+	}
+
+
+
+	#startButton {
+		background-color: #ffffff;
+		width: 100px;
+		height: 65px;
+		margin: 0;
+		padding: 0;
+		/* background: transparent; */
+		border: none;
+
+	}
+
+	#operateButton {
+		top: 0px;
+		background-color: #ffffff;
+		width: 100px;
+		height: 65px;
+		margin: 0;
+		padding: 0;
+		/* background: transparent; */
+		border: none;
+
+	}
+
+	#dicideButton {
+		top: 0px;
+		background-color: #ffffff;
+		width: 100px;
+		height: 65px;
+		margin: 0;
+		padding: 0;
+		/* background: transparent; */
+		border: none;
+
 	}
 
 	#registerButton {
