@@ -3,8 +3,8 @@
 	import { GraphHandler } from "./GraphHandler";
 	import mermaid from "mermaid";
 
-	globalThis["click_alpha"] = () => {
-		alert("料理を開始しましょう！");
+	globalThis["__handle_click"] = (value) => {
+		console.log(value);
 	};
 
 	const sample = `flowchart TB
@@ -56,14 +56,21 @@
 		click alpha call click_alpha()`;
 
 	function Render(graph: string) {
-		mermaid.mermaidAPI.render("graph1", graph, (svg, bf) => {
-			const elem = document.getElementById("preview");
-			elem.innerHTML = svg;
-			bf(elem);
-		});
 		const handler = new GraphHandler();
 		handler.parse(graph);
+
+		mermaid.mermaidAPI.render(
+			"graph1",
+			handler.toInternalMermaidString(),
+			(svg, bf) => {
+				const elem = document.getElementById("preview");
+				elem.innerHTML = svg;
+				bf(elem);
+			}
+		);
+
 		console.log(handler.toMermaidString());
+		console.log(handler.toInternalMermaidString());
 	}
 
 	onMount(() => {

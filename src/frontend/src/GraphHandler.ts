@@ -466,6 +466,26 @@ export class GraphHandler {
 
         return result;
     }
+
+    public toInternalMermaidString(): string {
+        let result = this.toMermaidString();
+        for (let i = 0; i < this.nodes.length; i++) {
+            const node = this.nodes[i];
+            result += "click";
+            result += " ";
+            result += node.id;
+            result += " ";
+            result += "call";
+            result += " ";
+            result += "__handle_click("
+            result += '"';
+            result += node.id;
+            result += '"';
+            result += ")"
+            result += "\n";
+        }
+        return result;
+    }
 }
 
 export class Edge {
