@@ -70,18 +70,25 @@ GUI上での直感的なレシピ作成を可能にすることを両立した�
 
   1.【料理工程の追加】セクションのテキストボックスに「福神漬けを添える」を入力して**REGISTER**ボタンを押下します。
   ![image](https://user-images.githubusercontent.com/96977103/197335472-f23caf21-8108-4f67-8eef-22ddbbbace16.png)
+  
   2. 画面上部の【フローチャートの作成】の部分に1で登録したノードが追加されているのを確認します。
   ![image](https://user-images.githubusercontent.com/96977103/197335675-90c2fa66-b297-41f2-bfa3-523bec7e7818.png)
+  
   3. セクション下部の**ADD**ボタンを押下した後に「再度火をつけて5分煮込む」をクリック、続いて「福神漬けを添える」をクリックするとエッジが繋がります。
   ![image](https://user-images.githubusercontent.com/96977103/197335848-280e84bd-c47c-43ad-b511-a933ec910794.png)
+  
   4. このレシピをmarkdownファイルとして出力するために、画面最下部の**レシピを保存する**ボタンを押下すると、markdownファイルがダウンロードできます。
   ![image](https://user-images.githubusercontent.com/96977103/197336041-d2f5c84a-291b-4bc0-9484-b67a7db6f4c2.png)
-  5. ダウンロードされたmarkdownファイルはただのテキストとして保存されるので、これをフローチャートとして保存するために、**flowchart TB**テキストの上部に「/`/`/`mermaid」を追加します。加えて、mermaid記法の終了を示すために末尾に「/`/`/`」を追加して、テキスト全体を囲んでください。
+  
+  5. ダウンロードされたmarkdownファイルはただのテキストとして保存されるので、これをフローチャートとして保存するために、**flowchart TB**テキストの上部に「&#96;&#96;&#96;mermaid」を追加します。加えて、mermaid記法の終了を示すために末尾に「&#96;&#96;&#96;」を追加して、テキスト全体を囲んでください。
   ![image](https://user-images.githubusercontent.com/96977103/197336359-3abe2b37-8379-4141-80fc-dc0fc01c00f1.png)
   ![image](https://user-images.githubusercontent.com/96977103/197336364-d26edcca-d727-4b0c-92f7-3a60900ffe11.png)
+  
   6. 自分のアレンジをアピールするために、適宜文章を書き加えて保存します。
   ![image](https://user-images.githubusercontent.com/96977103/197336573-9b4733c4-3a9a-46c2-ba03-a0546de5f2c1.png)
+  
   7. Githubに公開するために「git add」、「git commit」、「git push」 を行います。
   ![image](https://user-images.githubusercontent.com/96977103/197336849-3ec0386c-630b-44b3-b889-5d3a3dcd0507.png)
+  
 　8. レシピが公開されたことを確認すれば完了です！
   ![image](https://user-images.githubusercontent.com/96977103/197336895-ff79e6fc-4e9c-4fae-831d-fb5e1ac1dd47.png)
