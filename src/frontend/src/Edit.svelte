@@ -17,9 +17,19 @@
 		foodEscape = undefined;
 	}
 
+	let recipeContent: string;
+	function addNode() {
+		if (recipeContent === undefined) {
+			alert("登録する工程内容を書いてください！");
+			return;
+		}
 
-	let addPushedImageResourceURL: string = "./img/addPushed.png";
+		handler.addNode(recipeContent, "[");
+		Render(handler.toInternalMermaidString());
+	}
+
 	let addImageResourceURL: string = "./img/add.png";
+	let addPushedImageResourceURL: string = "./img/addPushed.png"
 	let editPushedImageResourceURL: string = "./img/editPushed.png";
 	let editImageResourceURL: string = "./img/edit.png";
 	let delPushedImageResourceURL: string = "./img/delPushed.png";
@@ -28,8 +38,7 @@
 	let confirmImageResourceURL: string = "./img/confirm.png";
 	let startImageResourceURL: string = "./img/start.png";
 	let operateImageResourceURL: string = "./img/operate.png";
-	let decideImageResourceURL: string = "./img/decide.png"
-
+	let decideImageResourceURL: string = "./img/decide.png";
 
 	const handler = new GraphHandler();
 	let prevNode: Node | undefined = undefined;
@@ -106,10 +115,6 @@
 	function enterGraphEdgeDeleteMode() {
 		mode = "deleteEdge";
 		prevNode = undefined;
-	}
-
-	function addNode(){
-		
 	}
 
 	const sample = `flowchart TB
@@ -253,7 +258,10 @@
 					/>
 					<div class="confirmButtonDiv">
 						<button id="confirmButton" on:click={foodAdd}
-							><img src={confirmImageResourceURL} alt="" /></button
+							><img
+								src={confirmImageResourceURL}
+								alt=""
+							/></button
 						>
 					</div>
 				</div>
@@ -264,6 +272,7 @@
 			<textarea
 				id="makeNodeBox"
 				placeholder="料理の工程を書き込んで、下からオブジェクトの形を選んでください"
+				bind:value={recipeContent}
 			/>
 			<div class="registerAndSelect">
 				<div id="selectObjectArea">
@@ -273,12 +282,14 @@
 					<button class="nodeButton" on:click={enterGraphNodeEditMode}
 						><img src={operateImageResourceURL} alt="" /></button
 					>
-					<button class="nodeButton" on:click={enterGraphEdgeDeleteMode}
+					<button
+						class="nodeButton"
+						on:click={enterGraphEdgeDeleteMode}
 						><img src={decideImageResourceURL} alt="" /></button
 					>
 				</div>
 				<div class="registerButtonDiv">
-					<button id="registerButton"
+					<button id="registerButton" on:click={addNode}
 						><img src={registerImageResourceURL} alt="" /></button
 					>
 				</div>
