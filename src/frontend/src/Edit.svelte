@@ -18,7 +18,7 @@
 	}
 
 	let recipeContent: string;
-	type addNodeModes = "[" | '[/' | "{";
+	type addNodeModes = "[" | "[/" | "{";
 	let addNodeMode: addNodeModes = "[";
 
 	function addNode() {
@@ -36,15 +36,46 @@
 	}
 
 	function enterAddNodeDecisionMode() {
-		addNodeMode = '[/';
+		addNodeMode = "[/";
 	}
 
 	function enterAddNodeStartMode() {
 		addNodeMode = "{";
 	}
 
+	/**
+	 * @param  content ダウンロードさせるデータ
+	 * @param  filename ファイル名。省略可
+	 * @param  mimetype データのMIME Type。省略可
+	 * @see http://furudate.hatenablog.com/entry/2014/06/02/172923
+	 */
+	function downloadData(
+		content: ArrayBuffer | ArrayBufferView | Blob | string,
+		filename: string | undefined,
+		mimetype: string | undefined
+	) {
+		if (arguments.length < 3) {
+			mimetype = "application/octet-stream";
+		}
+
+		var url = (window.URL || window.webkitURL).createObjectURL(
+			new Blob([content], { type: mimetype })
+		);
+		var a = document.createElement("a");
+
+		a.target = "_blank";
+		a.download = filename || "";
+		a.href = url;
+
+		a.click();
+	}
+
+	function handleDownload() {
+		downloadData(handler.toMermaidString(), "recipe.md", "text/plain");
+	}
+
 	let addImageResourceURL: string = "./img/add.png";
-	let addPushedImageResourceURL: string = "./img/addPushed.png"
+	let addPushedImageResourceURL: string = "./img/addPushed.png";
 	let editPushedImageResourceURL: string = "./img/editPushed.png";
 	let editImageResourceURL: string = "./img/edit.png";
 	let delPushedImageResourceURL: string = "./img/delPushed.png";
@@ -215,39 +246,31 @@
 		<div id="preview" />
 		<div class="nodeButtonArea">
 			<!-- ボタンを縦並びにする -->
-			<button class="nodeButton" on:click={enterGraphEdgeAddMode}
-				>
-
+			<button class="nodeButton" on:click={enterGraphEdgeAddMode}>
 				{#if mode !== "addEdge"}
 					<img src={addImageResourceURL} alt="" />
 				{/if}
-				{#if mode  === "addEdge"}
+				{#if mode === "addEdge"}
 					<img src={addPushedImageResourceURL} alt="" />
 				{/if}
-				
-				</button
-			>
-			<button class="nodeButton" on:click={enterGraphEdgeDeleteMode}
-				>
+			</button>
+			<button class="nodeButton" on:click={enterGraphEdgeDeleteMode}>
 				{#if mode !== "deleteEdge"}
 					<img src={delImageResourceURL} alt="" />
 				{/if}
-				{#if mode  === "deleteEdge"}
+				{#if mode === "deleteEdge"}
 					<img src={delPushedImageResourceURL} alt="" />
 				{/if}
-				</button
-			>
+			</button>
 
-			<button class="nodeButton" on:click={enterGraphNodeEditMode}
-				>
+			<button class="nodeButton" on:click={enterGraphNodeEditMode}>
 				{#if mode !== "editNode"}
 					<img src={editImageResourceURL} alt="" />
 				{/if}
-				{#if mode  === "editNode"}
+				{#if mode === "editNode"}
 					<img src={editPushedImageResourceURL} alt="" />
 				{/if}
-				</button
-			>
+			</button>
 		</div>
 	</div>
 
@@ -316,6 +339,10 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<div id="ioPanel">
+		<h3>ファイル入出力</h3>
+		<button on:click={handleDownload}>レシピを保存する</button>
 	</div>
 </main>
 
