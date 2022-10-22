@@ -1,31 +1,62 @@
 <script lang="ts">
-
 	import { onMount } from "svelte";
+	import { GraphHandler, Node } from "./GraphHandler";
 	import mermaid from "mermaid";
 
-	let add: string = '/img/add.png'
-	let edit: string = '/img/edit.png'
-	let del: string = '/img/del.png'
-	let register: string = '/img/register.png'
+	let addImageResourceURL: string = "/img/add.png";
+	let editImageResourceURL: string = "/img/edit.png";
+	let delImageResourceURL: string = "/img/del.png";
+	let registerImageResourceURL: string = "/img/register.png";
 
-	globalThis["click_alpha"] = () => {
-		alert("料理を開始しましょう！")
+	const handler = new GraphHandler();
+	let prevNode: Node | undefined = undefined;
+
+	globalThis["__handle_click"] = (nodeId) => {
+		console.log(nodeId);
+		const node = handler.getNodeById(nodeId);
+
+		if (prevNode.id === node.id) {
+			// 2回クリックしたら選択解除
+			prevNode = undefined;
+		} else {
+			switch (mode) {
+				case "addEdge":
+					if (prevNode === undefined) {
+						prevNode = node;
+					} else {
+						// add edge here!
+					}
+				case "deleteEdge":
+					if (prevNode === undefined) {
+						prevNode = node;
+					} else {
+						// delete edge here!
+					}
+				case "editNode":
+				// edit node here!
+			}
+		}
 	};
 
+	type editingMode = "editNode" | "addEdge" | "deleteEdge";
+	let mode: editingMode = "editNode";
+
 	function editing() {
-		alert("編集します")
+		mode = "editNode";
+		prevNode = undefined;
 	}
 
 	function adding() {
-		alert("追加します")
+		mode = "addEdge";
+		prevNode = undefined;
 	}
 
 	function deleting() {
-		alert("削除します")
+		mode = "deleteEdge";
+		prevNode = undefined;
 	}
 
-	onMount(() => {
-		document.getElementById("preview").innerHTML = `flowchart TB
+	const sample = `flowchart TB
 		alpha{"料理開始"}
 		A["じゃがいもを洗う"]
 		B["にんじんの上端、下端を切り落とす"]
@@ -64,29 +95,59 @@
 		K --> L
 		L --> M
 		M --> N
-		N --はい --> O
-		N --いいえ --> P
+		N --はい--> O
+		N --いいえ--> P
 		O --> P
 		P --> Q
 		Q --> R
-		R --> S
-		`;
-		mermaid.initialize({ startOnLoad: true, securityLevel: "loose" });
-	});
+		R --> S`;
 
-	export {add, edit, del, register}
-	// export {editing, adding, deleting}
+	function Render(graph: string) {
+		handler.parse(graph);
+
+		mermaid.mermaidAPI.render(
+			"graph1",
+			handler.toInternalMermaidString(),
+			(svg, bindFunc) => {
+				const elem = document.getElementById("preview");
+				elem.innerHTML = svg;
+				bindFunc(elem);
+			}
+		);
+
+		console.log(handler.toMermaidString());
+		console.log(handler.toInternalMermaidString());
+	}
+
+	onMount(() => {
+		mermaid.mermaidAPI.initialize({
+			startOnLoad: false,
+			securityLevel: "loose",
+			logLevel: "error",
+			flowchart: {
+				useMaxWidth: false,
+			},
+		});
+
+		Render(sample);
+	});
 </script>
 
 <main>
 	<div id="makeFlowChart">
 		<h2 id="makeFlowChartTitle">フローチャートの作成</h2>
-		<div id="preview" class="mermaid" />
+		<div id="preview" />
 		<div class="nodeButtonArea">
 			<!-- ボタンを縦並びにする -->
-			<button class="nodeButton" on:click={adding}><img src={add} alt=""></button>
-			<button class="nodeButton" on:click={editing}><img src={edit} alt=""></button>
-			<button class="nodeButton" on:click={deleting}><img src={del} alt=""></button>
+			<button class="nodeButton" on:click={adding}
+				><img src={addImageResourceURL} alt="" /></button
+			>
+			<button class="nodeButton" on:click={editing}
+				><img src={editImageResourceURL} alt="" /></button
+			>
+			<button class="nodeButton" on:click={deleting}
+				><img src={delImageResourceURL} alt="" /></button
+			>
 		</div>
 	</div>
 
@@ -96,15 +157,26 @@
 		</div>
 		<div id="makeNode">
 			<h2 id="makeNodeTitle">料理工程の追加</h2>
-			<textarea id="makeNodeBox" placeholder="料理の工程を書き込んで、下からオブジェクトの形を選んでください"></textarea>
+			<textarea
+				id="makeNodeBox"
+				placeholder="料理の工程を書き込んで、下からオブジェクトの形を選んでください"
+			/>
 			<div class="registerAndSelect">
 				<div id="selectObjectAraa">
-					<button class="nodeButton" on:click={adding}><img src={add} alt=""></button>
-					<button class="nodeButton" on:click={editing}><img src={edit} alt=""></button>
-					<button class="nodeButton" on:click={deleting}><img src={del} alt=""></button>
+					<button class="nodeButton" on:click={adding}
+						><img src={addImageResourceURL} alt="" /></button
+					>
+					<button class="nodeButton" on:click={editing}
+						><img src={editImageResourceURL} alt="" /></button
+					>
+					<button class="nodeButton" on:click={deleting}
+						><img src={delImageResourceURL} alt="" /></button
+					>
 				</div>
 				<div class="registerButtonDiv">
-					<button id="registerButton"><img src={register} alt=""></button>
+					<button id="registerButton"
+						><img src={registerImageResourceURL} alt="" /></button
+					>
 				</div>
 			</div>
 		</div>
@@ -125,7 +197,7 @@
 		margin-left: -33px;
 		line-height: 1.3;
 		border-bottom: solid 3px rgb(14, 13, 11);
-		z-index:3;
+		z-index: 3;
 	}
 
 	#preview {
@@ -151,15 +223,14 @@
 	}
 
 	#makeNode {
-		background-color: #6B6766;
+		background-color: #6b6766;
 		width: 50%;
 	}
 
-	
 	#makeNodeTitle {
 		width: 95%;
 	}
-	
+
 	#makeNodeBox {
 		width: 80%;
 		height: 50%;
@@ -171,7 +242,7 @@
 	.registerAndSelect {
 		display: flex;
 	}
-	
+
 	.registerButtonDiv {
 		text-align: right;
 	}
@@ -182,8 +253,7 @@
 	}
 
 	#registerFood {
-		background-color: #6B6766;
+		background-color: #6b6766;
 		width: 50%;
 	}
-	
 </style>
