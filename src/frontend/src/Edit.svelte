@@ -17,14 +17,16 @@
 		foodEscape = undefined;
 	}
 
-	let addImageResourceURL: string = "/img/add.png";
-	let editImageResourceURL: string = "/img/edit.png";
-	let delImageResourceURL: string = "/img/del.png";
-	let registerImageResourceURL: string = "/img/register.png";
-	let confirmb: string = "img/confirm.png";
-	let startImageResourceURL: string = "/img/start.png";
-	let operateImageResourceURL: string = "/img/operate.png";
-	let decideImageResourceURL: string = "/img/decide.png"
+	
+	let addImageResourceURL: string = "./img/add.png";
+	let editImageResourceURL: string = "./img/edit.png";
+	let delImageResourceURL: string = "./img/del.png";
+	let registerImageResourceURL: string = "./img/register.png";
+	let confirmImageResourceURL: string = "./img/confirm.png";
+	let startImageResourceURL: string = "./img/start.png";
+	let operateImageResourceURL: string = "./img/operate.png";
+	let decideImageResourceURL: string = "./img/decide.png"
+
 
 	const handler = new GraphHandler();
 	let prevNode: Node | undefined = undefined;
@@ -218,7 +220,7 @@
 					/>
 					<div class="confirmButtonDiv">
 						<button id="confirmButton" on:click={foodAdd}
-							><img src={confirmb} alt="" /></button
+							><img src={confirmImageResourceURL} alt="" /></button
 						>
 					</div>
 				</div>
