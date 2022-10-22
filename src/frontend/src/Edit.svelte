@@ -84,7 +84,7 @@
 	let confirmImageResourceURL: string = "./img/confirm.png";
 	let startImageResourceURL: string = "./img/start.png";
 	let operateImageResourceURL: string = "./img/operate.png";
-	let decideImageResourceURL: string = "./img/decide.png";
+	let decideImageResourceURL: string = "./img/dicide.png";
 
 	const handler = new GraphHandler();
 	let prevNode: Node | undefined = undefined;
@@ -414,7 +414,7 @@
 
 	#makeFoodBox {
 		width: 80%;
-		height: 60%;
+		height: 80%;
 		margin-left: 10%;
 		margin-right: 10%;
 	}
@@ -462,44 +462,15 @@
 		padding: 0;
 		height: 65px;
 		position: relative;
-		background-color: aqua;
 	}
 
 
-
-	#startButton {
-		background-color: #ffffff;
-		width: 100px;
-		height: 65px;
+	.shapeButton {
+		width: 65px;
 		margin: 0;
 		padding: 0;
-		/* background: transparent; */
+		background: transparent;
 		border: none;
-
-	}
-
-	#operateButton {
-		top: 0px;
-		background-color: #ffffff;
-		width: 100px;
-		height: 65px;
-		margin: 0;
-		padding: 0;
-		/* background: transparent; */
-		border: none;
-
-	}
-
-	#dicideButton {
-		top: 0px;
-		background-color: #ffffff;
-		width: 100px;
-		height: 65px;
-		margin: 0;
-		padding: 0;
-		/* background: transparent; */
-		border: none;
-
 	}
 
 	#registerButton {
@@ -510,6 +481,7 @@
 
 	#registerFood {
 		background-color: #838383;
+		/* background: transparent; */
 		width: 50%;
 	}
 </style>
