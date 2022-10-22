@@ -76,7 +76,7 @@ GUI上での直感的なレシピ作成を可能にすることを両立した�
   ![image](https://user-images.githubusercontent.com/96977103/197335848-280e84bd-c47c-43ad-b511-a933ec910794.png)
   4. このレシピをmarkdownファイルとして出力するために、画面最下部の**レシピを保存する**ボタンを押下すると、markdownファイルがダウンロードできます。
   ![image](https://user-images.githubusercontent.com/96977103/197336041-d2f5c84a-291b-4bc0-9484-b67a7db6f4c2.png)
-  5. ダウンロードされたmarkdownファイルはただのテキストとして保存されるので、これをフローチャートとして保存するために、**flowchart TB**テキストの上部に「```mermaid」を追加します。加えて、mermaid記法の終了を示すために末尾に「```」を追加して、テキスト全体を囲んでください。
+  5. ダウンロードされたmarkdownファイルはただのテキストとして保存されるので、これをフローチャートとして保存するために、**flowchart TB**テキストの上部に「/`/`/`mermaid」を追加します。加えて、mermaid記法の終了を示すために末尾に「/`/`/`」を追加して、テキスト全体を囲んでください。
   ![image](https://user-images.githubusercontent.com/96977103/197336359-3abe2b37-8379-4141-80fc-dc0fc01c00f1.png)
   ![image](https://user-images.githubusercontent.com/96977103/197336364-d26edcca-d727-4b0c-92f7-3a60900ffe11.png)
   6. 自分のアレンジをアピールするために、適宜文章を書き加えて保存します。
