@@ -36,7 +36,7 @@
 		const node = handler.getNodeById(nodeId);
 
 		if (prevNode !== undefined && prevNode.id === node.id) {
-			// 2回クリックしたら選択解除
+			// 2回クリックしたら選択解除する
 			prevNode = undefined;
 		} else {
 			switch (mode) {
@@ -68,7 +68,7 @@
 							(x) => x.toNode === node
 						);
 						if (targets.length !== 1) {
-							console.info(" 削除するエッジがありません");
+							console.info("削除するエッジがありません");
 							alert("削除できる手順の関係がありません");
 							prevNode = undefined;
 							break;
@@ -88,19 +88,23 @@
 	type editingMode = "editNode" | "addEdge" | "deleteEdge";
 	let mode: editingMode = "editNode";
 
-	function editing() {
+	function enterGraphNodeEditMode() {
 		mode = "editNode";
 		prevNode = undefined;
 	}
 
-	function adding() {
+	function enterGraphEdgeAddMode() {
 		mode = "addEdge";
 		prevNode = undefined;
 	}
 
-	function deleting() {
+	function enterGraphEdgeDeleteMode() {
 		mode = "deleteEdge";
 		prevNode = undefined;
+	}
+
+	function addNode(){
+		
 	}
 
 	const sample = `flowchart TB
@@ -186,13 +190,13 @@
 		<div id="preview" />
 		<div class="nodeButtonArea">
 			<!-- ボタンを縦並びにする -->
-			<button class="nodeButton" on:click={adding}
+			<button class="nodeButton" on:click={enterGraphEdgeAddMode}
 				><img src={addImageResourceURL} alt="" /></button
 			>
-			<button class="nodeButton" on:click={editing}
+			<button class="nodeButton" on:click={enterGraphNodeEditMode}
 				><img src={editImageResourceURL} alt="" /></button
 			>
-			<button class="nodeButton" on:click={deleting}
+			<button class="nodeButton" on:click={enterGraphEdgeDeleteMode}
 				><img src={delImageResourceURL} alt="" /></button
 			>
 		</div>
@@ -234,13 +238,13 @@
 			/>
 			<div class="registerAndSelect">
 				<div id="selectObjectArea">
-					<button class="nodeButton" on:click={adding}
+					<button class="nodeButton" on:click={enterGraphEdgeAddMode}
 						><img src={startImageResourceURL} alt="" /></button
 					>
-					<button class="nodeButton" on:click={editing}
+					<button class="nodeButton" on:click={enterGraphNodeEditMode}
 						><img src={operateImageResourceURL} alt="" /></button
 					>
-					<button class="nodeButton" on:click={deleting}
+					<button class="nodeButton" on:click={enterGraphEdgeDeleteMode}
 						><img src={decideImageResourceURL} alt="" /></button
 					>
 				</div>
