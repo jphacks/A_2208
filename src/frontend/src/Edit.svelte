@@ -3,10 +3,25 @@
 	import { onMount } from "svelte";
 	import mermaid from "mermaid";
 
+	let food = ["たまねぎ", "にんじん"]
+	let foodEscape: string = undefined;
+
+	function foodAdd() {
+		if (foodEscape === undefined) {
+			alert("食材名を書いてください！")
+			return
+		}
+
+		food.push(foodEscape);
+		food = food
+		foodEscape = undefined
+	}
+
 	let add: string = '/img/add.png'
 	let edit: string = '/img/edit.png'
 	let del: string = '/img/del.png'
 	let register: string = '/img/register.png'
+	let confirmb: string = 'img/confirm.png'
 
 	globalThis["click_alpha"] = () => {
 		alert("料理を開始しましょう！")
@@ -93,12 +108,30 @@
 	<div id="makeFoodNode">
 		<div id="registerFood">
 			<h2 id="registerFoodTitle">材料の登録</h2>
+			<div class="registerFoodTwo">
+				<div class="foodLists">
+					{#each food as item}
+						<div class="foodList">
+							<h3>
+								{item}
+							</h3>
+						</div>
+					{/each}
+				</div>
+
+				<div class="foodTextareaAndButton">
+					<textarea id="makeFoodBox" placeholder="使う材料を書き込んで追加してください" bind:value={foodEscape}></textarea>
+					<div class="confirmButtonDiv">
+						<button id="confirmButton" on:click={foodAdd}><img src={confirmb} alt=""></button>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div id="makeNode">
 			<h2 id="makeNodeTitle">料理工程の追加</h2>
 			<textarea id="makeNodeBox" placeholder="料理の工程を書き込んで、下からオブジェクトの形を選んでください"></textarea>
 			<div class="registerAndSelect">
-				<div id="selectObjectAraa">
+				<div id="selectObjectArea">
 					<button class="nodeButton" on:click={adding}><img src={add} alt=""></button>
 					<button class="nodeButton" on:click={editing}><img src={edit} alt=""></button>
 					<button class="nodeButton" on:click={deleting}><img src={del} alt=""></button>
@@ -139,6 +172,7 @@
 	.nodeButtonArea {
 		text-align: right;
 	}
+
 	.nodeButton {
 		width: 100px;
 		background: transparent;
@@ -150,8 +184,52 @@
 		height: 300px;
 	}
 
+	.registerFoodTwo {
+		display: flex;
+	}
+
+	.foodLists {
+    	overflow-y: scroll;
+		height: 185px;
+		width: 50%;
+		margin-left: 5%;
+		margin-right: auto;
+	}
+
+	.foodList {
+		/* border: solid 2px #07c61a; */
+		background-color: rgb(124, 0, 0);
+		color: azure;
+		height: 30px;
+		width: 100%;
+		margin-right: 10px;
+		margin-bottom: 10px;
+		padding-top: 10px;
+		padding-bottom: 30px;
+		border-radius: 15px;
+		text-align: center;
+	}
+
+	#makeFoodBox {
+		width: 80%;
+		height: 60%;
+		margin-left: 10%;
+		margin-right: 10%;
+	}
+
+	.confirmButtonDiv {
+		text-align: right;
+	}
+
+	#confirmButton {
+		width: 120px;
+		background: transparent;
+		border: none;
+		margin-right: 10%;
+	}
+
 	#makeNode {
-		background-color: #6B6766;
+		background-color: #838383;
 		width: 50%;
 	}
 
@@ -175,6 +253,11 @@
 	.registerButtonDiv {
 		text-align: right;
 	}
+
+	#selectObjectArea {
+		margin-left: 10%;
+	}
+
 	#registerButton {
 		width: 120px;
 		background: transparent;
@@ -182,7 +265,7 @@
 	}
 
 	#registerFood {
-		background-color: #6B6766;
+		background-color: #838383;
 		width: 50%;
 	}
 	
