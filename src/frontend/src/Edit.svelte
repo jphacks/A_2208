@@ -3,10 +3,10 @@
 	import { onMount } from "svelte";
 	import mermaid from "mermaid";
 
-	let add = '/img/add.png'
-	let edit = '/img/edit.png'
-	let del = '/img/del.png'
-	let register = '/img/register.png'
+	let add: string = '/img/add.png'
+	let edit: string = '/img/edit.png'
+	let del: string = '/img/del.png'
+	let register: string = '/img/register.png'
 
 	globalThis["click_alpha"] = () => {
 		alert("料理を開始しましょう！")
@@ -23,18 +23,6 @@
 	function deleting() {
 		alert("削除します")
 	}
-
-	// globalThis["editing"] = () => {
-	// 	alert("編集します");
-	// }
-
-	// globalThis["adding"] = () => {
-	// 	alert("追加します");
-	// }
-
-	// globalThis["deleting"] = () => {
-	// 	alert("削除します");
-	// }
 
 	onMount(() => {
 		document.getElementById("preview").innerHTML = `flowchart TB
@@ -92,21 +80,27 @@
 
 <main>
 	<div id="makeFlowChart">
-		<h2>フローチャートの作成</h2>
+		<h2 id="makeFlowChartTitle">フローチャートの作成</h2>
 		<div id="preview" class="mermaid" />
 		<div class="nodeButtonArea">
 			<!-- ボタンを縦並びにする -->
-			<!-- ボタン用のいい感じの画像を作成する -->
-			<!-- ↑うまく乗せられない、なんで？？？？？？？ -->
 			<button class="nodeButton" on:click={adding}><img src={add} alt=""></button>
 			<button class="nodeButton" on:click={editing}><img src={edit} alt=""></button>
 			<button class="nodeButton" on:click={deleting}><img src={del} alt=""></button>
 		</div>
 	</div>
-	<div id="makeNode">
-		<h2>料理の工程を書き込んでください</h2>
-		<textarea placeholder="料理の工程を書き込んでください"></textarea>
-		<button id="registerButton"><img src={register} alt=""></button>
+
+	<div id="makeFoodNode">
+		<div id="registerFood">
+			<h2 id="registerFoodTitle">材料の登録</h2>
+		</div>
+		<div id="makeNode">
+			<h2 id="makeNodeTitle">料理工程の追加</h2>
+			<textarea id="makeNodeBox" placeholder="料理の工程を書き込んでください"></textarea>
+			<div class="registerButtonDiv">
+				<button id="registerButton"><img src={register} alt=""></button>
+			</div>
+		</div>
 	</div>
 </main>
 
@@ -115,12 +109,24 @@
 		width: 100%;
 	}
 
+	h2 {
+		position: relative;
+		padding: 5px 26px 5px 42px;
+		background: #4b4945;
+		font-size: 20px;
+		color: #ffffff;
+		margin-left: -33px;
+		line-height: 1.3;
+		border-bottom: solid 3px rgb(14, 13, 11);
+		z-index:3;
+	}
+
 	#preview {
 		text-align: center;
 	}
 
 	#makeFlowChart {
-		background-color: #5670a0;
+		background-color: #577699;
 	}
 
 	.nodeButtonArea {
@@ -128,25 +134,45 @@
 	}
 	.nodeButton {
 		width: 100px;
-		display: inline-flex;
-		flex-direction: column;
+		background: transparent;
+		border: none;
+	}
+
+	#makeFoodNode {
+		display: flex;
 	}
 
 	#makeNode {
 		background-color: #6B6766;
+		width: 50%;
 	}
 
+	
+	#makeNodeTitle {
+		width: 95%;
+	}
+	
+	#makeNodeBox {
+		width: 80%;
+		height: 50%;
+		margin-left: 10%;
+		margin-right: 10%;
+	}
+
+	/* ボタンを右寄せしたいとき→divで囲む→class指定→textalign right　なんで？？？ */
+	
+	.registerButtonDiv {
+		text-align: right;
+	}
 	#registerButton {
-		width: 100px;
-		text-align: center;
+		width: 120px;
+		background: transparent;
+		border: none;
 	}
 
-	/* main {
-		text-align: center;
-		padding: 1em;
-		width: 80vh;
-		margin: 0 auto;
-	} */
-
+	#registerFood {
+		background-color: #6B6766;
+		width: 50%;
+	}
 	
 </style>
