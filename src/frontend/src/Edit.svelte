@@ -15,7 +15,7 @@
 		console.log(nodeId);
 		const node = handler.getNodeById(nodeId);
 
-		if (prevNode.id === node.id) {
+		if (prevNode !== undefined && prevNode.id === node.id) {
 			// 2回クリックしたら選択解除
 			prevNode = undefined;
 		} else {
@@ -23,14 +23,41 @@
 				case "addEdge":
 					if (prevNode === undefined) {
 						prevNode = node;
+						break;
 					} else {
-						// add edge here!
+						const targets = prevNode.outgoingEdges.filter(
+							(x) => x.toNode === node
+						);
+						if (targets.length > 0) {
+							console.info("既に存在するエッジ : 追加をスキップ");
+							prevNode = undefined;
+							break;
+						}
+
+						handler.addEdge(3, undefined, prevNode, node);
+						prevNode = undefined;
+						Render(handler.toInternalMermaidString());
+						break;
 					}
 				case "deleteEdge":
 					if (prevNode === undefined) {
 						prevNode = node;
+						break;
 					} else {
-						// delete edge here!
+						const targets = prevNode.outgoingEdges.filter(
+							(x) => x.toNode === node
+						);
+						if (targets.length !== 1) {
+							console.info(" 削除するエッジがありません");
+							alert("削除できる手順の関係がありません");
+							prevNode = undefined;
+							break;
+						}
+
+						handler.deleteEdge(targets[0]);
+						prevNode = undefined;
+						Render(handler.toInternalMermaidString());
+						break;
 					}
 				case "editNode":
 				// edit node here!

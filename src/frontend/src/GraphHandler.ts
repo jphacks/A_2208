@@ -406,7 +406,7 @@ export class GraphHandler {
         if (match.length === 0) {
             throw new Error(`id ${id} をもつ要素が見つかりません`);
         }
-        if (match.length > 0) {
+        if (match.length > 1) {
             throw new Error("内部エラー : IDが重複しています");
         }
         return match[0];
@@ -485,6 +485,53 @@ export class GraphHandler {
             result += "\n";
         }
         return result;
+    }
+
+    public addNode(id: string, content: string | undefined, type: string | undefined): void {
+        const node = new Node();
+        node.id = id;
+        node.content = content;
+        node.type = type;
+
+        if (content !== undefined) {
+            if (type === undefined) {
+                throw new Error("内部エラー : contentを指定する場合、typeも指定してください");
+            }
+            for (let i = 0; i < type.length; i++) {
+                if (!this.validStartChars.includes(type[i])) {
+                    throw new Error("内部エラー : 無効なノードtypeです");
+                }
+            }
+        }
+
+        this.nodes.push(node);
+    }
+
+    public deleteNode(node: Node) {
+        this.nodes = this.nodes.filter(x => x !== node);
+    }
+
+    public addEdge(arrowLength: number, content: string | undefined, fromNode: Node, toNode: Node) {
+        const edge = new Edge();
+        edge.arrowLength = arrowLength;
+        edge.content = content;
+        edge.fromNode = fromNode;
+        edge.toNode = toNode;
+
+        if (arrowLength <= 0) {
+            throw new Error("矢印の長さが必要です");
+        }
+
+        this.edges.push(edge);
+        fromNode.outgoingEdges.push(edge);
+        toNode.incommingEdges.push(edge);
+    }
+
+    public deleteEdge(edge: Edge) {
+        edge.fromNode.outgoingEdges = edge.fromNode.outgoingEdges.filter(x => x !== edge);
+        edge.toNode.incommingEdges = edge.toNode.incommingEdges.filter(x => x !== edge);
+
+        this.edges = this.edges.filter(x => x !== edge);
     }
 }
 
