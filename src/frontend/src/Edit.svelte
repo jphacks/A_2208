@@ -261,6 +261,8 @@
 			placeholder="何人分"
 		/>
 		<!-- 横並びにしたい displayflex -->
+		<!-- 追加ボタンでボックスが追加されるようにする -->
+		<!-- 登録ボタン実装 or JSで文字列として保持 -->
 		<div id="addFoodAndQuantityTitle">
 			<div id="foodName"><h3>材料・調味料</h3></div>
 			<div id="quantity"><h3>文量</h3></div>
@@ -328,7 +330,7 @@
 	<!-- 材料の登録・料理工程の追加（いずれ消します） -->
 	<div id="makeFoodNode">
 		<!-- 材料の登録 -->
-		<div id="registerFood">
+		<!-- <div id="registerFood">
 			<h2 id="registerFoodTitle">材料の登録</h2>
 			<div class="registerFoodTwo">
 				<div class="foodLists">
@@ -357,7 +359,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<!-- 料理工程の追加 -->
 		<div id="makeNode">
 			<h2 id="makeNodeTitle">料理工程の追加</h2>
@@ -493,7 +495,7 @@
 
 	#makeNode {
 		background-color: #838383;
-		width: 50%;
+		/*width: 50%;*/
 	}
 
 	#makeNodeTitle {
