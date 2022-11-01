@@ -241,19 +241,29 @@
 </script>
 
 <main>
+	<!-- メタデータ -->
+	<div id="metaData">
+		<h2>レシピ名</h2>
+		<textarea
+			id="registerRecipeNameBox"
+			placeholder="例）おうちで簡単に作れる！エンジニア向けのおいしいカレー"
+		/>
+	</div>
 	<!-- 食材追加 -->
 	<!-- 必要事項
 		N人分
 		材料×文量 
 	-->
-	<div id="registerFood">
+	<div id="registerFoodAndQuantity">
+		<h2>材料・分量</h2>
 		<textarea
-		id="registerPeopleBox"
-		placeholder="何人分"/>
+			id="registerPeopleBox"
+			placeholder="何人分"
+		/>
 		<!-- 横並びにしたい displayflex -->
 		<div id="addFoodAndQuantityTitle">
-			<div id="foodName"><h2>材料・調味料</h2></div>
-			<div id="quantity"><h2>文量</h2></div>
+			<div id="foodName"><h3>材料・調味料</h3></div>
+			<div id="quantity"><h3>文量</h3></div>
 		</div>
 		<div class="addFoodAndQuantity">
 			<textarea
