@@ -263,7 +263,7 @@
 		<!-- 横並びにしたい displayflex -->
 		<div id="addFoodAndQuantityTitle">
 			<div id="foodName"><h3>材料・調味料</h3></div>
-			<div id="quantity"><h3>文量</h3></div>
+			<div id="quantity"><h3>分量</h3></div>
 		</div>
 		<div class="addFoodAndQuantity">
 			<textarea
@@ -403,18 +403,26 @@
 <style>
 	main * {
 		width: 100%;
+		background: #9c9c9c;
 	}
 
 	h2 {
 		position: relative;
 		padding: 5px 26px 5px 42px;
-		background: #4b4945;
+		background: #716664;
 		font-size: 20px;
 		color: #ffffff;
-		margin-left: -33px;
+		margin-left: -40px;
 		line-height: 1.3;
-		border-bottom: solid 3px rgb(14, 13, 11);
+		border-bottom: solid 3px rgb(58, 52, 38);
 		z-index: 3;
+	}
+	#metaData{
+		background-color: #9c9c9c;
+	}
+	#registerRecipeNameBox{
+		background-color: aliceblue;
+
 	}
 
 	#preview {
