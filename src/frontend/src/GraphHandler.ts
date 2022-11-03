@@ -44,7 +44,7 @@ function getEndType(nodeType: string): string {
         if (index === -1) {
             throw new Error("不正なノードです");
         }
-        result = validEndChars[index] + nodeType[i];
+        result = validEndChars[index] + result;
     }
     return result;
 }
