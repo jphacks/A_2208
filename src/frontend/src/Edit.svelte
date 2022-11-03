@@ -241,6 +241,57 @@
 </script>
 
 <main>
+	<!-- メタデータ -->
+	<div id="metaData">
+		<h2>レシピ名</h2>
+		<textarea
+			id="registerRecipeNameBox"
+			placeholder="例）おうちで簡単に作れる！エンジニア向けのおいしいカレー"
+		/>
+	</div>
+	<!-- 食材追加 -->
+	<!-- 必要事項
+		N人分
+		材料×文量 
+	-->
+	<div id="registerFoodAndQuantity">
+		<h2>材料・分量</h2>
+		<textarea
+			id="registerPeopleBox"
+			placeholder="何人分"
+		/>
+		<!-- 横並びにしたい displayflex -->
+		<div id="addFoodAndQuantityTitle">
+			<div id="foodName"><h3>材料・調味料</h3></div>
+			<div id="quantity"><h3>文量</h3></div>
+		</div>
+		<div class="addFoodAndQuantity">
+			<textarea
+			id="registerFoodBox"
+			placeholder="例）豚肉"/>
+			<textarea
+			id="registerQuantityBox"
+			placeholder="例）350g"/>
+		</div>
+		<div class="addFoodAndQuantity">
+			<textarea
+			id="registerFoodBox"
+			placeholder="例）にんじん"/>
+			<textarea
+			id="registerQuantityBox"
+			placeholder="例）1本"/>
+		</div>
+		<div class="addFoodAndQuantity">
+			<textarea
+			id="registerFoodBox"
+			placeholder="例）大根"/>
+			<textarea
+			id="registerQuantityBox"
+			placeholder="例）1/2本"/>
+		</div>
+	</div>
+
+	<!-- フローチャート作成 -->
 	<div id="makeFlowChart">
 		<h2 id="makeFlowChartTitle">フローチャートの作成</h2>
 		<div id="preview" />
@@ -274,7 +325,9 @@
 		</div>
 	</div>
 
+	<!-- 材料の登録・料理工程の追加（いずれ消します） -->
 	<div id="makeFoodNode">
+		<!-- 材料の登録 -->
 		<div id="registerFood">
 			<h2 id="registerFoodTitle">材料の登録</h2>
 			<div class="registerFoodTwo">
@@ -305,6 +358,7 @@
 				</div>
 			</div>
 		</div>
+		<!-- 料理工程の追加 -->
 		<div id="makeNode">
 			<h2 id="makeNodeTitle">料理工程の追加</h2>
 			<textarea
@@ -365,6 +419,13 @@
 
 	#preview {
 		text-align: center;
+	}
+
+	#addFoodAndQuantityTitle {
+		display: flex;
+	}
+	.addFoodAndQuantity {
+		display: flex;
 	}
 
 	#makeFlowChart {
