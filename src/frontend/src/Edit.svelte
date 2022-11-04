@@ -5,7 +5,7 @@
 
 	let food = ["たまねぎ", "にんじん"];
 	let foodEscape: string = undefined;
-
+ 
 	function foodAdd() {
 		if (foodEscape === undefined) {
 			alert("食材名を書いてください！");
@@ -163,6 +163,23 @@
 		prevNode = undefined;
 	}
 
+	function addAddFoodAndQuantity() {
+		let foodAndQuantityDiv = document.getElementById("addFoodAndQuantityList");
+		// let result = "<div class=\"addFoodAndQuantity\"><textarea			id=\"registerFoodBox\" <textarea	id=\"registerQuantityBox\"</div>";
+		// let add = 
+
+		let result = document.createElement('div');
+		result.className = "addFoodAndQuantity";
+		let text1 = document.createElement('textarea');
+		text1.className = "registerFoodBox";
+		let text2 = document.createElement('textarea');
+		text2.className = "registerQuantityBox";
+		result.appendChild(text1);
+		result.appendChild(text2);
+
+		foodAndQuantityDiv.appendChild(result);
+	}
+
 	const sample = `flowchart TB
 		alpha{"料理開始"}
 		A["じゃがいもを洗う"]
@@ -238,6 +255,7 @@
 
 		Render(sample);
 	});
+
 </script>
 
 <main>
@@ -265,31 +283,34 @@
 		<!-- 登録ボタン実装 or JSで文字列として保持 -->
 		<div id="addFoodAndQuantityTitle">
 			<div id="foodName"><h3>材料・調味料</h3></div>
-			<div id="quantity"><h3>文量</h3></div>
+			<div id="quantity"><h3>分量</h3></div>
 		</div>
-		<div class="addFoodAndQuantity">
-			<textarea
-			id="registerFoodBox"
-			placeholder="例）豚肉"/>
-			<textarea
-			id="registerQuantityBox"
-			placeholder="例）350g"/>
-		</div>
-		<div class="addFoodAndQuantity">
-			<textarea
-			id="registerFoodBox"
-			placeholder="例）にんじん"/>
-			<textarea
-			id="registerQuantityBox"
-			placeholder="例）1本"/>
-		</div>
-		<div class="addFoodAndQuantity">
-			<textarea
-			id="registerFoodBox"
-			placeholder="例）大根"/>
-			<textarea
-			id="registerQuantityBox"
-			placeholder="例）1/2本"/>
+		<div id="addFoodAndQuantityList">
+			<button on:click={addAddFoodAndQuantity}>ボックスを追加</button>
+			<div class="addFoodAndQuantity">
+				<textarea
+				class="registerFoodBox"
+				placeholder="例）豚肉"/>
+				<textarea
+				class="registerQuantityBox"
+				placeholder="例）350g"/>
+			</div>
+			<div class="addFoodAndQuantity">
+				<textarea
+				class="registerFoodBox"
+				placeholder="例）にんじん"/>
+				<textarea
+				class="registerQuantityBox"
+				placeholder="例）1本"/>
+			</div>
+			<div class="addFoodAndQuantity">
+				<textarea
+				class="registerFoodBox"
+				placeholder="例）大根"/>
+				<textarea
+				class="registerQuantityBox"
+				placeholder="例）1/2本"/>
+			</div>
 		</div>
 	</div>
 
@@ -298,7 +319,6 @@
 		<h2 id="makeFlowChartTitle">フローチャートの作成</h2>
 		<div id="preview" />
 		<div class="nodeButtonArea">
-			<!-- ボタンを縦並びにする -->
 			<button class="nodeButton" on:click={enterGraphEdgeAddMode}>
 				{#if mode !== "addEdge"}
 					<img src={addImageResourceURL} alt="" />
@@ -328,7 +348,7 @@
 	</div>
 
 	<!-- 材料の登録・料理工程の追加（いずれ消します） -->
-	<div id="makeFoodNode">
+	<!-- <div id="makeFoodNode"> -->
 		<!-- 材料の登録 -->
 		<!-- <div id="registerFood">
 			<h2 id="registerFoodTitle">材料の登録</h2>
@@ -395,7 +415,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	<!-- </div> -->
 	<div id="ioPanel">
 		<h3>ファイル入出力</h3>
 		<button on:click={handleDownload}>レシピを保存する</button>
@@ -544,7 +564,6 @@
 
 	#registerFood {
 		background-color: #838383;
-		/* background: transparent; */
 		width: 50%;
 	}
 </style>
