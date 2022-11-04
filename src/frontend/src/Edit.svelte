@@ -334,9 +334,9 @@
 				<div class="foodLists">
 					{#each food as item}
 						<div class="foodList">
-							<h3>
+							<h4>
 								{item}
-							</h3>
+							</h4>
 						</div>
 					{/each}
 				</div>
@@ -395,7 +395,7 @@
 		</div>
 	</div>
 	<div id="ioPanel">
-		<h3>ファイル入出力</h3>
+		<h2>ファイル入出力</h2>
 		<button on:click={handleDownload}>レシピを保存する</button>
 	</div>
 </main>
@@ -404,6 +404,7 @@
 	main * {
 		width: 100%;
 		background: #9c9c9c;
+		margin: 0%;
 	}
 
 	h2 {
@@ -414,11 +415,19 @@
 		color: #ffffff;
 		margin-left: -40px;
 		line-height: 1.3;
+		border-top: solid 3px #9c9c9c;
 		border-bottom: solid 3px rgb(58, 52, 38);
 		z-index: 3;
 	}
+	h3{
+		background-color: #716664;
+		border-bottom: solid 3px ;
+	}
+	textarea{
+		background-color: aliceblue;
+	}
 	#metaData{
-		background-color: #9c9c9c;
+		background-color: 3px rgb(58, 52, 38);
 	}
 	#registerRecipeNameBox{
 		background-color: aliceblue;
@@ -552,5 +561,8 @@
 		background-color: #838383;
 		/* background: transparent; */
 		width: 50%;
+	}
+	#ioPanel{
+		margin-top: 0%;
 	}
 </style>
