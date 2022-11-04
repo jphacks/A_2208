@@ -103,6 +103,62 @@
 		inputingIngredient = undefined;
 	}
 
+	type FoodAndQuantity = {
+		food: string;
+		quantity: string;
+		placeholderFood: string;
+		placeholderQuantity: string;
+	};
+
+	let placeholder1: FoodAndQuantity = {
+		placeholderFood: "豚肉",
+		placeholderQuantity: "350g",
+		food: undefined,
+		quantity: undefined,
+	};
+
+	let placeholder2: FoodAndQuantity = {
+		placeholderFood: "にんじん",
+		placeholderQuantity: "1本",
+		food: undefined,
+		quantity: undefined,
+	};
+
+	let placeholder3: FoodAndQuantity = {
+		placeholderFood: "大根",
+		placeholderQuantity: "1/2本",
+		food: undefined,
+		quantity: undefined,
+	};
+
+	let foodAndQuantityPairList = [placeholder1, placeholder2, placeholder3];
+
+	function addAddFoodAndQuantity() {
+		let add: FoodAndQuantity = {
+			food: undefined,
+			quantity: undefined,
+			placeholderFood: "水",
+			placeholderQuantity: "200cc",
+		};
+		foodAndQuantityPairList.push(add);
+		foodAndQuantityPairList = foodAndQuantityPairList;
+	}
+
+	function saveFoodAndQuantity() {
+		foodAndQuantityPairList.forEach((element) => {
+			if (element.food === undefined && element.quantity === undefined) {
+				// continue
+			}
+			if (element.food === undefined || element.quantity === undefined) {
+				alert("食材と分量を入力してください");
+				// break;
+				return;
+			}
+
+			// 食材と分量を保存する処理
+		});
+	}
+
 	let recipeContent: string;
 	type nodeTypes = "[" | "[/" | "{";
 	let nodeType: nodeTypes = "[";
@@ -246,21 +302,29 @@
 		<h2>材料・分量</h2>
 		<textarea id="registerPeopleBox" placeholder="何人分" />
 		<!-- 横並びにしたい displayflex -->
+		<!-- 追加ボタンでボックスが追加されるようにする -->
+		<!-- 登録ボタン実装 or JSで文字列として保持 -->
 		<div id="addFoodAndQuantityTitle">
 			<div id="foodName"><h3>材料・調味料</h3></div>
 			<div id="quantity"><h3>分量</h3></div>
 		</div>
-		<div class="addFoodAndQuantity">
-			<textarea id="registerFoodBox" placeholder="例）豚肉" />
-			<textarea id="registerQuantityBox" placeholder="例）350g" />
-		</div>
-		<div class="addFoodAndQuantity">
-			<textarea id="registerFoodBox" placeholder="例）にんじん" />
-			<textarea id="registerQuantityBox" placeholder="例）1本" />
-		</div>
-		<div class="addFoodAndQuantity">
-			<textarea id="registerFoodBox" placeholder="例）大根" />
-			<textarea id="registerQuantityBox" placeholder="例）1/2本" />
+		<div id="addFoodAndQuantityList">
+			<button on:click={addAddFoodAndQuantity}>ボックスを追加</button>
+			{#each foodAndQuantityPairList as placeholder}
+				<div class="addFoodAndQuantity">
+					<textarea
+						class="registerFoodBox"
+						placeholder={"例）" + placeholder.placeholderFood}
+						bind:value={placeholder.food}
+					/>
+					<textarea
+						class="registerQuantityBox"
+						placeholder={"例）" + placeholder.placeholderQuantity}
+						bind:value={placeholder.quantity}
+					/>
+				</div>
+			{/each}
+			<button on:click={saveFoodAndQuantity}>保存する</button>
 		</div>
 	</div>
 
@@ -299,71 +363,43 @@
 	</div>
 
 	<!-- 材料の登録・料理工程の追加（いずれ消します） -->
-	<div id="makeFoodNode">
-		<!-- 材料の登録 -->
-		<div id="registerFood">
-			<h2 id="registerFoodTitle">材料の登録</h2>
-			<div class="registerFoodTwo">
-				<div class="foodLists">
-					{#each registeredIngredients as item}
-						<div class="foodList">
-							<h3>
-								{item}
-							</h3>
-						</div>
-					{/each}
-				</div>
+	<!-- 材料の登録 -->
 
-				<div class="foodTextareaAndButton">
-					<textarea
-						id="makeFoodBox"
-						placeholder="使う材料を書き込んで追加してください"
-						bind:value={inputingIngredient}
-					/>
-					<div class="confirmButtonDiv">
-						<button id="confirmButton" on:click={addIngredient}>
-							<img src="./img/confirm.png" alt="" />
-						</button>
-					</div>
-				</div>
+	<!-- 料理工程の追加 -->
+	<div id="makeNode">
+		<h2 id="makeNodeTitle">料理工程の追加</h2>
+		<textarea
+			id="nodeContentInput"
+			placeholder="料理の工程を書き込んで、下からオブジェクトの形を選んでください"
+			bind:value={recipeContent}
+		/>
+		<div class="registerAndSelect">
+			<div id="selectObjectArea">
+				<button
+					class="shapeButton"
+					id="startButton"
+					on:click={enterAddNodeStartMode}
+				>
+					<img src="./img/start.png" alt="" />
+				</button>
+				<button
+					class="shapeButton"
+					id="procedureButton"
+					on:click={enterAddNodeProcedureMode}
+				>
+					<img src="./img/procudure.png" alt="" />
+				</button>
+				<button
+					class="shapeButton"
+					id="decideButton"
+					on:click={enterAddNodeDecisionMode}
+					><img src="./img/decision.png" alt="" /></button
+				>
 			</div>
-		</div>
-		<!-- 料理工程の追加 -->
-		<div id="makeNode">
-			<h2 id="makeNodeTitle">料理工程の追加</h2>
-			<textarea
-				id="nodeContentInput"
-				placeholder="料理の工程を書き込んで、下からオブジェクトの形を選んでください"
-				bind:value={recipeContent}
-			/>
-			<div class="registerAndSelect">
-				<div id="selectObjectArea">
-					<button
-						class="shapeButton"
-						id="startButton"
-						on:click={enterAddNodeStartMode}
-					>
-						<img src="./img/start.png" alt="" />
-					</button>
-					<button
-						class="shapeButton"
-						id="procedureButton"
-						on:click={enterAddNodeProcedureMode}
-					>
-						<img src="./img/procudure.png" alt="" />
-					</button>
-					<button
-						class="shapeButton"
-						id="decideButton"
-						on:click={enterAddNodeDecisionMode}
-						><img src="./img/decision.png" alt="" /></button
-					>
-				</div>
-				<div class="registerButtonDiv">
-					<button id="registerButton" on:click={addNode}>
-						<img src="./img/register.png" alt="" />
-					</button>
-				</div>
+			<div class="registerButtonDiv">
+				<button id="registerButton" on:click={addNode}>
+					<img src="./img/register.png" alt="" />
+				</button>
 			</div>
 		</div>
 	</div>
@@ -399,6 +435,7 @@
 	#addFoodAndQuantityTitle {
 		display: flex;
 	}
+
 	.addFoodAndQuantity {
 		display: flex;
 	}
