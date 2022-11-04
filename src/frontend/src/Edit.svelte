@@ -30,6 +30,19 @@
 		a.click();
 	}
 
+	let addImageResourceURL: string = "./img/add.png";
+	let addPushedImageResourceURL: string = "./img/addPushed.png";
+	let editPushedImageResourceURL: string = "./img/editPushed.png";
+	let editImageResourceURL: string = "./img/edit.png";
+	let delPushedImageResourceURL: string = "./img/delPushed.png";
+	let delImageResourceURL: string = "./img/del.png";
+	let registerImageResourceURL: string = "./img/register.png";
+	let confirmImageResourceURL: string = "./img/confirm.png";
+	let startImageResourceURL: string = "./img/start.png";
+	let operateImageResourceURL: string = "./img/operate.png";
+	let decideImageResourceURL: string = "./img/dicide.png";
+
+
 	const sample = `flowchart TB
 		alpha{"料理開始"}
 		A["じゃがいもを洗う"]
@@ -75,33 +88,6 @@
 		P --> Q
 		Q --> R
 		R --> S`;
-
-	onMount(() => {
-		mermaid.mermaidAPI.initialize({
-			startOnLoad: false,
-			securityLevel: "loose",
-			logLevel: "error",
-			flowchart: {
-				useMaxWidth: false,
-			},
-		});
-
-		Render(sample);
-	});
-
-	let registeredIngredients = ["たまねぎ", "にんじん"];
-	let inputingIngredient: string = undefined;
-
-	function addIngredient() {
-		if (inputingIngredient === undefined) {
-			alert("食材名を書いてください！");
-			return;
-		}
-
-		registeredIngredients.push(inputingIngredient);
-		registeredIngredients = registeredIngredients;
-		inputingIngredient = undefined;
-	}
 
 	type FoodAndQuantity = {
 		food: string;
@@ -266,6 +252,7 @@
 		}
 	};
 
+
 	function Render(graph: string) {
 		handler.parse(graph);
 
@@ -282,6 +269,20 @@
 		console.log(handler.toMermaidString());
 		console.log(handler.toInternalMermaidString());
 	}
+
+	onMount(() => {
+		mermaid.mermaidAPI.initialize({
+			startOnLoad: false,
+			securityLevel: "loose",
+			logLevel: "error",
+			flowchart: {
+				useMaxWidth: false,
+			},
+		});
+
+		Render(sample);
+	});
+
 </script>
 
 <main>
@@ -300,7 +301,10 @@
 	-->
 	<div id="registerFoodAndQuantity">
 		<h2>材料・分量</h2>
-		<textarea id="registerPeopleBox" placeholder="何人分" />
+		<textarea
+			id="registerPeopleBox"
+			placeholder="何人分"
+		/>
 		<!-- 横並びにしたい displayflex -->
 		<!-- 追加ボタンでボックスが追加されるようにする -->
 		<!-- 登録ボタン実装 or JSで文字列として保持 -->
@@ -333,37 +337,35 @@
 		<h2 id="makeFlowChartTitle">フローチャートの作成</h2>
 		<div id="preview" />
 		<div class="nodeButtonArea">
-			<!-- ボタンを縦並びにする -->
 			<button class="nodeButton" on:click={enterGraphEdgeAddMode}>
 				{#if nodeEditMode !== "addEdge"}
-					<img src="./img/add.png" alt="" />
+					<img src={addImageResourceURL} alt="" />
 				{/if}
 				{#if nodeEditMode === "addEdge"}
-					<img src="./img/addPushed.png" alt="" />
+					<img src={addPushedImageResourceURL} alt="" />
 				{/if}
 			</button>
 			<button class="nodeButton" on:click={enterGraphEdgeDeleteMode}>
 				{#if nodeEditMode !== "deleteEdge"}
-					<img src="./img/del.png" alt="" />
+					<img src={delImageResourceURL} alt="" />
 				{/if}
 				{#if nodeEditMode === "deleteEdge"}
-					<img src="./img/delPushed.png" alt="" />
+					<img src={delPushedImageResourceURL} alt="" />
 				{/if}
 			</button>
 
 			<button class="nodeButton" on:click={enterGraphNodeEditMode}>
 				{#if nodeEditMode !== "editNode"}
-					<img src="./img/edit.png" alt="" />
+					<img src={editImageResourceURL} alt="" />
 				{/if}
 				{#if nodeEditMode === "editNode"}
-					<img src="./img/editPushed.png" alt="" />
+					<img src={editPushedImageResourceURL} alt="" />
 				{/if}
 			</button>
 		</div>
 	</div>
 
-	<!-- 材料の登録・料理工程の追加（いずれ消します） -->
-	<!-- 材料の登録 -->
+
 
 	<!-- 料理工程の追加 -->
 	<div id="makeNode">
@@ -412,8 +414,6 @@
 <style>
 	main * {
 		width: 100%;
-		margin: 0px;
-		padding: 0px;
 	}
 
 	h2 {
@@ -505,14 +505,14 @@
 
 	#makeNode {
 		background-color: #838383;
-		width: 50%;
+		/*width: 50%;*/
 	}
 
 	#makeNodeTitle {
 		width: 95%;
 	}
 
-	#nodeContentInput {
+	#makeNodeBox {
 		width: 80%;
 		height: 50%;
 		margin-left: 10%;
@@ -537,6 +537,7 @@
 		position: relative;
 	}
 
+
 	.shapeButton {
 		width: 65px;
 		margin: 0;
@@ -553,7 +554,6 @@
 
 	#registerFood {
 		background-color: #838383;
-		/* background: transparent; */
 		width: 50%;
 	}
 </style>
