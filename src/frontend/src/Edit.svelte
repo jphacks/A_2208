@@ -4,7 +4,7 @@
 	import mermaid from "mermaid";
 
 	let food = ["たまねぎ", "にんじん"];
-	let foodEscape: string = undefined;
+	// let foodEscape: string = undefined;
  
 	function foodAdd() {
 		if (foodEscape === undefined) {
@@ -163,22 +163,27 @@
 		prevNode = undefined;
 	}
 
+	let foodEscape: string = undefined;
+	let quantityEscape: string = undefined;
+	let foodList = [];
+	let quantityList = [];
+
 	function addAddFoodAndQuantity() {
 		let foodAndQuantityDiv = document.getElementById("addFoodAndQuantityList");
-		// let result = "<div class=\"addFoodAndQuantity\"><textarea			id=\"registerFoodBox\" <textarea	id=\"registerQuantityBox\"</div>";
-		// let add = 
 
 		let result = document.createElement('div');
-		result.className = "addFoodAndQuantity";
+		result.className = "addFoodAndQuantity svelte-54lj6t";
 		let text1 = document.createElement('textarea');
-		text1.className = "registerFoodBox";
+		text1.className = "registerFoodBox svelte-54lj6t";
 		let text2 = document.createElement('textarea');
-		text2.className = "registerQuantityBox";
+		text2.className = "registerQuantityBox svelte-54lj6t";
 		result.appendChild(text1);
 		result.appendChild(text2);
 
 		foodAndQuantityDiv.appendChild(result);
 	}
+
+
 
 	const sample = `flowchart TB
 		alpha{"料理開始"}
