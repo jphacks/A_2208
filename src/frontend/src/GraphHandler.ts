@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 type ParseMode = "Default" | "NodeId" | "NodeTypeStart" | "NodeName" | "NodeTypeEnd" | "Arrow" | "ArrowName";
 
 function ensureNotNull<T>(param: T | undefined): T {
@@ -597,3 +598,826 @@ export class Node {
     incommingEdges: Edge[];
     outgoingEdges: Edge[];
 }
+=======
+// exportされていない型・関数・クラスは内部用です。
+
+/**
+ * 構文解析中の状態を定義します。
+ */
+type ParseMode = "Default" | "NodeId" | "NodeTypeStart" | "NodeName" | "NodeTypeEnd" | "Arrow" | "ArrowName";
+
+/**
+ * 引数が undefined ではないことを保証します。
+ */
+function ensureNotNull<T>(param: T | undefined): T {
+    if (param === undefined) {
+        throw new Error();
+    }
+    return param;
+}
+
+// 構文解析上特別な意味を持つ文字をここに定義します
+const validStartChars = ["(", "{", "[", "\\", "/"];
+const validEndChars = [")", "}", "]", "\\", "/"];
+const validArrowChars = ["-"];
+const validArrowEnds = [">"];
+const validArrowNameChars = ["|"];
+const whiteSpaces = [" ", "\t"];
+
+/**
+ * ノードの開始文字 ( '[' など ) からノード種別を表現する文字列を取得します。
+ * @param nodeStart 
+ * @returns 
+ */
+function getNodeType(nodeStart: string): string {
+    // 仮
+    return nodeStart.replace('\"', "");
+}
+/**
+ * ノード種別からノード終了文字 ( ']' など ) を取得します。
+ * @param nodeType 
+ * @returns 
+ */
+function getEndType(nodeType: string): string {
+    let result = "";
+    for (let i = 0; i < nodeType.length; i++) {
+        const index = validStartChars.indexOf(nodeType[i]);
+        if (index === -1) {
+            throw new Error("不正なノードです");
+        }
+        result = validEndChars[index] + result;
+    }
+    return result;
+}
+
+/**
+ * 解析中のオブジェクトであることを約束します。
+ */
+interface IParsingObject {
+    /**
+     * 現在の状態が正しいかどうかを表す値を取得します。
+     */
+    isValid(): boolean;
+}
+
+/**
+ * 解析中のノードを表現します。
+ */
+class ParsingNode implements IParsingObject {
+
+    public nodeId: string | undefined;
+    public nodeStart: string | undefined;
+    public nodeName: string | undefined;
+    public nodeEnd: string | undefined;
+
+    constructor() {
+        this.nodeId = undefined;
+        this.nodeStart = undefined;
+        this.nodeName = undefined;
+        this.nodeEnd = undefined;
+    }
+
+    isValid(): boolean {
+        if (this.nodeId === undefined) {
+            return false;
+        }
+        if (this.nodeStart === undefined) {
+            if (this.nodeEnd !== undefined || this.nodeName !== undefined) {
+                return false;
+            }
+            return true;
+        }
+        if (this.nodeName === undefined || this.nodeEnd === undefined) {
+            return false;
+        }
+        // should check start-end matching here.
+        return true;
+    }
+}
+
+/**
+ * 解析中のエッジを表現します。
+ */
+class ParsingEdge implements IParsingObject {
+    public isQuoted: boolean;
+    public arrowLength: number;
+    public arrowNameSign: boolean;
+    public arrowName: string | undefined;
+
+    constructor() {
+        this.isQuoted = false;
+        this.arrowLength = 0;
+        this.arrowNameSign = false;
+        this.arrowName = undefined;
+    }
+
+    isValid(): boolean {
+        if (this.arrowLength === 0) {
+            return false;
+        }
+        return true;
+    }
+}
+
+/**
+ * グラフの操作を提供します。
+ */
+export class GraphHandler {
+
+    constructor() {
+        this.nodes = [];
+        this.edges = [];
+    }
+
+    private nodes: Node[];
+    /**
+     * ノードをすべて取得します。
+     */
+    public get Nodes() {
+        return this.nodes;
+    }
+
+
+    private edges: Edge[];
+    /**
+     * エッジをすべて取得します。
+     */
+    public get Edges() {
+        return this.edges;
+    }
+
+
+    /**
+     * mermaid記法文字列を解析し、このインスタンスに反映します。
+     * @param input 
+     * @returns 
+     */
+    public parse(input: string): void {
+        const _edges: Edge[] = [];
+        const _nodes: Node[] = [];
+        let parseMode: ParseMode = "Default";
+        const lines = input.split("\n");
+
+        // 構文エラーを生成する補助関数です。
+        function graphSyntaxError(i: number, j: number, msg: string) {
+            const message = `構文解析エラー。\n${msg}\n行:${i + 1},列:${j + 1}`;
+            console.error(message);
+            return new Error(message);
+        }
+
+        for (let i = 0; i < lines.length; i++) {
+            parseMode = "Default";
+            const line = lines[i];
+
+            if (line.includes("flowchart") || line.includes("click")) {
+                continue;
+            }
+
+            let buffer: string[] = [];
+            let parsingObjects: IParsingObject[] = [];
+
+            let j = 0;
+
+            let _nodeId: string | undefined;
+            let _nodeStart: string | undefined;
+            let _nodeName: string | undefined;
+            let _nodeEnd: string | undefined;
+
+            let _isQuoted = false;
+            let _arrowLength = 0;
+            let _arrowNameSigned = false;
+            let _arrowName: string | undefined;
+
+            // ローカル変数をすべて初期値に戻す補助関数です。
+            function resetLocals() {
+                _nodeId = undefined;
+                _nodeStart = undefined;
+                _nodeName = undefined;
+                _nodeEnd = undefined;
+                _isQuoted = false;
+                _arrowLength = 0;
+                _arrowNameSigned = false;
+                _arrowName = undefined;
+            }
+
+            // 現在のローカル変数状態からノードを生成します。
+            function genNode(): ParsingNode {
+                let _node = new ParsingNode();
+                _node.nodeId = _nodeId;
+                _node.nodeStart = _nodeStart;
+                _node.nodeName = _nodeName;
+                _node.nodeEnd = _nodeEnd;
+                if (!_node.isValid()) {
+                    throw graphSyntaxError(i, j, "不完全なノード宣言です");
+                }
+                return _node;
+            }
+
+            // 現在のローカル変数状態からエッジを生成します。
+            function genEdge(): ParsingEdge {
+                let _edge = new ParsingEdge();
+                _edge.isQuoted = _isQuoted;
+                _edge.arrowLength = _arrowLength;
+                _edge.arrowNameSign = _arrowNameSigned;
+                _edge.arrowName = _arrowName;
+                if (!_edge.isValid()) {
+                    throw graphSyntaxError(i, j, "不完全なエッジ宣言です");
+                }
+                return _edge;
+            }
+
+            for (; j < line.length; j++) {
+                const val = lines[i][j];
+                if (whiteSpaces.includes(val)) {
+                    continue;
+                }
+
+                if (parseMode === "Default") {
+                    buffer.push(val);
+                    resetLocals();
+                    parseMode = "NodeId";
+                    continue;
+                }
+
+                if (parseMode === "NodeId") {
+                    if (validStartChars.includes(val)) {
+                        if (buffer.length === 0) {
+                            throw graphSyntaxError(i, j, "ノードIDがありません");
+                        }
+                        _nodeId = buffer.join("");
+                        buffer = [];
+                        buffer.push(val);
+                        parseMode = "NodeTypeStart";
+                        continue;
+                    }
+                    if (validArrowChars.includes(val)) {
+                        if (buffer.length === 0) {
+                            throw graphSyntaxError(i, j, "ノードIDがありません");
+                        }
+                        _nodeId = buffer.join("");
+                        parsingObjects.push(genNode());
+                        resetLocals();
+                        buffer = [];
+                        _arrowLength++;
+                        parseMode = "Arrow"
+                        continue;
+                    }
+                    buffer.push(val);
+                    continue;
+                }
+
+                if (parseMode === "NodeTypeStart") {
+                    if (validStartChars.includes(val)) {
+                        buffer.push(val);
+                        continue;
+                    }
+                    if (val === '"') {
+                        _isQuoted = true;
+                        buffer.push(val);
+                        _nodeStart = buffer.join("");
+                        buffer = [];
+                        parseMode = "NodeName"
+                        continue;
+                    }
+                    if (buffer.length !== 0) {
+                        _nodeStart = buffer.join("");
+                        buffer = [];
+                    }
+                    buffer.push(val);
+                    parseMode = "Arrow";
+                    continue;
+                }
+
+                if (parseMode === "NodeName") {
+                    if (_isQuoted) {
+                        if (val === '"') {
+                            _nodeName = buffer.join("");
+                            buffer = [];
+                            buffer.push(val);
+                            parseMode = "NodeTypeEnd";
+                            continue;
+                        } else {
+                            buffer.push(val);
+                            continue;
+                        }
+                    } else {
+                        if (validEndChars.includes(val)) {
+                            _nodeName = buffer.join("");
+                            buffer = [];
+                            buffer.push(val);
+                            parseMode = "NodeTypeEnd";
+                            continue;
+                        } else {
+                            buffer.push(val);
+                            continue;
+                        }
+                    }
+                }
+
+                if (parseMode === "NodeTypeEnd") {
+                    if (validEndChars.includes(val)) {
+                        buffer.push(val);
+                        continue;
+                    } else {
+                        _nodeEnd = buffer.join("");
+                        parsingObjects.push(genNode());
+                        resetLocals();
+                        buffer = [];
+                        _arrowLength++;
+                        parseMode = "Arrow";
+                        continue;
+                    }
+                }
+
+                if (parseMode === "Arrow") {
+                    if (validArrowChars.includes(val)) {
+                        _arrowLength++;
+                        continue;
+                    }
+                    if (validArrowNameChars.includes(val)) {
+                        _arrowNameSigned = true;
+                        parseMode = "ArrowName";
+                        continue;
+                    }
+                    if (validArrowEnds.includes(val)) {
+                        _arrowLength++;
+                        parseMode = "NodeId";
+                        parsingObjects.push(genEdge());
+                        resetLocals();
+                        buffer = [];
+                        continue;
+                    }
+                    else {
+                        buffer.push(val);
+                        parseMode = "ArrowName";
+                        continue;
+                    }
+                }
+
+                if (parseMode === "ArrowName") {
+                    if (validArrowChars.includes(val)) {
+                        if (buffer.length === 0) {
+                            throw graphSyntaxError(i, j, "矢印名がありません");
+                        }
+                        _arrowName = buffer.join("");
+                        buffer = [];
+                        _arrowLength++;
+                        parseMode = "Arrow";
+                        continue;
+                    }
+                    if (_arrowNameSigned && validArrowNameChars.includes(val)) {
+                        if (buffer.length === 0) {
+                            throw graphSyntaxError(i, j, "矢印名がありません");
+                        }
+                        _arrowName = buffer.join("");
+                        buffer = [];
+                        _arrowLength++;
+                        parseMode = "Arrow";
+                        continue;
+                    } else {
+                        buffer.push(val);
+                        continue;
+                    }
+                }
+            }
+
+            // flush buffer
+            if (parseMode === "Default") {
+                continue;
+            }
+            if (buffer.length !== 0) {
+                const j = line.length;
+                if (parseMode === "NodeId") {
+                    _nodeId = buffer.join("");
+                    parsingObjects.push(genNode());
+                }
+                else if (parseMode === "NodeTypeStart") {
+                    throw graphSyntaxError(i, j, "ノード名が閉じられていません");
+                } else if (parseMode === "NodeName") {
+                    throw graphSyntaxError(i, j, "ノードが閉じられていません");
+                }
+                else if (parseMode === "NodeTypeEnd") {
+                    _nodeEnd = buffer.join("");
+                    parsingObjects.push(genNode());
+                }
+                else if (parseMode === "Arrow") {
+                    throw graphSyntaxError(i, j, "終わりノードがありません");
+                }
+                else if (parseMode === "ArrowName") {
+                    throw graphSyntaxError(i, j, "終わりノードがありません");
+                }
+            }
+
+            // finalize
+            for (let k = 0; k < parsingObjects.length; k++) {
+                const obj = parsingObjects[k];
+                if (obj instanceof ParsingNode) {
+                    const exists = _nodes.filter(x => x.id === obj.nodeId);
+                    if (exists.length > 0) {
+                        if (exists.length > 1) {
+                            throw new Error("内部エラー : ノードのIDが重複しています");
+                        }
+                        if (obj.nodeName === undefined) {
+                            continue;
+                        }
+                        exists[0].content = ensureNotNull(obj.nodeName);
+                        exists[0].type = getNodeType(ensureNotNull(obj.nodeStart));
+                        continue;
+                    }
+                    const node = new Node();
+                    if (obj.nodeName === undefined) {
+                        node.id = ensureNotNull(obj.nodeId);
+
+                    } else {
+                        node.id = ensureNotNull(obj.nodeId);
+                        node.content = ensureNotNull(obj.nodeName);
+                        node.type = getNodeType(ensureNotNull(obj.nodeStart));
+                    }
+
+                    _nodes.push(node);
+                    continue;
+                }
+            }
+            for (let k = 0; k < parsingObjects.length; k++) {
+                const obj = parsingObjects[k];
+                if (obj instanceof ParsingEdge) {
+                    if (k === 0 || k === parsingObjects.length - 1) {
+                        throw new Error("内部エラー : 末端のエッジ宣言");
+                    }
+                    const from = parsingObjects[k - 1];
+                    const to = parsingObjects[k + 1];
+                    if (from instanceof ParsingNode) {
+                        if (to instanceof ParsingNode) {
+                            let froms = _nodes.filter(x => x.id === from.nodeId);
+                            if (froms.length !== 1) {
+                                throw new Error("内部エラー : ノードのIDが重複しています");
+                            }
+                            let tos = _nodes.filter(x => x.id === to.nodeId);
+                            if (tos.length !== 1) {
+                                throw new Error("内部エラー : ノードのIDが重複しています");
+                            }
+                            const _edge = new Edge();
+                            _edge.fromNode = froms[0];
+                            _edge.toNode = tos[0];
+                            _edge.arrowLength = obj.arrowLength;
+                            _edge.content = obj.arrowName;
+                            _edges.push(_edge);
+                            continue;
+                        }
+                    }
+                    throw new Error("内部エラー : ノードに挟まれないエッジ");
+                }
+            }
+        }
+
+        for (let i = 0; i < _edges.length; i++) {
+            const edge = _edges[i];
+            edge.toNode.incommingEdges.push(edge);
+            edge.fromNode.outgoingEdges.push(edge);
+        }
+        this.nodes = _nodes;
+        this.edges = _edges;
+        return;
+    }
+
+    /**
+     * ノードIDからノードを検索して返します。
+     * @param id 
+     * @returns 
+     */
+    public getNodeById(id: string) {
+        const match = this.nodes.filter(x => x.id == id);
+        if (match.length === 0) {
+            throw new Error(`id ${id} をもつ要素が見つかりません`);
+        }
+        if (match.length > 1) {
+            throw new Error("内部エラー : IDが重複しています");
+        }
+        return match[0];
+    }
+
+
+    /**
+     * 現在のオブジェクト状態を Mermaid 記法文字列に変換します。
+     * @returns 
+     */
+    public toMermaidString(): string {
+        let result = "flowchart TB\n";
+
+        for (let i = 0; i < this.nodes.length; i++) {
+            const node = this.nodes[i];
+            result += node.toString();
+            result += "\n";
+        }
+        for (let i = 0; i < this.edges.length; i++) {
+            const edge = this.edges[i];
+            result += edge.toString();
+            result += "\n";
+        }
+
+        return result;
+    }
+
+    /**
+     * 現在のオブジェクト状態をアプリケーション内部用の Mermaid 記法文字列に変換します。
+     * @returns 
+     */
+    public toInternalMermaidString(): string {
+        let result = this.toMermaidString();
+        for (let i = 0; i < this.nodes.length; i++) {
+            const node = this.nodes[i];
+            result += "click";
+            result += " ";
+            result += node.id;
+            result += " ";
+            result += "call";
+            result += " ";
+            result += "__handle_click("
+            result += '"';
+            result += node.id;
+            result += '"';
+            result += ")"
+            result += "\n";
+        }
+        return result;
+    }
+
+    /**
+     * 新しいノードを作成して追加します。
+     * @param content ノードの内容。
+     * @param type ノードの形状種別。
+     * @returns 作成したノード。
+     */
+    public addNode(content: string | undefined, type: string | undefined): Node {
+        const node = new Node();
+        node.id = this.getUniqueNodeId();
+        console.debug(node.id);
+        node.content = content;
+        node.type = type;
+
+        if (content !== undefined) {
+            if (type === undefined) {
+                throw new Error("内部エラー : contentを指定する場合、typeも指定してください");
+            }
+            for (let i = 0; i < type.length; i++) {
+                if (!validStartChars.includes(type[i])) {
+                    throw new Error("内部エラー : 無効なノードtypeです");
+                }
+            }
+        }
+
+        this.nodes.push(node);
+        return node;
+    }
+
+    private getUniqueNodeId(): string {
+        const exists = this.nodes.map(x => x.id).filter(x => x !== "alpha");
+
+        let maxLength = 0;
+        for (let i = 0; i < exists.length; i++) {
+            if (exists[i].length > maxLength) {
+                maxLength = exists[i].length;
+            }
+        }
+
+        const maxLengthNodes = exists.filter(x => x.length === maxLength).sort();
+        var latest = maxLengthNodes[maxLengthNodes.length - 1];
+
+        for (let i = latest.length - 1; i >= 0; i--) {
+            const val = latest[i];
+            if (val !== 'Z') {
+                let charCode = val.charCodeAt(0);
+                charCode++;
+                let nextChar = String.fromCharCode(charCode);
+                let result = "";
+                for (let j = 0; j < latest.length; j++) {
+                    if (i === j) {
+                        result += nextChar;
+                    } else if (j < i) {
+                        result += latest[j];
+                    } else {
+                        result += "A";
+                    }
+                }
+                return result;
+            }
+        }
+
+        let result = "";
+        for (let i = 0; i < latest.length + 1; i++) {
+            result += "A";
+        }
+        return result;
+    }
+
+    /**
+     * ノードを削除します。関連するエッジも削除されます。
+     * @param node 
+     */
+    public deleteNode(node: Node): void {
+        this.nodes = this.nodes.filter(x => x !== node);
+
+        node.incommingEdges.forEach(x => x.fromNode.outgoingEdges = x.fromNode.outgoingEdges.filter(x => x.toNode !== node));
+        node.outgoingEdges.forEach(x => x.toNode.incommingEdges = x.toNode.incommingEdges.filter(x => x.fromNode !== node));
+        this.edges = this.edges.filter(x => (!node.incommingEdges.includes(x)) && !node.outgoingEdges.includes(x));
+    }
+
+    /**
+     * エッジを作成して追加します。
+     * @param arrowLength 矢印の長さ。
+     * @param content 内容。
+     * @param fromNode 始点ノード。
+     * @param toNode 終点ノード。
+     */
+    public addEdge(arrowLength: number, content: string | undefined, fromNode: Node, toNode: Node): Edge {
+        const edge = new Edge();
+        edge.arrowLength = arrowLength;
+        edge.content = content;
+        edge.fromNode = fromNode;
+        edge.toNode = toNode;
+
+        if (arrowLength <= 0) {
+            throw new Error("矢印の長さが必要です");
+        }
+
+        this.edges.push(edge);
+        fromNode.outgoingEdges.push(edge);
+        toNode.incommingEdges.push(edge);
+
+        return edge;
+    }
+
+    /**
+     * エッジを削除します。
+     */
+    public deleteEdge(edge: Edge) {
+        edge.fromNode.outgoingEdges = edge.fromNode.outgoingEdges.filter(x => x !== edge);
+        edge.toNode.incommingEdges = edge.toNode.incommingEdges.filter(x => x !== edge);
+
+        this.edges = this.edges.filter(x => x !== edge);
+    }
+}
+
+/**
+ * ノードを表現します。
+ */
+export class Node {
+    constructor() {
+        this._incommingEdges = [];
+        this._outgoingEdges = [];
+    }
+
+    private _id: string;
+    /**
+     * このノードのIDを設定または取得します。
+     */
+    public get id(): string {
+        return this._id;
+    }
+    public set id(v: string) {
+        this._id = v;
+    }
+
+
+    private _content: string | undefined;
+    /**
+     * このノードの内容を取得または設定します。
+     */
+    public get content(): string | undefined {
+        return this._content;
+    }
+    public set content(v: string | undefined) {
+        this._content = v;
+    }
+
+
+    private _type: string | undefined;
+    /**
+     * このノードの形状種別を取得または設定します。
+     */
+    public get type(): string | undefined {
+        return this._type;
+    }
+    public set type(v: string | undefined) {
+        this._type = v;
+    }
+
+    private _incommingEdges: Edge[];
+    /**
+     * このノードに向かうエッジを取得または設定します。
+     */
+    public get incommingEdges(): Edge[] {
+        return this._incommingEdges;
+    }
+    public set incommingEdges(v: Edge[]) {
+        this._incommingEdges = v;
+    }
+
+    private _outgoingEdges: Edge[];
+    /**
+     * このノードから出るエッジを取得または設定します。
+     */
+    public get outgoingEdges(): Edge[] {
+        return this._outgoingEdges;
+    }
+    public set outgoingEdges(v: Edge[]) {
+        this._outgoingEdges = v;
+    }
+
+    /**
+     * 現在のオブジェクトを表す文字列を返します。
+     */
+    public toString(): string {
+        let result = "";
+        if (this.content === undefined) {
+            result += this.id;
+        } else {
+            result += this.id;
+            result += this.type;
+            result += '"';
+            result += this.content;
+            result += '"';
+            result += getEndType(ensureNotNull(this.type));
+        }
+        return result;
+    }
+}
+
+
+/**
+ * エッジを表現します。
+ */
+export class Edge {
+
+    private _arrowLength: number;
+    /**
+     * 矢印の長さを取得または設定します。
+     */
+    public get arrowLength(): number {
+        return this._arrowLength;
+    }
+    public set arrowLength(v: number) {
+        this._arrowLength = v;
+    }
+
+
+    private _content: string | undefined;
+    /**
+     * このエッジの内容を取得または設定します。
+     */
+    public get content(): string | undefined {
+        return this._content;
+    }
+    public set content(v: string | undefined) {
+        this._content = v;
+    }
+
+
+    private _fromNode: Node;
+    /**
+     * このエッジの始点ノードを取得または設定します。
+     */
+    public get fromNode(): Node {
+        return this._fromNode;
+    }
+    public set fromNode(v: Node) {
+        this._fromNode = v;
+    }
+
+
+
+    private _toNode: Node;
+    /**
+     * このエッジの終点ノードを取得または設定します。
+     */
+    public get toNode(): Node {
+        return this._toNode;
+    }
+    public set toNode(v: Node) {
+        this._toNode = v;
+    }
+
+    /**
+     * 現在のオブジェクトを表す文字列を返します。
+     */
+    public toString(): string {
+        let result = "";
+        if (this.content === undefined) {
+            result += this.fromNode.id;
+            result += " ";
+            result += "-->";
+            result += " ";
+            result += this.toNode.id;
+        } else {
+            result += this.fromNode.id;
+            result += " ";
+            result += "--";
+            result += this.content;
+            result += "-->";
+            result += " ";
+            result += this.toNode.id;
+        }
+        return result;
+    }
+}
+>>>>>>> master
