@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 type ParseMode = "Default" | "NodeId" | "NodeTypeStart" | "NodeName" | "NodeTypeEnd" | "Arrow" | "ArrowName";
 
 function ensureNotNull<T>(param: T | undefined): T {
@@ -599,6 +600,8 @@ export class Node {
     outgoingEdges: Edge[];
 }
 =======
+=======
+>>>>>>> c008eeff010f2efe766bd084f51a06828927ae3e
 // exportされていない型・関数・クラスは内部用です。
 
 /**
@@ -1420,4 +1423,7 @@ export class Edge {
         return result;
     }
 }
+<<<<<<< HEAD
 >>>>>>> master
+=======
+>>>>>>> c008eeff010f2efe766bd084f51a06828927ae3e
