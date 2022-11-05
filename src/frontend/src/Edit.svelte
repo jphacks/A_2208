@@ -3,46 +3,6 @@
 	import { GraphHandler, Node } from "./GraphHandler";
 	import mermaid from "mermaid";
 
-	let food = ["たまねぎ", "にんじん"];
-	let foodEscape: string = undefined;
-
-	function foodAdd() {
-		if (foodEscape === undefined) {
-			alert("食材名を書いてください！");
-			return;
-		}
-
-		food.push(foodEscape);
-		food = food;
-		foodEscape = undefined;
-	}
-
-	let recipeContent: string;
-	type addNodeModes = "[" | "[/" | "{";
-	let addNodeMode: addNodeModes = "[";
-
-	function addNode() {
-		if (recipeContent === undefined) {
-			alert("登録する工程内容を書いてください！");
-			return;
-		}
-
-		handler.addNode(recipeContent, addNodeMode);
-		Render(handler.toInternalMermaidString());
-	}
-
-	function enterAddNodeProcedureMode() {
-		addNodeMode = "[";
-	}
-
-	function enterAddNodeDecisionMode() {
-		addNodeMode = "[/";
-	}
-
-	function enterAddNodeStartMode() {
-		addNodeMode = "{";
-	}
-
 	/**
 	 * @param  content ダウンロードさせるデータ
 	 * @param  filename ファイル名。省略可
@@ -70,10 +30,6 @@
 		a.click();
 	}
 
-	function handleDownload() {
-		downloadData(handler.toMermaidString(), "recipe.md", "text/plain");
-	}
-
 	let addImageResourceURL: string = "./img/add.png";
 	let addPushedImageResourceURL: string = "./img/addPushed.png";
 	let editPushedImageResourceURL: string = "./img/editPushed.png";
@@ -86,82 +42,6 @@
 	let operateImageResourceURL: string = "./img/operate.png";
 	let decideImageResourceURL: string = "./img/dicide.png";
 
-	const handler = new GraphHandler();
-	let prevNode: Node | undefined = undefined;
-
-	globalThis["__handle_click"] = (nodeId) => {
-		console.log(nodeId);
-		const node = handler.getNodeById(nodeId);
-
-		if (prevNode !== undefined && prevNode.id === node.id) {
-			// 2回クリックしたら選択解除する
-			prevNode = undefined;
-		} else {
-			switch (mode) {
-				case "addEdge":
-					if (prevNode === undefined) {
-						prevNode = node;
-						break;
-					} else {
-						const targets = prevNode.outgoingEdges.filter(
-							(x) => x.toNode === node
-						);
-						if (targets.length > 0) {
-							console.info("既に存在するエッジ : 追加をスキップ");
-							prevNode = undefined;
-							break;
-						}
-
-						handler.addEdge(3, undefined, prevNode, node);
-						prevNode = undefined;
-						Render(handler.toInternalMermaidString());
-						break;
-					}
-				case "deleteEdge":
-					if (prevNode === undefined) {
-						prevNode = node;
-						break;
-					} else {
-						const targets = prevNode.outgoingEdges.filter(
-							(x) => x.toNode === node
-						);
-						if (targets.length !== 1) {
-							console.info("削除するエッジがありません");
-							alert("削除できる手順の関係がありません");
-							prevNode = undefined;
-							break;
-						}
-
-						handler.deleteEdge(targets[0]);
-						prevNode = undefined;
-						Render(handler.toInternalMermaidString());
-						break;
-					}
-				case "editNode":
-				// edit node here!
-
-				case undefined:
-			}
-		}
-	};
-
-	type editingMode = "editNode" | "addEdge" | "deleteEdge" | undefined;
-	let mode: editingMode = undefined;
-
-	function enterGraphNodeEditMode() {
-		mode = "editNode";
-		prevNode = undefined;
-	}
-
-	function enterGraphEdgeAddMode() {
-		mode = "addEdge";
-		prevNode = undefined;
-	}
-
-	function enterGraphEdgeDeleteMode() {
-		mode = "deleteEdge";
-		prevNode = undefined;
-	}
 
 	const sample = `flowchart TB
 		alpha{"料理開始"}
@@ -209,6 +89,170 @@
 		Q --> R
 		R --> S`;
 
+	type FoodAndQuantity = {
+		food: string;
+		quantity: string;
+		placeholderFood: string;
+		placeholderQuantity: string;
+	};
+
+	let placeholder1: FoodAndQuantity = {
+		placeholderFood: "豚肉",
+		placeholderQuantity: "350g",
+		food: undefined,
+		quantity: undefined,
+	};
+
+	let placeholder2: FoodAndQuantity = {
+		placeholderFood: "にんじん",
+		placeholderQuantity: "1本",
+		food: undefined,
+		quantity: undefined,
+	};
+
+	let placeholder3: FoodAndQuantity = {
+		placeholderFood: "大根",
+		placeholderQuantity: "1/2本",
+		food: undefined,
+		quantity: undefined,
+	};
+
+	let foodAndQuantityPairList = [placeholder1, placeholder2, placeholder3];
+
+	function addAddFoodAndQuantity() {
+		let add: FoodAndQuantity = {
+			food: undefined,
+			quantity: undefined,
+			placeholderFood: "水",
+			placeholderQuantity: "200cc",
+		};
+		foodAndQuantityPairList.push(add);
+		foodAndQuantityPairList = foodAndQuantityPairList;
+	}
+
+	function saveFoodAndQuantity() {
+		foodAndQuantityPairList.forEach((element) => {
+			if (element.food === undefined && element.quantity === undefined) {
+				// continue
+			}
+			if (element.food === undefined || element.quantity === undefined) {
+				alert("食材と分量を入力してください");
+				// break;
+				return;
+			}
+
+			// 食材と分量を保存する処理
+		});
+	}
+
+	let recipeContent: string;
+	type nodeTypes = "[" | "[/" | "{";
+	let nodeType: nodeTypes = "[";
+
+	function addNode() {
+		if (recipeContent === undefined) {
+			alert("登録する工程内容を書いてください！");
+			return;
+		}
+
+		handler.addNode(recipeContent, nodeType);
+		Render(handler.toInternalMermaidString());
+	}
+
+	function enterAddNodeProcedureMode() {
+		nodeType = "[";
+	}
+
+	function enterAddNodeDecisionMode() {
+		nodeType = "[/";
+	}
+
+	function enterAddNodeStartMode() {
+		nodeType = "{";
+	}
+
+	const handler = new GraphHandler();
+	let previousNode: Node | undefined = undefined;
+
+	type editingMode = "editNode" | "addEdge" | "deleteEdge" | undefined;
+	let nodeEditMode: editingMode = undefined;
+
+	function enterGraphNodeEditMode() {
+		nodeEditMode = "editNode";
+		previousNode = undefined;
+	}
+
+	function enterGraphEdgeAddMode() {
+		nodeEditMode = "addEdge";
+		previousNode = undefined;
+	}
+
+	function enterGraphEdgeDeleteMode() {
+		nodeEditMode = "deleteEdge";
+		previousNode = undefined;
+	}
+
+	function handleDownload() {
+		downloadData(handler.toMermaidString(), "recipe.md", "text/plain");
+	}
+
+	globalThis["__handle_click"] = (nodeId) => {
+		console.log(nodeId);
+		const node = handler.getNodeById(nodeId);
+
+		if (previousNode !== undefined && previousNode.id === node.id) {
+			// 2回クリックしたら選択解除する
+			previousNode = undefined;
+		} else {
+			switch (nodeEditMode) {
+				case "addEdge":
+					if (previousNode === undefined) {
+						previousNode = node;
+						break;
+					} else {
+						const targets = previousNode.outgoingEdges.filter(
+							(x) => x.toNode === node
+						);
+						if (targets.length > 0) {
+							console.info("既に存在するエッジ : 追加をスキップ");
+							previousNode = undefined;
+							break;
+						}
+
+						handler.addEdge(3, undefined, previousNode, node);
+						previousNode = undefined;
+						Render(handler.toInternalMermaidString());
+						break;
+					}
+				case "deleteEdge":
+					if (previousNode === undefined) {
+						previousNode = node;
+						break;
+					} else {
+						const targets = previousNode.outgoingEdges.filter(
+							(x) => x.toNode === node
+						);
+						if (targets.length !== 1) {
+							console.info("削除するエッジがありません");
+							alert("削除できる手順の関係がありません");
+							previousNode = undefined;
+							break;
+						}
+
+						handler.deleteEdge(targets[0]);
+						previousNode = undefined;
+						Render(handler.toInternalMermaidString());
+						break;
+					}
+				case "editNode":
+				// edit node here!
+
+				case undefined:
+			}
+		}
+	};
+
+
 	function Render(graph: string) {
 		handler.parse(graph);
 
@@ -238,6 +282,7 @@
 
 		Render(sample);
 	});
+
 </script>
 
 <main>
@@ -261,33 +306,29 @@
 			placeholder="何人分"
 		/>
 		<!-- 横並びにしたい displayflex -->
+		<!-- 追加ボタンでボックスが追加されるようにする -->
+		<!-- 登録ボタン実装 or JSで文字列として保持 -->
 		<div id="addFoodAndQuantityTitle">
 			<div id="foodName"><h3>材料・調味料</h3></div>
 			<div id="quantity"><h3>分量</h3></div>
 		</div>
-		<div class="addFoodAndQuantity">
-			<textarea
-			id="registerFoodBox"
-			placeholder="例）豚肉"/>
-			<textarea
-			id="registerQuantityBox"
-			placeholder="例）350g"/>
-		</div>
-		<div class="addFoodAndQuantity">
-			<textarea
-			id="registerFoodBox"
-			placeholder="例）にんじん"/>
-			<textarea
-			id="registerQuantityBox"
-			placeholder="例）1本"/>
-		</div>
-		<div class="addFoodAndQuantity">
-			<textarea
-			id="registerFoodBox"
-			placeholder="例）大根"/>
-			<textarea
-			id="registerQuantityBox"
-			placeholder="例）1/2本"/>
+		<div id="addFoodAndQuantityList">
+			<button on:click={addAddFoodAndQuantity}>ボックスを追加</button>
+			{#each foodAndQuantityPairList as placeholder}
+				<div class="addFoodAndQuantity">
+					<textarea
+						class="registerFoodBox"
+						placeholder={"例）" + placeholder.placeholderFood}
+						bind:value={placeholder.food}
+					/>
+					<textarea
+						class="registerQuantityBox"
+						placeholder={"例）" + placeholder.placeholderQuantity}
+						bind:value={placeholder.quantity}
+					/>
+				</div>
+			{/each}
+			<button on:click={saveFoodAndQuantity}>保存する</button>
 		</div>
 	</div>
 
@@ -296,101 +337,71 @@
 		<h2 id="makeFlowChartTitle">フローチャートの作成</h2>
 		<div id="preview" />
 		<div class="nodeButtonArea">
-			<!-- ボタンを縦並びにする -->
 			<button class="nodeButton" on:click={enterGraphEdgeAddMode}>
-				{#if mode !== "addEdge"}
+				{#if nodeEditMode !== "addEdge"}
 					<img src={addImageResourceURL} alt="" />
 				{/if}
-				{#if mode === "addEdge"}
+				{#if nodeEditMode === "addEdge"}
 					<img src={addPushedImageResourceURL} alt="" />
 				{/if}
 			</button>
 			<button class="nodeButton" on:click={enterGraphEdgeDeleteMode}>
-				{#if mode !== "deleteEdge"}
+				{#if nodeEditMode !== "deleteEdge"}
 					<img src={delImageResourceURL} alt="" />
 				{/if}
-				{#if mode === "deleteEdge"}
+				{#if nodeEditMode === "deleteEdge"}
 					<img src={delPushedImageResourceURL} alt="" />
 				{/if}
 			</button>
 
 			<button class="nodeButton" on:click={enterGraphNodeEditMode}>
-				{#if mode !== "editNode"}
+				{#if nodeEditMode !== "editNode"}
 					<img src={editImageResourceURL} alt="" />
 				{/if}
-				{#if mode === "editNode"}
+				{#if nodeEditMode === "editNode"}
 					<img src={editPushedImageResourceURL} alt="" />
 				{/if}
 			</button>
 		</div>
 	</div>
 
-	<!-- 材料の登録・料理工程の追加（いずれ消します） -->
-	<div id="makeFoodNode">
-		<!-- 材料の登録 -->
-		<div id="registerFood">
-			<h2 id="registerFoodTitle">材料の登録</h2>
-			<div class="registerFoodTwo">
-				<div class="foodLists">
-					{#each food as item}
-						<div class="foodList">
-							<h4>
-								{item}
-							</h4>
-						</div>
-					{/each}
-				</div>
 
-				<div class="foodTextareaAndButton">
-					<textarea
-						id="makeFoodBox"
-						placeholder="使う材料を書き込んで追加してください"
-						bind:value={foodEscape}
-					/>
-					<div class="confirmButtonDiv">
-						<button id="confirmButton" on:click={foodAdd}
-							><img
-								src={confirmImageResourceURL}
-								alt=""
-							/></button
-						>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- 料理工程の追加 -->
-		<div id="makeNode">
-			<h2 id="makeNodeTitle">料理工程の追加</h2>
-			<textarea
-				id="makeNodeBox"
-				placeholder="料理の工程を書き込んで、下からオブジェクトの形を選んでください"
-				bind:value={recipeContent}
-			/>
-			<div class="registerAndSelect">
-				<div id="selectObjectArea">
-					<button class="shapeButton"
+
+	<!-- 料理工程の追加 -->
+	<div id="makeNode">
+		<h2 id="makeNodeTitle">料理工程の追加</h2>
+		<textarea
+			id="nodeContentInput"
+			placeholder="料理の工程を書き込んで、下からオブジェクトの形を選んでください"
+			bind:value={recipeContent}
+		/>
+		<div class="registerAndSelect">
+			<div id="selectObjectArea">
+				<button
+					class="shapeButton"
 					id="startButton"
 					on:click={enterAddNodeStartMode}
-						><img src={startImageResourceURL} alt="" /></button
-					>
-					<button
-						class="shapeButton"
-						id="operateButton"
-						on:click={enterAddNodeProcedureMode}
-						><img src={operateImageResourceURL} alt="" /></button
-					>
-					<button
-						class="shapeButton"
-						id="dicideButton"
-						on:click={enterAddNodeDecisionMode}
-						><img src={decideImageResourceURL} alt="" /></button
-					>
-				</div>
-				<div class="registerButtonDiv">
-					<button id="registerButton" on:click={addNode}
-						><img src={registerImageResourceURL} alt="" /></button
-					>
-				</div>
+				>
+					<img src="./img/start.png" alt="" />
+				</button>
+				<button
+					class="shapeButton"
+					id="procedureButton"
+					on:click={enterAddNodeProcedureMode}
+				>
+					<img src="./img/procudure.png" alt="" />
+				</button>
+				<button
+					class="shapeButton"
+					id="decideButton"
+					on:click={enterAddNodeDecisionMode}
+					><img src="./img/decision.png" alt="" /></button
+				>
+			</div>
+			<div class="registerButtonDiv">
+				<button id="registerButton" on:click={addNode}>
+					<img src="./img/register.png" alt="" />
+				</button>
 			</div>
 		</div>
 	</div>
@@ -441,6 +452,7 @@
 	#addFoodAndQuantityTitle {
 		display: flex;
 	}
+
 	.addFoodAndQuantity {
 		display: flex;
 	}
@@ -510,7 +522,7 @@
 
 	#makeNode {
 		background-color: #838383;
-		width: 50%;
+		/*width: 50%;*/
 	}
 
 	#makeNodeTitle {
@@ -559,7 +571,6 @@
 
 	#registerFood {
 		background-color: #838383;
-		/* background: transparent; */
 		width: 50%;
 	}
 	#ioPanel{
