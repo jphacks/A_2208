@@ -416,18 +416,24 @@
 		width: 100%;
 		margin: 0%;
 		
+		margin: 0%;
+		
 	}
 
 	h2 {
 		position: relative;
-		padding: 5px 26px 5px 42px;
+		padding: 5px 26px 5px 15px;
+		background: #716664;
 		background: #716664;
 		font-size: 20px;
 		color: #ffffff;
 		margin-left: -33px;
 		line-height: 1.3;
 		border-top: solid 3px #9c9c9c;
+		border-top: solid 3px #9c9c9c;
 		border-bottom: solid 3px rgb(14, 13, 11);
+		border-left: solid 3px #838383;
+		border-right: solid 3px #838383;
 		border-left: solid 3px #838383;
 		border-right: solid 3px #838383;
 		z-index: 3;
@@ -436,6 +442,17 @@
 	textarea{
 		font-family: ;
 	}
+	.registerPeopleBox{
+		background-color: #79493F;
+
+	}
+	.registerFoodBox{
+		background-color: #79493F;
+	}
+	.registerQuantityBox{
+		background-color: #79493F;
+	}
+
 
 
 	
@@ -453,6 +470,7 @@
 	}
 
 	#makeFlowChart {
+		background-color: #778899;
 		background-color: #778899;
 	}
 
