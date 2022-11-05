@@ -414,19 +414,31 @@
 <style>
 	main * {
 		width: 100%;
+		margin: 0%;
+		
 	}
 
 	h2 {
 		position: relative;
 		padding: 5px 26px 5px 42px;
-		background: #4b4945;
+		background: #716664;
 		font-size: 20px;
 		color: #ffffff;
 		margin-left: -33px;
 		line-height: 1.3;
+		border-top: solid 3px #9c9c9c;
 		border-bottom: solid 3px rgb(14, 13, 11);
+		border-left: solid 3px #838383;
+		border-right: solid 3px #838383;
 		z-index: 3;
 	}
+
+	textarea{
+		font-family: ;
+	}
+
+
+	
 
 	#preview {
 		text-align: center;
@@ -441,7 +453,7 @@
 	}
 
 	#makeFlowChart {
-		background-color: #577699;
+		background-color: #778899;
 	}
 
 	.nodeButtonArea {
