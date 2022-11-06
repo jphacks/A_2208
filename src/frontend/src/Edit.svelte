@@ -308,12 +308,12 @@
 		<!-- 横並びにしたい displayflex -->
 		<!-- 追加ボタンでボックスが追加されるようにする -->
 		<!-- 登録ボタン実装 or JSで文字列として保持 -->
+		<!-- ボタンの位置変更 -->
 		<div id="addFoodAndQuantityTitle">
 			<div id="foodName"><h3>材料・調味料</h3></div>
 			<div id="quantity"><h3>分量</h3></div>
 		</div>
-		<div id="addFoodAndQuantityList">
-			<button on:click={addAddFoodAndQuantity}>ボックスを追加</button>
+		<div id = "FoodAndQuantityList">
 			{#each foodAndQuantityPairList as placeholder}
 				<div class="addFoodAndQuantity">
 					<textarea
@@ -328,7 +328,13 @@
 					/>
 				</div>
 			{/each}
-			<button on:click={saveFoodAndQuantity}>保存する</button>
+			<div id="addFoodAndQuantityList">
+				<button on:click={addAddFoodAndQuantity}>ボックスを追加</button>
+			</div>
+			<div id = "saveFoodAndQuantityList">
+				<h3>使用食材の確定</h3>
+				<button on:click={saveFoodAndQuantity}>保存する</button>
+			</div>
 		</div>
 	</div>
 
@@ -406,7 +412,7 @@
 		</div>
 	</div>
 	<div id="ioPanel">
-		<h3>ファイル入出力</h3>
+		<h2>ファイルの出力</h2>
 		<button on:click={handleDownload}>レシピを保存する</button>
 	</div>
 </main>
@@ -416,13 +422,11 @@
 		width: 100%;
 		margin: 0%;
 		
-		margin: 0%;
-		
 	}
-
+	/* セクション見出しの設定 */
 	h2 {
 		position: relative;
-		padding: 5px 26px 5px 15px;
+		padding: 5px 0px 5px 30px;
 		background: #716664;
 		background: #716664;
 		font-size: 20px;
@@ -430,27 +434,66 @@
 		margin-left: -33px;
 		line-height: 1.3;
 		border-top: solid 3px #9c9c9c;
-		border-top: solid 3px #9c9c9c;
 		border-bottom: solid 3px rgb(14, 13, 11);
-		border-left: solid 3px #838383;
-		border-right: solid 3px #838383;
 		border-left: solid 3px #838383;
 		border-right: solid 3px #838383;
 		z-index: 3;
 	}
 
 	textarea{
-		font-family: ;
+		font-size: large;
+		
 	}
-	.registerPeopleBox{
-		background-color: #79493F;
+
+	/*材料・分量セクション */
+
+	#registerFoodAndQuantity{
+		background-color: #9c9c9c;
+	}
+
+	#registerFoodAndQuantity h3{
+		border-top: solid 3px #9c9c9c;
+		border-bottom: solid 3px rgb(14, 13, 11);
+		border-left: solid 3px #838383;
+		border-right: solid 3px #838383;
+	}
+
+	#addFoodAndQuantityTitle h3{
+		background-color: #716664;
 
 	}
+
+
+
 	.registerFoodBox{
-		background-color: #79493F;
+		margin-top: 5px;
+		margin-bottom: 5px;
+		margin-left: 10px;
+		background-color: #79493F;/*もう少し明るく */
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+		border-bottom-right-radius: 10px;
+		border-bottom-left-radius: 10px;
+	}
+	.registerFoodBox:focus{
+		border-color: #ff6a4d;
+		background-color: #ff9985;
+
 	}
 	.registerQuantityBox{
+		margin-top: 5px;
+		margin-bottom: 5px;
 		background-color: #79493F;
+		width: 33%;
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+		border-bottom-right-radius: 10px;
+		border-bottom-left-radius: 10px;
+	}
+	.registerQuantityBox:focus{
+		border-color: #ff6a4d;
+		background-color: #ff9985;
+
 	}
 
 
@@ -484,70 +527,12 @@
 		border: none;
 	}
 
-	#makeFoodNode {
-		display: flex;
-		height: 300px;
-	}
-
-	.registerFoodTwo {
-		display: flex;
-	}
-
-	.foodLists {
-		overflow-y: scroll;
-		height: 185px;
-		width: 50%;
-		margin-left: 5%;
-		margin-right: auto;
-	}
-
-	.foodList {
-		/* border: solid 2px #07c61a; */
-		background-color: rgb(124, 0, 0);
-		color: azure;
-		height: 30px;
-		width: 100%;
-		margin-right: 10px;
-		margin-bottom: 10px;
-		padding-top: 10px;
-		padding-bottom: 30px;
-		border-radius: 15px;
-		text-align: center;
-	}
-
-	#makeFoodBox {
-		width: 80%;
-		height: 80%;
-		margin-left: 10%;
-		margin-right: 10%;
-	}
-
-	.confirmButtonDiv {
-		text-align: right;
-	}
-
-	#confirmButton {
-		width: 120px;
-		background: transparent;
-		border: none;
-		margin-right: 10%;
-	}
-
 	#makeNode {
 		background-color: #838383;
-		/*width: 50%;*/
 	}
 
-	#makeNodeTitle {
-		width: 95%;
-	}
 
-	#makeNodeBox {
-		width: 80%;
-		height: 50%;
-		margin-left: 10%;
-		margin-right: 10%;
-	}
+
 
 	/* ボタンを右寄せしたいとき→divで囲む→class指定→textalign right　なんで？？？ */
 	.registerAndSelect {
@@ -580,10 +565,5 @@
 		width: 120px;
 		background: transparent;
 		border: none;
-	}
-
-	#registerFood {
-		background-color: #838383;
-		width: 50%;
 	}
 </style>
