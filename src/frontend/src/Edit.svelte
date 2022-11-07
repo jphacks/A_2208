@@ -41,6 +41,7 @@
 	let startImageResourceURL: string = "./img/start.png";
 	let operateImageResourceURL: string = "./img/operate.png";
 	let decideImageResourceURL: string = "./img/dicide.png";
+	let delFoodAndQuantityResourceURL: string = "./img/del.png"; // 後で正式な画像に変更する
 
 
 	const sample = `flowchart TB
@@ -89,11 +90,23 @@
 		Q --> R
 		R --> S`;
 
+	// begin 食材と分量関係
+
+	// メモ
+	/*
+	delボタンを作る
+	↓
+	delボタンが押されたか否かを管理する配列
+	再描画
+	*/
+
 	type FoodAndQuantity = {
 		food: string;
 		quantity: string;
 		placeholderFood: string;
 		placeholderQuantity: string;
+		index: number,
+		deleted: boolean;
 	};
 
 	let placeholder1: FoodAndQuantity = {
@@ -101,6 +114,8 @@
 		placeholderQuantity: "350g",
 		food: undefined,
 		quantity: undefined,
+		index: 0,
+		deleted: false,
 	};
 
 	let placeholder2: FoodAndQuantity = {
@@ -108,6 +123,8 @@
 		placeholderQuantity: "1本",
 		food: undefined,
 		quantity: undefined,
+		index: 1,
+		deleted: false
 	};
 
 	let placeholder3: FoodAndQuantity = {
@@ -115,9 +132,12 @@
 		placeholderQuantity: "1/2本",
 		food: undefined,
 		quantity: undefined,
+		index: 2,
+		deleted: false
 	};
 
 	let foodAndQuantityPairList = [placeholder1, placeholder2, placeholder3];
+	let idx: number = 3;
 
 	function addAddFoodAndQuantity() {
 		let add: FoodAndQuantity = {
@@ -125,6 +145,8 @@
 			quantity: undefined,
 			placeholderFood: "水",
 			placeholderQuantity: "200cc",
+			index: idx++,
+			deleted: false,
 		};
 		foodAndQuantityPairList.push(add);
 		foodAndQuantityPairList = foodAndQuantityPairList;
@@ -144,6 +166,13 @@
 			// 食材と分量を保存する処理
 		});
 	}
+
+	function deleteFoodAndQuantitiy(index: number) {
+		foodAndQuantityPairList[index].deleted = true;
+		foodAndQuantityPairList = foodAndQuantityPairList
+	}
+
+	// end 食材と分量関係
 
 	let recipeContent: string;
 	type nodeTypes = "[" | "[/" | "{";
@@ -315,18 +344,25 @@
 		<div id="addFoodAndQuantityList">
 			<button on:click={addAddFoodAndQuantity}>ボックスを追加</button>
 			{#each foodAndQuantityPairList as placeholder}
-				<div class="addFoodAndQuantity">
-					<textarea
-						class="registerFoodBox"
-						placeholder={"例）" + placeholder.placeholderFood}
-						bind:value={placeholder.food}
-					/>
-					<textarea
-						class="registerQuantityBox"
-						placeholder={"例）" + placeholder.placeholderQuantity}
-						bind:value={placeholder.quantity}
-					/>
-				</div>
+				{#if !placeholder.deleted}
+					<div class="addFoodAndQuantity">
+						<textarea
+							class="registerFoodBox"
+							placeholder={"例）" + placeholder.placeholderFood}
+							bind:value={placeholder.food}
+						/>
+						<textarea
+							class="registerQuantityBox"
+							placeholder={"例）" + placeholder.placeholderQuantity}
+							bind:value={placeholder.quantity}
+						/>
+						<button
+							on:click={() => deleteFoodAndQuantitiy(placeholder.index)}
+						>
+							<img src={delFoodAndQuantityResourceURL} alt="">
+						</button>
+					</div>
+				{/if}
 			{/each}
 			<button on:click={saveFoodAndQuantity}>保存する</button>
 		</div>
