@@ -285,6 +285,9 @@
 
 </script>
 
+<header>
+	<img id = "logo" src="./img/cookingitlogo.png" alt="">
+</header>
 <main>
 	<!-- メタデータ -->
 	<div id="metaData">
@@ -314,7 +317,7 @@
 			<div id="quantity"><h3>分量</h3></div>
 			<!-- ↑と↓を違和感なく横並びにしたい -->
 			<button id = "confirmFoodAndQuantity" on:click={saveFoodAndQuantity}>
-				<img src="./img/confirm.png" alt="">
+				<img id = "confirmFoodAndQuantitybutton" src="./img/confirm.png" alt="">
 			</button>
 		</div>
 		<div id = "FoodAndQuantityList">
@@ -419,6 +422,13 @@
 </main>
 
 <style>
+	header{
+		background-color: #919386;
+	}
+	#logo{
+		width: 15rem;
+	}
+
 	main * {
 		width: 100%;
 		margin: 0%;
@@ -428,18 +438,18 @@
 	/* セクション見出しの設定 */
 	h2 {
 		position: relative;
-		padding: 5px 0px 5px 30px;
-		background: #716664;
+		padding: 5px 0px 5px 5px;
 		background: #716664;
 		font-size: 20px;
 		color: #ffffff;
-		margin-left: -33px;
+		margin-left: 0px;
 		line-height: 1.3;
 		border-top: solid 3px #9c9c9c;
 		border-bottom: solid 3px rgb(14, 13, 11);
 		border-left: solid 3px #838383;
 		border-right: solid 3px #838383;
 		z-index: 3;
+		width: auto;
 	}
 
 
@@ -456,9 +466,9 @@
 
 	#addFoodAndQuantityTitle {
 		display: flex;
-		background-color: #716664;
 	}
 	#foodName{
+		background: #716664;
 		margin-left: 5px;
 		margin-right: 4px;
 		border-top: solid 3px #9c9c9c;
@@ -466,25 +476,33 @@
 		border-left: solid 3px #838383;
 		border-right: solid 3px #838383;
 		width: 55%;
+		height: 30px;
+		display: flex;
 
 	}
 	#quantity{
+		background: #716664;
 		border-top: solid 3px #9c9c9c;
 		border-bottom: solid 3px rgb(14, 13, 11);
 		border-left: solid 3px #838383;
 		border-right: solid 3px #838383;
 		width: 35%;
+		display: flex;
+		height: 30px;
 	}
 
 	#confirmFoodAndQuantity{
 		background: #9c9c9c;
 		border: none;
 		width: fit-content;
-		padding: opx,2px,opx,1px;
 		border: 0cm;
 		display: flex;
 		width: 10%;
+	}
 
+	#confirmFoodAndQuantitybutton{
+		position: relative;
+		top: -8px;
 	}
 
 	.addFoodAndQuantity {
@@ -497,12 +515,13 @@
 		margin-top: 5px;
 		margin-bottom: 5px;
 		margin-left: 10px;
+		margin-right: 2px;
 		background-color: #99584d;/*もう少し明るく */
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
 		border-bottom-right-radius: 10px;
 		border-bottom-left-radius: 10px;
-		width: 45%;
+		width: 54%;
 		color: #ffffff;
 	}
 	.registerFoodBox:focus{
@@ -513,8 +532,9 @@
 	.registerQuantityBox{
 		margin-top: 5px;
 		margin-bottom: 5px;
+		margin-left: 5px;
 		background-color: #99584d;
-		width: 33%;
+		width: 35%;
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
 		border-bottom-right-radius: 10px;
