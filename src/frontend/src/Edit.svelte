@@ -312,6 +312,10 @@
 		<div id="addFoodAndQuantityTitle">
 			<div id="foodName"><h3>材料・調味料</h3></div>
 			<div id="quantity"><h3>分量</h3></div>
+			<!-- ↑と↓を違和感なく横並びにしたい -->
+			<button id = "confirmFoodAndQuantity" on:click={saveFoodAndQuantity}>
+				<img src="./img/confirm.png" alt="">
+			</button>
 		</div>
 		<div id = "FoodAndQuantityList">
 			{#each foodAndQuantityPairList as placeholder}
@@ -331,10 +335,7 @@
 			<div id="addFoodAndQuantityList">
 				<button on:click={addAddFoodAndQuantity}>ボックスを追加</button>
 			</div>
-			<div id = "saveFoodAndQuantityList">
-				<h3>使用食材の確定</h3>
-				<button on:click={saveFoodAndQuantity}>保存する</button>
-			</div>
+
 		</div>
 	</div>
 
@@ -421,6 +422,7 @@
 	main * {
 		width: 100%;
 		margin: 0%;
+		font-family: "Stick";
 		
 	}
 	/* セクション見出しの設定 */
@@ -440,10 +442,6 @@
 		z-index: 3;
 	}
 
-	textarea{
-		font-size: large;
-		
-	}
 
 	/*材料・分量セクション */
 
@@ -452,15 +450,45 @@
 	}
 
 	#registerFoodAndQuantity h3{
+
+		margin-right: 0%;
+	}
+
+	#addFoodAndQuantityTitle {
+		display: flex;
+		background-color: #716664;
+	}
+	#foodName{
+		margin-left: 5px;
+		margin-right: 4px;
 		border-top: solid 3px #9c9c9c;
 		border-bottom: solid 3px rgb(14, 13, 11);
 		border-left: solid 3px #838383;
 		border-right: solid 3px #838383;
+		width: 55%;
+
+	}
+	#quantity{
+		border-top: solid 3px #9c9c9c;
+		border-bottom: solid 3px rgb(14, 13, 11);
+		border-left: solid 3px #838383;
+		border-right: solid 3px #838383;
+		width: 35%;
 	}
 
-	#addFoodAndQuantityTitle h3{
-		background-color: #716664;
+	#confirmFoodAndQuantity{
+		background: #9c9c9c;
+		border: none;
+		width: fit-content;
+		padding: opx,2px,opx,1px;
+		border: 0cm;
+		display: flex;
+		width: 10%;
 
+	}
+
+	.addFoodAndQuantity {
+		display: flex;
 	}
 
 
@@ -469,11 +497,13 @@
 		margin-top: 5px;
 		margin-bottom: 5px;
 		margin-left: 10px;
-		background-color: #79493F;/*もう少し明るく */
+		background-color: #99584d;/*もう少し明るく */
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
 		border-bottom-right-radius: 10px;
 		border-bottom-left-radius: 10px;
+		width: 45%;
+		color: #ffffff;
 	}
 	.registerFoodBox:focus{
 		border-color: #ff6a4d;
@@ -483,12 +513,13 @@
 	.registerQuantityBox{
 		margin-top: 5px;
 		margin-bottom: 5px;
-		background-color: #79493F;
+		background-color: #99584d;
 		width: 33%;
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
 		border-bottom-right-radius: 10px;
 		border-bottom-left-radius: 10px;
+		color: #ffffff;
 	}
 	.registerQuantityBox:focus{
 		border-color: #ff6a4d;
@@ -499,17 +530,9 @@
 
 
 	
-
+/* フローチャートセクション */
 	#preview {
 		text-align: center;
-	}
-
-	#addFoodAndQuantityTitle {
-		display: flex;
-	}
-
-	.addFoodAndQuantity {
-		display: flex;
 	}
 
 	#makeFlowChart {
