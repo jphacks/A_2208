@@ -178,11 +178,11 @@
 <div id="screen">
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
 	<div id="content">
-		<header>
+		<header class="row1 col1">
 			<img id="logo" src="./img/cookingitlogo.png" alt="" />
 		</header>
-		<main>
-			<div id="metadataRegisterPanel">
+		<main class="row2 col1">
+			<div id="metadataRegisterPanel" class="row1 col1">
 				<h2>レシピ名</h2>
 				<textarea
 					id="registerRecipeNameBox"
@@ -190,7 +190,7 @@
 				/>
 			</div>
 
-			<div id="ingredientsRegisterPanel">
+			<div id="ingredientsRegisterPanel" class="row2 col1">
 				<h2>材料・分量</h2>
 				<h3>人数登録</h3>
 				<div>
@@ -203,14 +203,14 @@
 				<table id="ingredientsTable">
 					<thead>
 						<tr>
-							<td>材料・調味料</td>
-							<td>分量</td>
+							<td class="col1">材料・調味料</td>
+							<td class="col2">分量</td>
 						</tr>
 					</thead>
 					<tbody>
 						{#each ingredientInfos as item}
 							<tr class="addFoodAndQuantity">
-								<td>
+								<td class="row1 col1">
 									<textarea
 										class="registerFoodBox"
 										placeholder={"例）" +
@@ -218,7 +218,7 @@
 										bind:value={item.food}
 									/>
 								</td>
-								<td>
+								<td class="row1 col2">
 									<textarea
 										class="registerQuantityBox"
 										placeholder={"例）" +
@@ -231,8 +231,10 @@
 					</tbody>
 				</table>
 
+				<!--そもそも保存ボタンいらなくない？-->
+				<!--
 				<div id="addFoodAndQuantityTitle">
-					<!--そもそも保存ボタンいらなくない？-->
+					
 					<button
 						id="confirmFoodAndQuantity"
 						on:click={saveFoodAndQuantity}
@@ -244,6 +246,7 @@
 						/>
 					</button>
 				</div>
+				-->
 
 				<div id="addFoodAndQuantityList">
 					<button on:click={addIngredientInfo}>ボックスを追加</button>
@@ -252,8 +255,8 @@
 			</div>
 
 			<!-- フローチャート作成 -->
-			<div id="makeFlowChart">
-				<h2 id="makeFlowChartTitle">フローチャートの作成</h2>
+			<div id="flowChartPreviewPanel" class="row3 col1">
+				<h2>フローチャートの作成</h2>
 				<div id="preview" />
 				<div class="nodeButtonArea">
 					<button class="nodeButton" on:click={enterGraphEdgeAddMode}>
@@ -291,8 +294,8 @@
 			</div>
 
 			<!-- 料理工程の追加 -->
-			<div id="makeNode">
-				<h2 id="makeNodeTitle">料理工程の追加</h2>
+			<div id="flowChartDetailPanel" class="row4 col1">
+				<h2>料理工程の追加</h2>
 				<textarea
 					id="nodeContentInput"
 					placeholder="料理の工程を書き込んで、下からオブジェクトの形を選んでください"
@@ -328,7 +331,7 @@
 					</div>
 				</div>
 			</div>
-			<div id="ioPanel">
+			<div id="ioPanel" class="row5 col1">
 				<h3>ファイル入出力</h3>
 				<button on:click={handleDownload}>レシピを保存する</button>
 			</div>
@@ -352,21 +355,22 @@
 	}
 
 	#content {
-		overflow-x: scroll;
-		overflow-y: hidden;
+		width: 100%;
+		height: 100%;
+		overflow-x: hidden;
+		overflow-y: auto;
 		display: grid;
 		grid-template-rows: auto 1fr;
 		grid-template-columns: 1fr;
 	}
 
 	#content * {
+		width: 100%;
 		font-family: "Stick";
 	}
 
-	header {
-		grid-row: 1;
-		grid-column: 1;
-
+	#content header {
+		padding: 6px;
 		background-color: #919386;
 	}
 
@@ -376,23 +380,17 @@
 	}
 
 	main {
-		grid-row: 2;
-		grid-column: 1;
-	}
-
-	main * {
-		width: 100%; /* 移行 */
+		display: grid;
+		grid-template-rows: repeat(5, auto);
+		grid-template-columns: 1fr;
 	}
 
 	#content h2 {
-		padding: 5px 0px 5px 5px;
 		background: #716664;
 		font-size: 1.5rem;
 		color: #ffffff;
 		border-top: solid 3px #9c9c9c;
 		border-bottom: solid 3px rgb(14, 13, 11);
-		border-left: solid 3px #838383;
-		border-right: solid 3px #838383;
 	}
 
 	#content h3 {
@@ -401,8 +399,6 @@
 		color: #ffffff;
 		border-top: solid 3px #9c9c9c;
 		border-bottom: solid 3px rgb(14, 13, 11);
-		border-left: solid 3px #838383;
-		border-right: solid 3px #838383;
 	}
 
 	#ingredientsRegisterPanel {
@@ -410,20 +406,20 @@
 	}
 
 	#ingredientsTable thead tr td {
+		background: #716664;
 		font-size: 1.3rem;
 		color: #ffffff;
 		border-top: solid 3px #9c9c9c;
 		border-bottom: solid 3px rgb(14, 13, 11);
-		border-left: solid 3px #838383;
-		border-right: solid 3px #838383;
 	}
 
-	#confirmFoodAndQuantity {
-		background: #9c9c9c;
-		border: none;
+	#ingredientsTable tr {
+		display: grid;
+		grid-template-rows: auto;
+		grid-template-columns: repeat(2, 1fr);
 	}
 
-	.registerFoodBox {
+	#ingredientsTable .registerFoodBox {
 		background-color: #99584d; /*もう少し明るく */
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
@@ -431,11 +427,11 @@
 		border-bottom-left-radius: 10px;
 		color: #ffffff;
 	}
-	.registerFoodBox:focus {
+	#ingredientsTable .registerFoodBox:focus {
 		border-color: #ff6a4d;
 		background-color: #ff9985;
 	}
-	.registerQuantityBox {
+	#ingredientsTable .registerQuantityBox {
 		background-color: #99584d;
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
@@ -452,15 +448,7 @@
 		text-align: center;
 	}
 
-	#addFoodAndQuantityTitle {
-		display: flex;
-	}
-
-	.addFoodAndQuantity {
-		display: flex;
-	}
-
-	#makeFlowChart {
+	#flowChartPreviewPanel {
 		background-color: #577699;
 	}
 
@@ -474,13 +462,8 @@
 		border: none;
 	}
 
-	#makeNode {
+	#flowChartDetailPanel {
 		background-color: #838383;
-		/*width: 50%;*/
-	}
-
-	#makeNodeTitle {
-		width: 95%;
 	}
 
 	/* ボタンを右寄せしたいとき→divで囲む→class指定→textalign right　なんで？？？ */
@@ -494,17 +477,13 @@
 
 	#selectObjectArea {
 		text-align: left;
-		margin-top: 0;
-		margin-left: 10%;
-		padding: 0;
+		/* margin-left: 10%; */
 		height: 65px;
 		position: relative;
 	}
 
 	.shapeButton {
 		width: 65px;
-		margin: 0;
-		padding: 0;
 		background: transparent;
 		border: none;
 	}
@@ -513,5 +492,35 @@
 		width: 120px;
 		background: transparent;
 		border: none;
+	}
+
+	/*shorthands*/
+
+	.row1 {
+		grid-row: 1;
+	}
+
+	.row2 {
+		grid-row: 2;
+	}
+
+	.row3 {
+		grid-row: 3;
+	}
+
+	.row4 {
+		grid-row: 4;
+	}
+
+	.row5 {
+		grid-row: 5;
+	}
+
+	.col1 {
+		grid-column: 1;
+	}
+
+	.col2 {
+		grid-column: 2;
 	}
 </style>
