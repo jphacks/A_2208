@@ -65,8 +65,8 @@
 	const handler = new GraphHandler();
 	let previousNode: Node | undefined = undefined;
 
-	type GraohEditingMode = "editNode" | "addEdge" | "deleteEdge" | undefined;
-	let nodeEditMode: GraohEditingMode = undefined;
+	type GraphEditingMode = "editNode" | "addEdge" | "deleteEdge" | undefined;
+	let nodeEditMode: GraphEditingMode = undefined;
 
 	function enterGraphNodeEditMode() {
 		nodeEditMode = "editNode";
