@@ -409,9 +409,13 @@
 		background-color: #9c9c9c;
 	}
 
-	#ingredientsTable thead {
+	#ingredientsTable thead tr td {
 		font-size: 1.3rem;
 		color: #ffffff;
+		border-top: solid 3px #9c9c9c;
+		border-bottom: solid 3px rgb(14, 13, 11);
+		border-left: solid 3px #838383;
+		border-right: solid 3px #838383;
 	}
 
 	#confirmFoodAndQuantity {
