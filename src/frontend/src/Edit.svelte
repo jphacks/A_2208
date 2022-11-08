@@ -441,10 +441,8 @@
 	#addIngredientButton{
 		background-color: #9c9c9c;
 		display: block;
-		height: 50px;
-		width: fit-content;
+		height: 50px;/* 効いてない */
 	}
-
 
 	#flowChartPreviewPanel {
 		background-color: #778899;
