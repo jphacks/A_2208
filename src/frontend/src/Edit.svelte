@@ -309,8 +309,8 @@
 					placeholder="料理の工程を書き込んで、下からオブジェクトの形を選んでください"
 					bind:value={recipeContent}
 				/>
-				<div class="registerAndSelect">
-					<div id="selectObjectArea">
+				<div id="nodeEditButtonArea">
+					<div class="row1 col2">
 						<button
 							class="shapeButton"
 							id="startButton"
@@ -318,6 +318,9 @@
 						>
 							<img src="./img/start.png" alt="" />
 						</button>
+					</div>
+
+					<div class="row1 col3">
 						<button
 							class="shapeButton"
 							id="procedureButton"
@@ -325,6 +328,9 @@
 						>
 							<img src="./img/procudure.png" alt="" />
 						</button>
+					</div>
+
+					<div class="row1 col4">
 						<button
 							class="shapeButton"
 							id="decideButton"
@@ -332,7 +338,7 @@
 							><img src="./img/decision.png" alt="" /></button
 						>
 					</div>
-					<div class="registerButtonDiv">
+					<div class="row1 col5">
 						<button id="registerButton" on:click={addNode}>
 							<img src="./img/register.png" alt="" />
 						</button>
@@ -465,36 +471,28 @@
 		border: none;
 	}
 
-	#nodeButtonArea button img {
-		width: 100%;
-		height: auto;
-	}
-
 	#flowChartDetailPanel {
 		background-color: #838383;
 	}
 
-	/* ボタンを右寄せしたいとき→divで囲む→class指定→textalign right　なんで？？？ */
-	.registerAndSelect {
-		display: flex;
-	}
-
-	.registerButtonDiv {
-		text-align: right;
-	}
-
-	#selectObjectArea {
-		text-align: left;
-	}
-
-	.shapeButton {
+	#flowChartDetailPanel button {
 		background: transparent;
 		border: none;
 	}
 
-	#registerButton {
-		background: transparent;
-		border: none;
+	#nodeEditButtonArea {
+		display: grid;
+		grid-template-rows: auto;
+		grid-template-columns: 1fr repeat(4, auto);
+	}
+
+	#nodeEditButtonArea div {
+		width: 100px;
+		padding: 10px;
+	}
+
+	#nodeEditButtonArea button {
+		vertical-align: middle;
 	}
 
 	/*shorthands*/
@@ -519,10 +517,6 @@
 		grid-row: 5;
 	}
 
-	.row6 {
-		grid-row: 6;
-	}
-
 	.col1 {
 		grid-column: 1;
 	}
@@ -537,5 +531,9 @@
 
 	.col4 {
 		grid-column: 4;
+	}
+
+	.col5 {
+		grid-column: 5;
 	}
 </style>
