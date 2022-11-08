@@ -185,7 +185,6 @@
 			<div id="metadataRegisterPanel" class="row1 col1">
 				<h2>レシピ名</h2>
 				<textarea
-					id="registerRecipeNameBox"
 					placeholder="例）おうちで簡単に作れる！エンジニア向けのおいしいカレー"
 				/>
 			</div>
@@ -206,7 +205,7 @@
 					</thead>
 					<tbody>
 						{#each ingredientInfos as item}
-							<tr class="addFoodAndQuantity">
+							<tr>
 								<td class="row1 col1">
 									<textarea
 										class="ingredientInput"
@@ -254,8 +253,11 @@
 			<div id="flowChartPreviewPanel" class="row3 col1">
 				<h2>フローチャートの作成</h2>
 
-				<!--外部ライブラリが以下の要素を置換する-->
-				<div id="preview" />
+				<div id="mermaidPreviewPanel">
+					<!--外部ライブラリが以下の要素を置換する-->
+					<div id="preview" class="row1 col2" />
+				</div>
+
 				<div id="nodeButtonArea">
 					<div class="row1 col2">
 						<button
@@ -301,51 +303,35 @@
 				</div>
 			</div>
 
-			<!-- 料理工程の追加 -->
 			<div id="flowChartDetailPanel" class="row4 col1">
 				<h2>料理工程の追加</h2>
 				<textarea
-					id="nodeContentInput"
 					placeholder="料理の工程を書き込んで、下からオブジェクトの形を選んでください"
 					bind:value={recipeContent}
 				/>
 				<div id="nodeEditButtonArea">
 					<div id="nodeTypeButtonPanel" class="row1 col2">
 						<div class="nodeTypeButton row1 col1">
-							<button
-								class="shapeButton"
-								id="startButton"
-								on:click={enterAddNodeStartMode}
-							>
+							<button on:click={enterAddNodeStartMode}>
 								<img src="./img/start.png" alt="" />
 							</button>
 						</div>
 
 						<div class="nodeTypeButton row1 col2">
-							<button
-								class="shapeButton"
-								id="procedureButton"
-								on:click={enterAddNodeProcedureMode}
-							>
+							<button on:click={enterAddNodeProcedureMode}>
 								<img src="./img/procudure.png" alt="" />
 							</button>
 						</div>
 
 						<div class="nodeTypeButton row1 col3">
-							<button
-								class="shapeButton"
-								id="decideButton"
-								on:click={enterAddNodeDecisionMode}
-								><img src="./img/decision.png" alt="" /></button
-							>
+							<button on:click={enterAddNodeDecisionMode}>
+								<img src="./img/decision.png" alt="" />
+							</button>
 						</div>
 					</div>
+
 					<div id="nodeEditRegisterButtonPanel" class="row1 col4">
-						<button
-							id="registerButton"
-							class="row2 col1"
-							on:click={addNode}
-						>
+						<button class="row2 col1" on:click={addNode}>
 							<img src="./img/register.png" alt="" />
 						</button>
 					</div>
@@ -403,7 +389,7 @@
 		height: 5rem;
 	}
 
-	main {
+	#content main {
 		display: grid;
 		grid-template-rows: repeat(5, auto);
 		grid-template-columns: 1fr;
@@ -456,12 +442,14 @@
 		background-color: #ff9985;
 	}
 
-	#preview {
-		text-align: center;
-	}
-
 	#flowChartPreviewPanel {
 		background-color: #577699;
+	}
+
+	#mermaidPreviewPanel {
+		display: grid;
+		grid-template-rows: auto;
+		grid-template-columns: 1fr auto 1fr;
 	}
 
 	#nodeButtonArea {
@@ -476,7 +464,7 @@
 		padding-right: 20px;
 	}
 
-	#nodeButtonArea button {
+	#nodeButtonArea button.nodeButton {
 		background: transparent;
 		border: none;
 	}
@@ -552,9 +540,5 @@
 
 	.col4 {
 		grid-column: 4;
-	}
-
-	.col5 {
-		grid-column: 5;
 	}
 </style>
