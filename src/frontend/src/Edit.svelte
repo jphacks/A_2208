@@ -244,10 +244,7 @@
 				</div>
 				-->
 
-				<div id="addFoodAndQuantityList">
-					<button on:click={addIngredientInfo}>ボックスを追加</button>
-					<button on:click={saveFoodAndQuantity}>保存する</button>
-				</div>
+				<button id="addIngredientButton" on:click={addIngredientInfo}><img src=".\img\add_ingredient_button.png" alt=""></button>
 			</div>
 
 			<div id="flowChartPreviewPanel" class="row3 col1">
@@ -441,9 +438,16 @@
 		border-color: #ff6a4d;
 		background-color: #ff9985;
 	}
+	#addIngredientButton{
+		background-color: #9c9c9c;
+		display: block;
+		height: 50px;
+		width: fit-content;
+	}
+
 
 	#flowChartPreviewPanel {
-		background-color: #577699;
+		background-color: #778899;
 	}
 
 	#mermaidPreviewPanel {
