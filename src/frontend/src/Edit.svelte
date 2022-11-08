@@ -244,7 +244,7 @@
 				</div>
 				-->
 
-				<button id="addIngredientButton" on:click={addIngredientInfo}><img src=".\img\add_ingredient_button.png" alt=""></button>
+				<button id="addIngredientButton" on:click={addIngredientInfo}><img src=".\img\addIngredientButton.png" alt=""></button>
 			</div>
 
 			<div id="flowChartPreviewPanel" class="row3 col1">
