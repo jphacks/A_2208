@@ -310,36 +310,42 @@
 					bind:value={recipeContent}
 				/>
 				<div id="nodeEditButtonArea">
-					<div class="row1 col2">
-						<button
-							class="shapeButton"
-							id="startButton"
-							on:click={enterAddNodeStartMode}
-						>
-							<img src="./img/start.png" alt="" />
-						</button>
-					</div>
+					<div id="nodeTypeButtonPanel" class="row1 col2">
+						<div class="nodeTypeButton row1 col1">
+							<button
+								class="shapeButton"
+								id="startButton"
+								on:click={enterAddNodeStartMode}
+							>
+								<img src="./img/start.png" alt="" />
+							</button>
+						</div>
 
-					<div class="row1 col3">
-						<button
-							class="shapeButton"
-							id="procedureButton"
-							on:click={enterAddNodeProcedureMode}
-						>
-							<img src="./img/procudure.png" alt="" />
-						</button>
-					</div>
+						<div class="nodeTypeButton row1 col2">
+							<button
+								class="shapeButton"
+								id="procedureButton"
+								on:click={enterAddNodeProcedureMode}
+							>
+								<img src="./img/procudure.png" alt="" />
+							</button>
+						</div>
 
-					<div class="row1 col4">
-						<button
-							class="shapeButton"
-							id="decideButton"
-							on:click={enterAddNodeDecisionMode}
-							><img src="./img/decision.png" alt="" /></button
-						>
+						<div class="nodeTypeButton row1 col3">
+							<button
+								class="shapeButton"
+								id="decideButton"
+								on:click={enterAddNodeDecisionMode}
+								><img src="./img/decision.png" alt="" /></button
+							>
+						</div>
 					</div>
-					<div class="row1 col5">
-						<button id="registerButton" on:click={addNode}>
+					<div id="nodeEditRegisterButtonPanel" class="row1 col4">
+						<button
+							id="registerButton"
+							class="row2 col1"
+							on:click={addNode}
+						>
 							<img src="./img/register.png" alt="" />
 						</button>
 					</div>
@@ -381,6 +387,10 @@
 	#content * {
 		width: 100%;
 		font-family: "Stick";
+	}
+
+	#content textarea {
+		resize: none;
 	}
 
 	#content header {
@@ -483,16 +493,27 @@
 	#nodeEditButtonArea {
 		display: grid;
 		grid-template-rows: auto;
-		grid-template-columns: 1fr repeat(4, auto);
+		grid-template-columns: 100px auto 1fr auto;
 	}
 
-	#nodeEditButtonArea div {
+	#nodeTypeButtonPanel {
+		display: grid;
+		grid-template-rows: auto;
+		grid-template-columns: repeat(3, auto);
+	}
+
+	#nodeEditButtonArea div.nodeTypeButton {
 		width: 100px;
-		padding: 10px;
+		padding-right: 20px;
 	}
 
-	#nodeEditButtonArea button {
-		vertical-align: middle;
+	#nodeEditRegisterButtonPanel {
+		width: 120px;
+		padding-right: 20px;
+
+		display: grid;
+		grid-template-rows: 1fr auto 1fr;
+		grid-template-columns: auto;
 	}
 
 	/*shorthands*/
