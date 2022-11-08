@@ -10,7 +10,7 @@
 
 	function addIngredientInfo() {
 		let value: IngredientInfo = {
-			food: undefined,
+			name: undefined,
 			quantity: undefined,
 			placeholderFood: "水",
 			placeholderQuantity: "200cc",
@@ -21,10 +21,10 @@
 
 	function saveFoodAndQuantity() {
 		ingredientInfos.forEach((element) => {
-			if (element.food === undefined && element.quantity === undefined) {
+			if (element.name === undefined && element.quantity === undefined) {
 				// continue
 			} else if (
-				element.food === undefined ||
+				element.name === undefined ||
 				element.quantity === undefined
 			) {
 				alert("食材と分量を入力してください");
@@ -192,13 +192,10 @@
 
 			<div id="ingredientsRegisterPanel" class="row2 col1">
 				<h2>材料・分量</h2>
-				<h3>人数登録</h3>
+				<h3>何人分？</h3>
 				<div>
-					<span>"何人分？"</span>
 					<input type="number" />
 				</div>
-
-				<h3>材料登録</h3>
 
 				<table id="ingredientsTable">
 					<thead>
@@ -212,15 +209,15 @@
 							<tr class="addFoodAndQuantity">
 								<td class="row1 col1">
 									<textarea
-										class="registerFoodBox"
+										class="ingredientInput"
 										placeholder={"例）" +
 											item.placeholderFood}
-										bind:value={item.food}
+										bind:value={item.name}
 									/>
 								</td>
 								<td class="row1 col2">
 									<textarea
-										class="registerQuantityBox"
+										class="ingredientInput"
 										placeholder={"例）" +
 											item.placeholderQuantity}
 										bind:value={item.quantity}
@@ -254,42 +251,53 @@
 				</div>
 			</div>
 
-			<!-- フローチャート作成 -->
 			<div id="flowChartPreviewPanel" class="row3 col1">
 				<h2>フローチャートの作成</h2>
-				<div id="preview" />
-				<div class="nodeButtonArea">
-					<button class="nodeButton" on:click={enterGraphEdgeAddMode}>
-						{#if nodeEditMode !== "addEdge"}
-							<img src="./img/add.png" alt="" />
-						{/if}
-						{#if nodeEditMode === "addEdge"}
-							<img src="./img/addPushed.png" alt="" />
-						{/if}
-					</button>
-					<button
-						class="nodeButton"
-						on:click={enterGraphEdgeDeleteMode}
-					>
-						{#if nodeEditMode !== "deleteEdge"}
-							<img src="./img/del.png" alt="" />
-						{/if}
-						{#if nodeEditMode === "deleteEdge"}
-							<img src="./img/delPushed.png" alt="" />
-						{/if}
-					</button>
 
-					<button
-						class="nodeButton"
-						on:click={enterGraphNodeEditMode}
-					>
-						{#if nodeEditMode !== "editNode"}
-							<img src="./img/edit.png" alt="" />
-						{/if}
-						{#if nodeEditMode === "editNode"}
-							<img src="./img/editPushed.png" alt="" />
-						{/if}
-					</button>
+				<!--外部ライブラリが以下の要素を置換する-->
+				<div id="preview" />
+				<div id="nodeButtonArea">
+					<div class="row1 col2">
+						<button
+							class="nodeButton"
+							on:click={enterGraphEdgeAddMode}
+						>
+							{#if nodeEditMode !== "addEdge"}
+								<img src="./img/add.png" alt="" />
+							{/if}
+							{#if nodeEditMode === "addEdge"}
+								<img src="./img/addPushed.png" alt="" />
+							{/if}
+						</button>
+					</div>
+
+					<div class="row1 col3">
+						<button
+							class="nodeButton"
+							on:click={enterGraphEdgeDeleteMode}
+						>
+							{#if nodeEditMode !== "deleteEdge"}
+								<img src="./img/del.png" alt="" />
+							{/if}
+							{#if nodeEditMode === "deleteEdge"}
+								<img src="./img/delPushed.png" alt="" />
+							{/if}
+						</button>
+					</div>
+
+					<div class="row1 col4">
+						<button
+							class="nodeButton"
+							on:click={enterGraphNodeEditMode}
+						>
+							{#if nodeEditMode !== "editNode"}
+								<img src="./img/edit.png" alt="" />
+							{/if}
+							{#if nodeEditMode === "editNode"}
+								<img src="./img/editPushed.png" alt="" />
+							{/if}
+						</button>
+					</div>
 				</div>
 			</div>
 
@@ -419,7 +427,7 @@
 		grid-template-columns: repeat(2, 1fr);
 	}
 
-	#ingredientsTable .registerFoodBox {
+	#ingredientsTable .ingredientInput {
 		background-color: #99584d; /*もう少し明るく */
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
@@ -427,19 +435,7 @@
 		border-bottom-left-radius: 10px;
 		color: #ffffff;
 	}
-	#ingredientsTable .registerFoodBox:focus {
-		border-color: #ff6a4d;
-		background-color: #ff9985;
-	}
-	#ingredientsTable .registerQuantityBox {
-		background-color: #99584d;
-		border-top-left-radius: 10px;
-		border-top-right-radius: 10px;
-		border-bottom-right-radius: 10px;
-		border-bottom-left-radius: 10px;
-		color: #ffffff;
-	}
-	.registerQuantityBox:focus {
+	#ingredientsTable .ingredientInput:focus {
 		border-color: #ff6a4d;
 		background-color: #ff9985;
 	}
@@ -452,14 +448,26 @@
 		background-color: #577699;
 	}
 
-	.nodeButtonArea {
+	#nodeButtonArea {
+		display: grid;
+		grid-template-rows: auto;
+		grid-template-columns: 1fr repeat(3, auto);
 		text-align: right;
 	}
 
-	.nodeButton {
+	#nodeButtonArea div {
 		width: 100px;
+		padding-right: 20px;
+	}
+
+	#nodeButtonArea button {
 		background: transparent;
 		border: none;
+	}
+
+	#nodeButtonArea button img {
+		width: 100%;
+		height: auto;
 	}
 
 	#flowChartDetailPanel {
@@ -477,19 +485,14 @@
 
 	#selectObjectArea {
 		text-align: left;
-		/* margin-left: 10%; */
-		height: 65px;
-		position: relative;
 	}
 
 	.shapeButton {
-		width: 65px;
 		background: transparent;
 		border: none;
 	}
 
 	#registerButton {
-		width: 120px;
 		background: transparent;
 		border: none;
 	}
@@ -516,11 +519,23 @@
 		grid-row: 5;
 	}
 
+	.row6 {
+		grid-row: 6;
+	}
+
 	.col1 {
 		grid-column: 1;
 	}
 
 	.col2 {
 		grid-column: 2;
+	}
+
+	.col3 {
+		grid-column: 3;
+	}
+
+	.col4 {
+		grid-column: 4;
 	}
 </style>

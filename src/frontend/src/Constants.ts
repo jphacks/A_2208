@@ -47,7 +47,7 @@ Q --> R
 R --> S`;
 
 export type IngredientInfo = {
-    food: string;
+    name: string;
     quantity: string;
     placeholderFood: string;
     placeholderQuantity: string;
@@ -57,19 +57,19 @@ export const defaultIngredientInfos: IngredientInfo[] = [
     {
         placeholderFood: "豚肉",
         placeholderQuantity: "350g",
-        food: undefined,
+        name: undefined,
         quantity: undefined,
     },
     {
         placeholderFood: "にんじん",
         placeholderQuantity: "1本",
-        food: undefined,
+        name: undefined,
         quantity: undefined,
     },
     {
         placeholderFood: "大根",
         placeholderQuantity: "1/2本",
-        food: undefined,
+        name: undefined,
         quantity: undefined,
     }
 ];
