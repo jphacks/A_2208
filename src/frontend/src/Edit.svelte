@@ -244,7 +244,9 @@
 				</div>
 				-->
 
-				<button id="addIngredientButton" on:click={addIngredientInfo}><img src=".\img\add_ingredient_button.png" alt=""></button>
+				<div id="addFoodAndQuantityList">
+					<button on:click={addIngredientInfo}><img src=".\img\addIngredientButton.png" alt=""></button>
+				</div>
 			</div>
 
 			<div id="flowChartPreviewPanel" class="row3 col1">
@@ -437,11 +439,6 @@
 	#ingredientsTable .ingredientInput:focus {
 		border-color: #ff6a4d;
 		background-color: #ff9985;
-	}
-	#addIngredientButton{
-		background-color: #9c9c9c;
-		display: block;
-		height: 50px;/* 効いてない */
 	}
 
 	#flowChartPreviewPanel {
