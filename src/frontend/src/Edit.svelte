@@ -2,181 +2,51 @@
 	import { onMount } from "svelte";
 	import { GraphHandler, Node } from "./GraphHandler";
 	import mermaid from "mermaid";
+	import { sample, defaultIngredientInfos } from "./Constants";
+	import type { IngredientInfo } from "./Constants";
+	import { downloadData } from "./Utilities";
 
-	/**
-	 * @param  content ダウンロードさせるデータ
-	 * @param  filename ファイル名。省略可
-	 * @param  mimetype データのMIME Type。省略可
-	 * @see http://furudate.hatenablog.com/entry/2014/06/02/172923
-	 */
-	function downloadData(
-		content: ArrayBuffer | ArrayBufferView | Blob | string,
-		filename: string | undefined,
-		mimetype: string | undefined
-	) {
-		if (arguments.length < 3) {
-			mimetype = "application/octet-stream";
-		}
+	let ingredientInfos = defaultIngredientInfos;
 
-		var url = (window.URL || window.webkitURL).createObjectURL(
-			new Blob([content], { type: mimetype })
-		);
-		var a = document.createElement("a");
-
-		a.target = "_blank";
-		a.download = filename || "";
-		a.href = url;
-
-		a.click();
-	}
-
-	let addImageResourceURL: string = "./img/add.png";
-	let addPushedImageResourceURL: string = "./img/addPushed.png";
-	let editPushedImageResourceURL: string = "./img/editPushed.png";
-	let editImageResourceURL: string = "./img/edit.png";
-	let delPushedImageResourceURL: string = "./img/delPushed.png";
-	let delImageResourceURL: string = "./img/del.png";
-	let registerImageResourceURL: string = "./img/register.png";
-	let confirmImageResourceURL: string = "./img/confirm.png";
-	let startImageResourceURL: string = "./img/start.png";
-	let operateImageResourceURL: string = "./img/operate.png";
-	let decideImageResourceURL: string = "./img/dicide.png";
-	let delFoodAndQuantityResourceURL: string = "./img/del.png"; // 後で正式な画像に変更する
-
-
-	const sample = `flowchart TB
-		alpha{"料理開始"}
-		A["じゃがいもを洗う"]
-		B["にんじんの上端、下端を切り落とす"]
-		C["玉ねぎの上端、下端を切り落とす"]
-		D["にんじんを洗う"]
-		E["玉ねぎの皮をむく"]
-		F["ピーラーで皮をむく"]
-		G["豚肩肉を一口大に切る"]
-		H["にんじんを半月切りにする"]
-		I["じゃがいもを乱切りをする"]
-		J["玉ねぎをくし切りにする"]
-		K["厚手の鍋にサラダ油を入れて熱する"]
-		L["焦がさないように中火で炒める"]
-		M["鍋に水を入れて沸騰させる"]
-		N[/"アクが出る"/]
-		O["取り除く"]
-		P["弱火or中火で20分煮込む"]
-		Q["火を止める"]
-		R["ルーを入れて溶かす"]
-		S["再度火をつけ弱火で5分煮込む"]
-
-		alpha --> A
-		alpha --> B
-		alpha --> C
-		B --> D
-		A --> F
-		D --> F
-		C --> E
-		F --> H
-		F --> I
-		E --> J
-		G --> L
-		H --> L
-		I --> L
-		J --> L
-		K --> L
-		L --> M
-		M --> N
-		N --はい--> O
-		N --いいえ--> P
-		O --> P
-		P --> Q
-		Q --> R
-		R --> S`;
-
-	// begin 食材と分量関係
-
-	// メモ
-	/*
-	delボタンを作る
-	↓
-	delボタンが押されたか否かを管理する配列
-	再描画
-	*/
-
-	type FoodAndQuantity = {
-		food: string;
-		quantity: string;
-		placeholderFood: string;
-		placeholderQuantity: string;
-		index: number,
-		deleted: boolean;
-	};
-
-	let placeholder1: FoodAndQuantity = {
-		placeholderFood: "豚肉",
-		placeholderQuantity: "350g",
-		food: undefined,
-		quantity: undefined,
-		index: 0,
-		deleted: false,
-	};
-
-	let placeholder2: FoodAndQuantity = {
-		placeholderFood: "にんじん",
-		placeholderQuantity: "1本",
-		food: undefined,
-		quantity: undefined,
-		index: 1,
-		deleted: false
-	};
-
-	let placeholder3: FoodAndQuantity = {
-		placeholderFood: "大根",
-		placeholderQuantity: "1/2本",
-		food: undefined,
-		quantity: undefined,
-		index: 2,
-		deleted: false
-	};
-
-	let foodAndQuantityPairList = [placeholder1, placeholder2, placeholder3];
-	let idx: number = 3;
-
-	function addAddFoodAndQuantity() {
-		let add: FoodAndQuantity = {
-			food: undefined,
+	function addIngredientInfo() {
+		let value: IngredientInfo = {
+			name: undefined,
 			quantity: undefined,
 			placeholderFood: "水",
 			placeholderQuantity: "200cc",
-			index: idx++,
-			deleted: false,
 		};
-		foodAndQuantityPairList.push(add);
-		foodAndQuantityPairList = foodAndQuantityPairList;
+		ingredientInfos.push(value);
+		ingredientInfos = ingredientInfos;
 	}
 
-	function saveFoodAndQuantity() {
-		foodAndQuantityPairList.forEach((element) => {
-			if (element.food === undefined && element.quantity === undefined) {
+	function saveIngredientInfo() {
+		ingredientInfos.forEach((element) => {
+			if (element.name === undefined && element.quantity === undefined) {
 				// continue
-			}
-			if (element.food === undefined || element.quantity === undefined) {
+			} else if (
+				element.name === undefined ||
+				element.quantity === undefined
+			) {
 				alert("食材と分量を入力してください");
 				// break;
 				return;
+			} else {
+				// 食材と分量を保存する処理
 			}
-
-			// 食材と分量を保存する処理
 		});
 	}
 
-	function deleteFoodAndQuantitiy(index: number) {
-		foodAndQuantityPairList[index].deleted = true;
-		foodAndQuantityPairList = foodAndQuantityPairList
+	function deleteIngredientInfo(target: IngredientInfo) {
+		ingredientInfos = ingredientInfos.filter(item =>
+			item !== target
+		)
 	}
 
 	// end 食材と分量関係
 
 	let recipeContent: string;
-	type nodeTypes = "[" | "[/" | "{";
-	let nodeType: nodeTypes = "[";
+	type NodeTypes = "[" | "[/" | "{";
+	let nodeType: NodeTypes = "[";
 
 	function addNode() {
 		if (recipeContent === undefined) {
@@ -203,8 +73,8 @@
 	const handler = new GraphHandler();
 	let previousNode: Node | undefined = undefined;
 
-	type editingMode = "editNode" | "addEdge" | "deleteEdge" | undefined;
-	let nodeEditMode: editingMode = undefined;
+	type GraphEditingMode = "editNode" | "addEdge" | "deleteEdge" | undefined;
+	let nodeEditMode: GraphEditingMode = undefined;
 
 	function enterGraphNodeEditMode() {
 		nodeEditMode = "editNode";
@@ -281,7 +151,6 @@
 		}
 	};
 
-
 	function Render(graph: string) {
 		handler.parse(graph);
 
@@ -311,285 +180,364 @@
 
 		Render(sample);
 	});
-
 </script>
 
-<main>
-	<!-- メタデータ -->
-	<div id="metaData">
-		<h2>レシピ名</h2>
-		<textarea
-			id="registerRecipeNameBox"
-			placeholder="例）おうちで簡単に作れる！エンジニア向けのおいしいカレー"
-		/>
-	</div>
-	<!-- 食材追加 -->
-	<!-- 必要事項
-		N人分
-		材料×文量 
-	-->
-	<div id="registerFoodAndQuantity">
-		<h2>材料・分量</h2>
-		<textarea
-			id="registerPeopleBox"
-			placeholder="何人分"
-		/>
-		<!-- 横並びにしたい displayflex -->
-		<!-- 追加ボタンでボックスが追加されるようにする -->
-		<!-- 登録ボタン実装 or JSで文字列として保持 -->
-		<div id="addFoodAndQuantityTitle">
-			<div id="foodName"><h3>材料・調味料</h3></div>
-			<div id="quantity"><h3>分量</h3></div>
-		</div>
-		<div id="addFoodAndQuantityList">
-			<button on:click={addAddFoodAndQuantity}>ボックスを追加</button>
-			{#each foodAndQuantityPairList as placeholder}
-				{#if !placeholder.deleted}
-					<div class="addFoodAndQuantity">
-						<textarea
-							class="registerFoodBox"
-							placeholder={"例）" + placeholder.placeholderFood}
-							bind:value={placeholder.food}
-						/>
-						<textarea
-							class="registerQuantityBox"
-							placeholder={"例）" + placeholder.placeholderQuantity}
-							bind:value={placeholder.quantity}
-						/>
+
+<!--スクリーンサイズに固定する要素(モーダル・下付き要素の実装に使用する)-->
+<div id="screen">
+	<!--縦にスクロールするコンテンツ要素(可変長)-->
+	<div id="content">
+		<header class="row1 col1">
+			<img id="logo" src="./img/cookingitlogo.png" alt="" />
+		</header>
+		<main class="row2 col1">
+			<div id="metadataRegisterPanel" class="row1 col1">
+				<h2>レシピ名</h2>
+				<textarea
+					placeholder="例）おうちで簡単に作れる！エンジニア向けのおいしいカレー"
+				/>
+			</div>
+
+			<div id="ingredientsRegisterPanel" class="row2 col1">
+				<h2>材料・分量</h2>
+				<h3>何人分？</h3>
+				<div>
+					<input type="number" />
+				</div>
+
+				<table id="ingredientsTable">
+					<thead>
+						<tr>
+							<td class="col1">材料・調味料</td>
+							<td class="col2">分量</td>
+						</tr>
+					</thead>
+					<tbody>
+						{#each ingredientInfos as item}
+							<tr>
+								<td class="row1 col1">
+									<textarea
+										class="ingredientInput"
+										placeholder={"例）" +
+											item.placeholderFood}
+										bind:value={item.name}
+									/>
+								</td>
+								<td class="row1 col2">
+									<textarea
+										class="ingredientInput"
+										placeholder={"例）" +
+												item.placeholderQuantity}
+										bind:value={item.quantity}
+									/>
+								</td>
+								<td>
+									<button
+										on:click={() => deleteIngredientInfo(item)}
+									>
+										削除する
+									</button>
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+
+				<div id="addIngredientInfoList">
+					<button on:click={addIngredientInfo}>ボックスを追加</button>
+					<!-- <button on:click={saveIngredientInfo}>保存する</button> -->
+				</div>
+			</div>
+
+			<div id="flowChartPreviewPanel" class="row3 col1">
+				<h2>フローチャートの作成</h2>
+
+				<div id="mermaidPreviewPanel">
+					<!--外部ライブラリが以下の要素を置換する-->
+					<div id="preview" class="row1 col2" />
+				</div>
+
+				<div id="nodeButtonArea">
+					<div class="row1 col2">
 						<button
-							on:click={() => deleteFoodAndQuantitiy(placeholder.index)}
+							class="nodeButton"
+							on:click={enterGraphEdgeAddMode}
 						>
-							<img src={delFoodAndQuantityResourceURL} alt="">
+							{#if nodeEditMode !== "addEdge"}
+								<img src="./img/add.png" alt="" />
+							{/if}
+							{#if nodeEditMode === "addEdge"}
+								<img src="./img/addPushed.png" alt="" />
+							{/if}
 						</button>
 					</div>
-				{/if}
-			{/each}
-			<button on:click={saveFoodAndQuantity}>保存する</button>
-		</div>
-	</div>
 
-	<!-- フローチャート作成 -->
-	<div id="makeFlowChart">
-		<h2 id="makeFlowChartTitle">フローチャートの作成</h2>
-		<div id="preview" />
-		<div class="nodeButtonArea">
-			<button class="nodeButton" on:click={enterGraphEdgeAddMode}>
-				{#if nodeEditMode !== "addEdge"}
-					<img src={addImageResourceURL} alt="" />
-				{/if}
-				{#if nodeEditMode === "addEdge"}
-					<img src={addPushedImageResourceURL} alt="" />
-				{/if}
-			</button>
-			<button class="nodeButton" on:click={enterGraphEdgeDeleteMode}>
-				{#if nodeEditMode !== "deleteEdge"}
-					<img src={delImageResourceURL} alt="" />
-				{/if}
-				{#if nodeEditMode === "deleteEdge"}
-					<img src={delPushedImageResourceURL} alt="" />
-				{/if}
-			</button>
+					<div class="row1 col3">
+						<button
+							class="nodeButton"
+							on:click={enterGraphEdgeDeleteMode}
+						>
+							{#if nodeEditMode !== "deleteEdge"}
+								<img src="./img/del.png" alt="" />
+							{/if}
+							{#if nodeEditMode === "deleteEdge"}
+								<img src="./img/delPushed.png" alt="" />
+							{/if}
+						</button>
+					</div>
 
-			<button class="nodeButton" on:click={enterGraphNodeEditMode}>
-				{#if nodeEditMode !== "editNode"}
-					<img src={editImageResourceURL} alt="" />
-				{/if}
-				{#if nodeEditMode === "editNode"}
-					<img src={editPushedImageResourceURL} alt="" />
-				{/if}
-			</button>
-		</div>
-	</div>
-
-
-
-	<!-- 料理工程の追加 -->
-	<div id="makeNode">
-		<h2 id="makeNodeTitle">料理工程の追加</h2>
-		<textarea
-			id="nodeContentInput"
-			placeholder="料理の工程を書き込んで、下からオブジェクトの形を選んでください"
-			bind:value={recipeContent}
-		/>
-		<div class="registerAndSelect">
-			<div id="selectObjectArea">
-				<button
-					class="shapeButton"
-					id="startButton"
-					on:click={enterAddNodeStartMode}
-				>
-					<img src="./img/start.png" alt="" />
-				</button>
-				<button
-					class="shapeButton"
-					id="procedureButton"
-					on:click={enterAddNodeProcedureMode}
-				>
-					<img src="./img/procudure.png" alt="" />
-				</button>
-				<button
-					class="shapeButton"
-					id="decideButton"
-					on:click={enterAddNodeDecisionMode}
-					><img src="./img/decision.png" alt="" /></button
-				>
+					<div class="row1 col4">
+						<button
+							class="nodeButton"
+							on:click={enterGraphNodeEditMode}
+						>
+							{#if nodeEditMode !== "editNode"}
+								<img src="./img/edit.png" alt="" />
+							{/if}
+							{#if nodeEditMode === "editNode"}
+								<img src="./img/editPushed.png" alt="" />
+							{/if}
+						</button>
+					</div>
+				</div>
 			</div>
-			<div class="registerButtonDiv">
-				<button id="registerButton" on:click={addNode}>
-					<img src="./img/register.png" alt="" />
-				</button>
+
+			<div id="flowChartDetailPanel" class="row4 col1">
+				<h2>料理工程の追加</h2>
+				<textarea
+					placeholder="料理の工程を書き込んで、下からオブジェクトの形を選んでください"
+					bind:value={recipeContent}
+				/>
+				<div id="nodeEditButtonArea">
+					<div id="nodeTypeButtonPanel" class="row1 col2">
+						<div class="nodeTypeButton row1 col1">
+							<button on:click={enterAddNodeStartMode}>
+								<img src="./img/start.png" alt="" />
+							</button>
+						</div>
+
+						<div class="nodeTypeButton row1 col2">
+							<button on:click={enterAddNodeProcedureMode}>
+								<img src="./img/procudure.png" alt="" />
+							</button>
+						</div>
+
+						<div class="nodeTypeButton row1 col3">
+							<button on:click={enterAddNodeDecisionMode}>
+								<img src="./img/decision.png" alt="" />
+							</button>
+						</div>
+					</div>
+
+					<div id="nodeEditRegisterButtonPanel" class="row1 col4">
+						<button class="row2 col1" on:click={addNode}>
+							<img src="./img/register.png" alt="" />
+						</button>
+					</div>
+				</div>
 			</div>
-		</div>
+			<div id="ioPanel" class="row5 col1">
+				<h3>ファイル入出力</h3>
+				<button on:click={handleDownload}>レシピを保存する</button>
+			</div>
+		</main>
 	</div>
-	<div id="ioPanel">
-		<h3>ファイル入出力</h3>
-		<button on:click={handleDownload}>レシピを保存する</button>
-	</div>
-</main>
+</div>
 
 <style>
-	main * {
+	#screen {
+		min-width: 100vw;
+		width: 100vw;
+		min-height: 100vh;
+		height: 100vh;
+		margin: 0px;
+		padding: 0px;
+	}
+
+	#screen * {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	#content {
 		width: 100%;
+		height: 100%;
+		overflow-x: hidden;
+		overflow-y: auto;
+		display: grid;
+		grid-template-rows: auto 1fr;
+		grid-template-columns: 1fr;
 	}
 
-	h2 {
-		position: relative;
-		padding: 5px 26px 5px 42px;
-		background: #4b4945;
-		font-size: 20px;
+	#content * {
+		width: 100%;
+		font-family: "Stick";
+	}
+
+	#content textarea {
+		resize: none;
+	}
+
+	#content header {
+		padding: 6px;
+		background-color: #919386;
+	}
+
+	#logo {
+		width: auto;
+		height: 5rem;
+	}
+
+	#content main {
+		display: grid;
+		grid-template-rows: repeat(5, auto);
+		grid-template-columns: 1fr;
+	}
+
+	#content h2 {
+		background: #716664;
+		font-size: 1.5rem;
 		color: #ffffff;
-		margin-left: -33px;
-		line-height: 1.3;
+		border-top: solid 3px #9c9c9c;
 		border-bottom: solid 3px rgb(14, 13, 11);
-		z-index: 3;
 	}
 
-	#preview {
-		text-align: center;
+	#content h3 {
+		background: #716664;
+		font-size: 1.3rem;
+		color: #ffffff;
+		border-top: solid 3px #9c9c9c;
+		border-bottom: solid 3px rgb(14, 13, 11);
 	}
 
-	#addFoodAndQuantityTitle {
-		display: flex;
+	#ingredientsRegisterPanel {
+		background-color: #9c9c9c;
 	}
 
-	.addFoodAndQuantity {
-		display: flex;
+	#ingredientsTable thead tr td {
+		background: #716664;
+		font-size: 1.3rem;
+		color: #ffffff;
+		border-top: solid 3px #9c9c9c;
+		border-bottom: solid 3px rgb(14, 13, 11);
 	}
 
-	#makeFlowChart {
+	#ingredientsTable tr {
+		display: grid;
+		grid-template-rows: auto;
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	#ingredientsTable .ingredientInput {
+		background-color: #99584d; /*もう少し明るく */
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+		border-bottom-right-radius: 10px;
+		border-bottom-left-radius: 10px;
+		color: #ffffff;
+	}
+	#ingredientsTable .ingredientInput:focus {
+		border-color: #ff6a4d;
+		background-color: #ff9985;
+	}
+
+	#flowChartPreviewPanel {
 		background-color: #577699;
 	}
 
-	.nodeButtonArea {
+	#mermaidPreviewPanel {
+		display: grid;
+		grid-template-rows: auto;
+		grid-template-columns: 1fr auto 1fr;
+	}
+
+	#nodeButtonArea {
+		display: grid;
+		grid-template-rows: auto;
+		grid-template-columns: 1fr repeat(3, auto);
 		text-align: right;
 	}
 
-	.nodeButton {
+	#nodeButtonArea div {
 		width: 100px;
+		padding-right: 20px;
+	}
+
+	#nodeButtonArea button.nodeButton {
 		background: transparent;
 		border: none;
 	}
 
-	#makeFoodNode {
-		display: flex;
-		height: 300px;
-	}
-
-	.registerFoodTwo {
-		display: flex;
-	}
-
-	.foodLists {
-		overflow-y: scroll;
-		height: 185px;
-		width: 50%;
-		margin-left: 5%;
-		margin-right: auto;
-	}
-
-	.foodList {
-		/* border: solid 2px #07c61a; */
-		background-color: rgb(124, 0, 0);
-		color: azure;
-		height: 30px;
-		width: 100%;
-		margin-right: 10px;
-		margin-bottom: 10px;
-		padding-top: 10px;
-		padding-bottom: 30px;
-		border-radius: 15px;
-		text-align: center;
-	}
-
-	#makeFoodBox {
-		width: 80%;
-		height: 80%;
-		margin-left: 10%;
-		margin-right: 10%;
-	}
-
-	.confirmButtonDiv {
-		text-align: right;
-	}
-
-	#confirmButton {
-		width: 120px;
-		background: transparent;
-		border: none;
-		margin-right: 10%;
-	}
-
-	#makeNode {
+	#flowChartDetailPanel {
 		background-color: #838383;
-		/*width: 50%;*/
 	}
 
-	#makeNodeTitle {
-		width: 95%;
-	}
-
-	#makeNodeBox {
-		width: 80%;
-		height: 50%;
-		margin-left: 10%;
-		margin-right: 10%;
-	}
-
-	/* ボタンを右寄せしたいとき→divで囲む→class指定→textalign right　なんで？？？ */
-	.registerAndSelect {
-		display: flex;
-	}
-
-	.registerButtonDiv {
-		text-align: right;
-	}
-
-	#selectObjectArea {
-		text-align: left;
-		margin-top: 0;
-		margin-left: 10%;
-		padding: 0;
-		height: 65px;
-		position: relative;
-	}
-
-
-	.shapeButton {
-		width: 65px;
-		margin: 0;
-		padding: 0;
+	#flowChartDetailPanel button {
 		background: transparent;
 		border: none;
 	}
 
-	#registerButton {
+	#nodeEditButtonArea {
+		display: grid;
+		grid-template-rows: auto;
+		grid-template-columns: 100px auto 1fr auto;
+	}
+
+	#nodeTypeButtonPanel {
+		display: grid;
+		grid-template-rows: auto;
+		grid-template-columns: repeat(3, auto);
+	}
+
+	#nodeEditButtonArea div.nodeTypeButton {
+		width: 100px;
+		padding-right: 20px;
+	}
+
+	#nodeEditRegisterButtonPanel {
 		width: 120px;
-		background: transparent;
-		border: none;
+		padding-right: 20px;
+
+		display: grid;
+		grid-template-rows: 1fr auto 1fr;
+		grid-template-columns: auto;
 	}
 
-	#registerFood {
-		background-color: #838383;
-		width: 50%;
+	/*shorthands*/
+
+	.row1 {
+		grid-row: 1;
+	}
+
+	.row2 {
+		grid-row: 2;
+	}
+
+	.row3 {
+		grid-row: 3;
+	}
+
+	.row4 {
+		grid-row: 4;
+	}
+
+	.row5 {
+		grid-row: 5;
+	}
+
+	.col1 {
+		grid-column: 1;
+	}
+
+	.col2 {
+		grid-column: 2;
+	}
+
+	.col3 {
+		grid-column: 3;
+	}
+
+	.col4 {
+		grid-column: 4;
 	}
 </style>
