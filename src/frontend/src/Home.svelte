@@ -10,18 +10,21 @@
 			<button>通知</button>
 		</header>
 		<main class="row2 col1">
-			<div id="searchMyRecipe">
-				<button>投稿済みレシピ一覧</button>
+			<div id="welcomArea">
+				<div id="signinAndSignup">
+					<button>sign up</button>
+					<button>sign in</button>
+				</div>
+				<img src="./img/toplogo.png" alt="" id="toplogo">
+			</div>
+			<div id="searchWindow">
 				<form id="searchBox" method="get">
-					<input placeholder="レシピ名を検索" />
+					<input placeholder="料理を検索" />
 					<input type="submit" value="検索" />
 				</form>
 			</div>
-			<div id="calenderWindow">
-
-			</div>
-			<div id="myRecipeListWindow">
-
+			<div id="timelineWindow">
+				<!-- データベースから取得したレシピ情報を表示 -->
 			</div>
 		</main>
 	</div>
@@ -51,4 +54,9 @@
 		width: auto;
 		height: 5rem;
 	}
+
+	#toplogo {
+		width: 70%;
+	}
+
 </style>

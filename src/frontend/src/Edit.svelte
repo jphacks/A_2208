@@ -19,7 +19,7 @@
 		ingredientInfos = ingredientInfos;
 	}
 
-	function saveFoodAndQuantity() {
+	function saveIngredientInfo() {
 		ingredientInfos.forEach((element) => {
 			if (element.name === undefined && element.quantity === undefined) {
 				// continue
@@ -35,6 +35,14 @@
 			}
 		});
 	}
+
+	function deleteIngredientInfo(target: IngredientInfo) {
+		ingredientInfos = ingredientInfos.filter(item =>
+			item !== target
+		)
+	}
+
+	// end 食材と分量関係
 
 	let recipeContent: string;
 	type NodeTypes = "[" | "[/" | "{";
@@ -174,6 +182,7 @@
 	});
 </script>
 
+
 <!--スクリーンサイズに固定する要素(モーダル・下付き要素の実装に使用する)-->
 <div id="screen">
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
@@ -218,34 +227,25 @@
 									<textarea
 										class="ingredientInput"
 										placeholder={"例）" +
-											item.placeholderQuantity}
+												item.placeholderQuantity}
 										bind:value={item.quantity}
 									/>
+								</td>
+								<td>
+									<button
+										on:click={() => deleteIngredientInfo(item)}
+									>
+										削除する
+									</button>
 								</td>
 							</tr>
 						{/each}
 					</tbody>
 				</table>
 
-				<!--そもそも保存ボタンいらなくない？-->
-				<!--
-				<div id="addFoodAndQuantityTitle">
-					
-					<button
-						id="confirmFoodAndQuantity"
-						on:click={saveFoodAndQuantity}
-					>
-						<img
-							id="confirmFoodAndQuantitybutton"
-							src="./img/confirm.png"
-							alt=""
-						/>
-					</button>
-				</div>
-				-->
-
-				<div id="addFoodAndQuantityList">
-					<button on:click={addIngredientInfo}><img src=".\img\addIngredientButton.png" alt=""></button>
+				<div id="addIngredientInfoList">
+					<button on:click={addIngredientInfo}>ボックスを追加</button>
+					<!-- <button on:click={saveIngredientInfo}>保存する</button> -->
 				</div>
 			</div>
 
