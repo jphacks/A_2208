@@ -4,23 +4,45 @@
 <div id="screen">
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
 	<div id="content">
-		<header class="row1 col1">
+		<header class="row1 col1 header">
 			<img id="logo" src="./img/cookingitlogo.png" alt="" />
-			<button>レシピ作成</button>
-			<button>通知</button>
+			<div id="headerButtons">
+				<button class="headerButton"><img id="recipeButton" src="./img/recipecreate.png" alt="" /></button>
+				<button class="headerButton"><img id="noticeButton" src="./img/notice.png" alt="" /></button>
+			</div>
 		</header>
 		<main class="row2 col1">
 			<div id="welcomArea">
-				<div id="signinAndSignup">
-					<button>sign up</button>
-					<button>sign in</button>
+				<div id="signButtons">
+					<button
+						><img
+							class="signButton"
+							src="./img/signup.png"
+							alt=""
+						/></button
+					>
+					<button
+						><img
+							class="signButton"
+							src="./img/signin.png"
+							alt=""
+						/></button
+					>
 				</div>
-				<img src="./img/toplogo.png" alt="" id="toplogo">
+				<img src="./img/toplogo.png" alt="" id="toplogo" />
 			</div>
 			<div id="searchWindow">
-				<form id="searchBox" method="get">
-					<input placeholder="料理を検索" />
-					<input type="submit" value="検索" />
+				<link
+					href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+					rel="stylesheet"
+				/>
+				<form method="get" action="#" class="search_container">
+					<input
+						type="text"
+						size="25"
+						placeholder="　キーワード検索"
+					/>
+					<input type="submit" value="&#xf002" />
 				</form>
 			</div>
 			<div id="timelineWindow">
@@ -50,13 +72,76 @@
 		background-color: #919386;
 	}
 
+	.header {
+		display: flex;
+	}
+	
 	#logo {
 		width: auto;
 		height: 5rem;
+	}
+	
+	#headerButtons {
+		text-align: right;
+		margin-left: auto;
+	}
+
+	.headerButton {
+		background: transparent;
+		border: none;
+	}
+
+	.signButton {
+		width: 100px;
 	}
 
 	#toplogo {
 		width: 70%;
 	}
 
+	#recipeButton {
+		height: 50px;
+		background: transparent;
+	}
+
+	#noticeButton {
+		height: 50px;
+		background: transparent;
+	}
+
+	.search_container {
+		position: relative;
+		box-sizing: border-box;
+		display: block;
+		padding: 3px 10px;
+		border-radius: 20px;
+		height: 2.2em;
+		width: 250px;
+		overflow: hidden;
+		background: #3879d9;
+	}
+	.search_container input[type="text"] {
+		border: none;
+		height: 2em;
+		background: #3879d9;
+	}
+	.search_container input[type="text"]:focus {
+		outline: 0;
+	}
+	.search_container input[type="submit"] {
+		cursor: pointer;
+		font-family: FontAwesome;
+		font-size: 1.3em;
+		border: none;
+		background: none;
+		color: #fff;
+		position: absolute;
+		height: 2.5em;
+		right: 8px;
+		top: -10px;
+		outline: none;
+	}
+	.search_container ::-webkit-input-placeholder {
+		color: #fff;
+	}
 </style>
