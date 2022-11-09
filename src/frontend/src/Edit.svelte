@@ -440,16 +440,9 @@
 		border-color: #ff6a4d;
 		background-color: #ff9985;
 	}
-	#addIngredientButton{
-		background-color: #9c9c9c;
-		display: block;
-		height: 50px;
-		width: fit-content;
-	}
-
 
 	#flowChartPreviewPanel {
-		background-color: #778899;
+		background-color: #577699;
 	}
 
 	#mermaidPreviewPanel {
