@@ -1,23 +1,84 @@
 <script lang="ts">
+	// Import the functions you need from the SDKs you need
+	
+	import { initializeApp } from "firebase/app";
+	import { getAnalytics } from "firebase/analytics";
+	import {
+		getAuth,
+		signInWithPopup,
+		GithubAuthProvider,
+	} from "firebase/auth";
+	// TODO: Add SDKs for Firebase products that you want to use
+	// https://firebase.google.com/docs/web/setup#available-libraries
+
+	// Your web app's Firebase configuration
+	// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+	const firebaseConfig = {
+		apiKey: "AIzaSyBJfWSAq6qXpzlNZwj4kuH_D160oGxg_8A",
+		authDomain: "shimesaba-project.firebaseapp.com",
+		projectId: "shimesaba-project",
+		storageBucket: "shimesaba-project.appspot.com",
+		messagingSenderId: "655635703052",
+		appId: "1:655635703052:web:b1dfac187d4f7afa105529",
+		measurementId: "G-41TW8J27DH",
+	};
+
+	// Initialize Firebase
+	const app = initializeApp(firebaseConfig);
+	const analytics = getAnalytics(app);
+
+	const provider = new GithubAuthProvider();
+	provider.addScope("repo");
+	provider.setCustomParameters({
+		allow_signup: "false",
+	});
+	const auth = getAuth();
+	
+	function login() 
+	{
+		signInWithPopup(auth, provider)
+		.then((result) => {
+			const credential = GithubAuthProvider.credentialFromResult(result);
+			const token = credential.accessToken;
+
+			const user = result.user;
+		})
+		.catch((error) => {
+			const errorCode = error.code;
+			const errorMessage = error.message;
+			const email = error.customData.email;
+			const credential = GithubAuthProvider.credentialFromError(error);
+		});
+	}
 </script>
+
 <div id="screen">
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
 	<div id="content">
 		<header class="row1 col1">
-			<img class="headerIcon" id="logo" src="./img/cookingitlogo.png" alt="" />
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
+			<img
+				class="headerIcon"
+				id="logo"
+				src="./img/cookingitlogo.png"
+				alt=""
+			/>
+			<div />
+			<div />
+			<div />
+			<div />
+			<div />
 			<div class="headerIcon" id="recipeCreateButtonPanel">
 				<button class="headerButton">
-					<img id="recipeCreateImage" src=".\img\recipecreate.png" alt="">
+					<img
+						id="recipeCreateImage"
+						src=".\img\recipecreate.png"
+						alt=""
+					/>
 				</button>
 			</div>
 			<div class="headerIcon" id="noticeButtonPanel">
 				<button class="headerButton">
-					<img id="noticeImage" src=".\img\notice.png" alt="">
+					<img id="noticeImage" src=".\img\notice.png" alt="" />
 				</button>
 			</div>
 		</header>
@@ -25,6 +86,7 @@
 			<div id="welcomArea">
 				<div id="signButtons">
 					<button class="signButton"
+					on:click={login}
 						><img
 							id="signUpButton"
 							class="signButtonImg"
@@ -79,52 +141,51 @@
 		padding: 0px;
 	}
 
-/* cssのスタイル */
-	/* #content */header { 
+	/* cssのスタイル */
+	/* #content */
+	header {
 		display: grid;
-		grid-template-columns: repeat(8,1fr);
+		grid-template-columns: repeat(8, 1fr);
 		grid-template-rows: 1fr auto 1fr;
 		padding: 6px;
-		background-color: #D9D9D9;
+		background-color: #d9d9d9;
 	}
-	#recipeCreateButtonPanel{
+	#recipeCreateButtonPanel {
 		display: grid;
 		grid-row: 2;
 		grid-column: 7;
-
 	}
-	#noticeButtonPanel{
+	#noticeButtonPanel {
 		display: grid;
 		grid-row: 2;
 		grid-column: 8;
 	}
-	.headerIcon{
+	.headerIcon {
 		grid-column: auto;
 		grid-row: 2;
 	}
-	.headerButton{
+	.headerButton {
 		background: transparent;
 		border: transparent;
 	}
 
-
-	#recipeCreateImage{
+	#recipeCreateImage {
 		width: 200px;
 	}
 
-	#noticeImage{
+	#noticeImage {
 		width: 180px;
 		height: 50px;
 	}
-	
+
 	#logo {
 		width: 500px;
 	}
 
-	.row1{
+	.row1 {
 		grid-row: 1;
 	}
-	.col1{
+	.col1 {
 		grid-column: 1;
 	}
 
