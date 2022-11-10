@@ -82,6 +82,7 @@
 	}
 	
 	#headerButtons {
+		margin-top: 15px;
 		text-align: right;
 		margin-left: auto;
 	}
