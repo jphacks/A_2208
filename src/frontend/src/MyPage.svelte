@@ -5,18 +5,11 @@
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
 	<div id="content">
 		<header class="row1 col1">
-			<img  id="logo" src="./img/cookingitlogo.png" alt="" />
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div id="recipeCreateButtonPanel">
+			<img id="logo" src="./img/cookingitlogo.png" alt="" />
+			<div id="buttonsMargin">
 				<button class="headerButton">
 					<img id="recipeCreateImage" src=".\img\recipecreate.png" alt="">
 				</button>
-			</div>
-			<div id="noticeButtonPanel">
 				<button class="headerButton">
 					<img id="noticeImage" src=".\img\notice.png" alt="">
 				</button>
@@ -70,23 +63,17 @@
 	}
 
 	#content header {
-		display: grid;
-		grid-template-columns: repeat(8,1fr);
-		grid-template-rows: auto;
+		display: flex;
 		padding: 6px;
 		background-color: #D9D9D9;
 	}
-	#recipeCreateButtonPanel{
-		display: grid;
-		grid-template-columns: auto;
-		grid-template-rows: 1fr auto 1fr;
-	}
-	#noticeButtonPanel{
-		display: grid;
-		grid-template-columns: auto;
-		grid-template-rows: 1fr auto 1fr;
+	#buttonsMargin{
+		margin-top: 15px;
+		text-align: right;
+		margin-left: auto;
 	}
 	.headerButton{
+
 		background: transparent;
 		border: transparent;
 	}
