@@ -376,6 +376,10 @@
 
 	#content textarea {
 		resize: none;
+		font-family: sans-serif;
+	}
+	::placeholder{
+		font-family: "Stick";
 	}
 
 	#content header {
@@ -429,7 +433,7 @@
 	}
 
 	#ingredientsTable .ingredientInput {
-		background-color: #99584d; /*もう少し明るく */
+		background-color: #123442; /*最悪白でもいい；白の場合は文字色を黒に */
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
 		border-bottom-right-radius: 10px;

@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { onMount } from "svelte";
+	import mermaid from "mermaid";
 </script>
-
 <div id="screen">
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
 	<div id="content">
