@@ -442,7 +442,7 @@
 	}
 
 	#flowChartPreviewPanel {
-		background-color: #577699;
+		background-color: #778899;
 	}
 
 	#mermaidPreviewPanel {
