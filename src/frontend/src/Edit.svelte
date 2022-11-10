@@ -186,9 +186,18 @@
 <!--スクリーンサイズに固定する要素(モーダル・下付き要素の実装に使用する)-->
 <div id="screen">
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
+	<!--  -->
 	<div id="content">
-		<header class="row1 col1">
+		<header class="row1 col1"><!-- display gridを使用している場合。適宜変更*/-->
 			<img id="logo" src="./img/cookingitlogo.png" alt="" />
+			<div id="buttonsMargin">
+				<button class="headerButton">
+					<img id="recipeCreateImage" src=".\img\recipecreate.png" alt="">
+				</button>
+				<button class="headerButton">
+					<img id="noticeImage" src=".\img\notice.png" alt="">
+				</button>
+			</div>
 		</header>
 		<main class="row2 col1">
 			<div id="metadataRegisterPanel" class="row1 col1">
@@ -379,14 +388,36 @@
 	}
 
 	#content header {
+		display: grid;
 		padding: 6px;
-		background-color: #919386;
+		background-color: #D9D9D9;
 	}
+	#buttonsMargin{
+		display: grid;
+		margin-top: 15px;
+		text-align: right;
+		margin-left: auto;
+	}
+	.headerButton{
+		background: transparent;
+		border: transparent;
+		display: grid;
+		grid-template-columns: 3;
+		grid-template-rows: 1;
 
+	}
+	#recipeCreateImage{
+		width: 200px;
+	}
+	#noticeImage{
+		width: 200px;
+		height: 50px;
+	}
 	#logo {
 		width: auto;
 		height: 5rem;
 	}
+
 
 	#content main {
 		display: grid;

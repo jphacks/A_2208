@@ -4,10 +4,16 @@
 <div id="screen">
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
 	<div id="content">
-		<header class="row1 col1">
+		<header class="row1 col1"><!-- display gridを使用している場合。適宜変更*/-->
 			<img id="logo" src="./img/cookingitlogo.png" alt="" />
-			<button>レシピ作成</button>
-			<button>通知</button>
+			<div id="buttonsMargin">
+				<button class="headerButton">
+					<img id="recipeCreateImage" src=".\img\recipecreate.png" alt="">
+				</button>
+				<button class="headerButton">
+					<img id="noticeImage" src=".\img\notice.png" alt="">
+				</button>
+			</div>
 		</header>
 		<main class="row2 col1">
 			<div id="welcomArea">
@@ -46,10 +52,27 @@
 	}
 
 	#content header {
+		display: flex;
 		padding: 6px;
-		background-color: #919386;
+		background-color: #D9D9D9;
 	}
+	#buttonsMargin{
+		margin-top: 15px;
+		text-align: right;
+		margin-left: auto;
+	}
+	.headerButton{
 
+		background: transparent;
+		border: transparent;
+	}
+	#recipeCreateImage{
+		width: 200px;
+	}
+	#noticeImage{
+		width: 200px;
+		height: 50px;
+	}
 	#logo {
 		width: auto;
 		height: 5rem;

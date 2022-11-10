@@ -5,19 +5,28 @@
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
 	<div id="content">
 		<header class="row1 col1">
-			<img id="logo" src="./img/cookingitlogo.png" alt="" />
-			<button class="headerButton">
-				<img id="recipeCreateImage" src=".\img\recipecreate.png" alt="">
-			</button>
-			<button class="headerButton">
-				<img id="noticeImage" src=".\img\notice.png" alt="">
-			</button>
+			<img  id="logo" src="./img/cookingitlogo.png" alt="" />
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div id="recipeCreateButtonPanel">
+				<button class="headerButton">
+					<img id="recipeCreateImage" src=".\img\recipecreate.png" alt="">
+				</button>
+			</div>
+			<div id="noticeButtonPanel">
+				<button class="headerButton">
+					<img id="noticeImage" src=".\img\notice.png" alt="">
+				</button>
+			</div>
 		</header>
 		<main class="row2 col1">
 			<div id="searchMyRecipe">
 				<button>投稿済みレシピ一覧</button>
 				<form id="searchBox" method="get">
-					<input id="searcher" placeholder="レシピ名を検索" />
+					<input id="searcher" placeholder="レシピ名で検索" />
 					<button id="searchButton"><img id="searchIcon" src=".\img\searchIcon.png" alt=""></button>
 				</form>
 			</div>
@@ -61,13 +70,28 @@
 	}
 
 	#content header {
+		display: grid;
+		grid-template-columns: repeat(8,1fr);
+		grid-template-rows: auto;
 		padding: 6px;
 		background-color: #D9D9D9;
+	}
+	#recipeCreateButtonPanel{
+		display: grid;
+		grid-template-columns: auto;
+		grid-template-rows: 1fr auto 1fr;
+	}
+	#noticeButtonPanel{
+		display: grid;
+		grid-template-columns: auto;
+		grid-template-rows: 1fr auto 1fr;
 	}
 	.headerButton{
 		background: transparent;
 		border: transparent;
 	}
+
+
 	#recipeCreateImage{
 		width: 200px;
 	}
@@ -75,22 +99,20 @@
 		width: 200px;
 		height: 50px;
 	}
-
-
 	#logo {
-		width: auto;
-		height: 5rem;
+		width: 500px;
 	}
 
 	#searchMyRecipe{
 		font-family: "Stick";
+		display: flex;
 	}
 	#searcher{
 		border-radius: 10px;
+		margin-left: 20px;
 	}
 	#searchBox{
 		display: flex;
-		width: 20px;
 	}
 	#searchButton{
 
@@ -122,6 +144,7 @@
 	}
 	#myRecipeListWindow{
 	/* 仮のかたち */
+    text-align: center;	/* 見やすさ調整 */
 	padding-bottom: 20px;
 	width: 85%;
 	height: 200px;
@@ -162,6 +185,43 @@
 	.detail{
 		grid-column: 3;
 		grid-row: auto;
+	}
+
+	/* グリッドテンプレ */
+	.row1 {
+		grid-row: 1;
+	}
+
+	.row2 {
+		grid-row: 2;
+	}
+
+	.row3 {
+		grid-row: 3;
+	}
+
+	.row4 {
+		grid-row: 4;
+	}
+
+	.row5 {
+		grid-row: 5;
+	}
+
+	.col1 {
+		grid-column: 1;
+	}
+
+	.col2 {
+		grid-column: 2;
+	}
+
+	.col3 {
+		grid-column: 3;
+	}
+
+	.col4 {
+		grid-column: 4;
 	}
 
 	
