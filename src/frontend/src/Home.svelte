@@ -111,10 +111,12 @@
 	#recipeCreateImage{
 		width: 200px;
 	}
+
 	#noticeImage{
 		width: 180px;
 		height: 50px;
 	}
+	
 	#logo {
 		width: 500px;
 	}
@@ -144,16 +146,6 @@
 
 	#toplogo {
 		width: 70%;
-	}
-
-	#recipeButton {
-		height: 50px;
-		background: transparent;
-	}
-
-	#noticeButton {
-		height: 50px;
-		background: transparent;
 	}
 
 	.search_container {
