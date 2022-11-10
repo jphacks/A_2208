@@ -6,12 +6,14 @@
 	<div id="content">
 		<header class="row1 col1">
 			<img id="logo" src="./img/cookingitlogo.png" alt="" />
-			<button class="headerButton">
-				<img id="recipeCreateImage" src=".\img\recipecreate.png" alt="">
-			</button>
-			<button class="headerButton">
-				<img id="noticeImage" src=".\img\notice.png" alt="">
-			</button>
+			<div id="buttonsMargin">
+				<button class="headerButton">
+					<img id="recipeCreateImage" src=".\img\recipecreate.png" alt="">
+				</button>
+				<button class="headerButton">
+					<img id="noticeImage" src=".\img\notice.png" alt="">
+				</button>
+			</div>
 		</header>
 		<main class="row2 col1">
 			<div id="searchMyRecipe">
@@ -61,10 +63,17 @@
 	}
 
 	#content header {
+		display: flex;
 		padding: 6px;
 		background-color: #D9D9D9;
 	}
+	#buttonsMargin{
+		margin-top: 15px;
+		text-align: right;
+		margin-left: auto;
+	}
 	.headerButton{
+
 		background: transparent;
 		border: transparent;
 	}
