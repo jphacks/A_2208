@@ -1,27 +1,24 @@
 <script lang="ts">
-	import { onMount } from "svelte";
-	import mermaid from "mermaid";
 </script>
 <div id="screen">
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
 	<div id="content">
-		<header class="row1 col1 header">
-			<img id="logo" src="./img/cookingitlogo.png" alt="" />
-			<div id="headerButtons">
-				<button class="headerButton"
-					><img
-						id="recipeButton"
-						src="./img/recipecreate.png"
-						alt=""
-					/></button
-				>
-				<button class="headerButton"
-					><img
-						id="noticeButton"
-						src="./img/notice.png"
-						alt=""
-					/></button
-				>
+		<header class="row1 col1">
+			<img class="headerIcon" id="logo" src="./img/cookingitlogo.png" alt="" />
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div class="headerIcon" id="recipeCreateButtonPanel">
+				<button class="headerButton">
+					<img id="recipeCreateImage" src=".\img\recipecreate.png" alt="">
+				</button>
+			</div>
+			<div class="headerIcon" id="noticeButtonPanel">
+				<button class="headerButton">
+					<img id="noticeImage" src=".\img\notice.png" alt="">
+				</button>
 			</div>
 		</header>
 		<main class="row2 col1">
@@ -82,29 +79,51 @@
 		padding: 0px;
 	}
 
-	#content header {
+/* cssのスタイル */
+	/* #content */header { 
+		display: grid;
+		grid-template-columns: repeat(8,1fr);
+		grid-template-rows: 1fr auto 1fr;
 		padding: 6px;
-		background-color: #919386;
+		background-color: #D9D9D9;
 	}
+	#recipeCreateButtonPanel{
+		display: grid;
+		grid-row: 2;
+		grid-column: 7;
 
-	.header {
-		display: flex;
 	}
-
-	#logo {
-		width: auto;
-		height: 5rem;
+	#noticeButtonPanel{
+		display: grid;
+		grid-row: 2;
+		grid-column: 8;
 	}
-
-	#headerButtons {
-		margin-top: 15px;
-		text-align: right;
-		margin-left: auto;
+	.headerIcon{
+		grid-column: auto;
+		grid-row: 2;
 	}
-
-	.headerButton {
+	.headerButton{
 		background: transparent;
-		border: none;
+		border: transparent;
+	}
+
+
+	#recipeCreateImage{
+		width: 200px;
+	}
+	#noticeImage{
+		width: 180px;
+		height: 50px;
+	}
+	#logo {
+		width: 500px;
+	}
+
+	.row1{
+		grid-row: 1;
+	}
+	.col1{
+		grid-column: 1;
 	}
 
 	#signButtons {

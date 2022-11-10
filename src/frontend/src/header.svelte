@@ -52,7 +52,7 @@
 		width: 200px;
 	}
 	#noticeImage{
-		width: 200px;
+		width: 180px;
 		height: 50px;
 	}
 	#logo {
