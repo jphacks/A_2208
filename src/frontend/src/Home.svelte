@@ -7,23 +7,37 @@
 		<header class="row1 col1 header">
 			<img id="logo" src="./img/cookingitlogo.png" alt="" />
 			<div id="headerButtons">
-				<button class="headerButton"><img id="recipeButton" src="./img/recipecreate.png" alt="" /></button>
-				<button class="headerButton"><img id="noticeButton" src="./img/notice.png" alt="" /></button>
+				<button class="headerButton"
+					><img
+						id="recipeButton"
+						src="./img/recipecreate.png"
+						alt=""
+					/></button
+				>
+				<button class="headerButton"
+					><img
+						id="noticeButton"
+						src="./img/notice.png"
+						alt=""
+					/></button
+				>
 			</div>
 		</header>
 		<main class="row2 col1">
 			<div id="welcomArea">
 				<div id="signButtons">
-					<button
+					<button class="signButton"
 						><img
-							class="signButton"
+							id="signUpButton"
+							class="signButtonImg"
 							src="./img/signup.png"
 							alt=""
 						/></button
 					>
-					<button
+					<button class="signButton"
 						><img
-							class="signButton"
+							id="signInButton"
+							class="signButtonImg"
 							src="./img/signin.png"
 							alt=""
 						/></button
@@ -75,12 +89,12 @@
 	.header {
 		display: flex;
 	}
-	
+
 	#logo {
 		width: auto;
 		height: 5rem;
 	}
-	
+
 	#headerButtons {
 		margin-top: 15px;
 		text-align: right;
@@ -92,7 +106,19 @@
 		border: none;
 	}
 
+	#signButtons {
+		text-align: right;
+		margin-left: auto;
+		padding: 15px;
+	}
+
 	.signButton {
+		width: 100px;
+		background: transparent;
+		border: none;
+	}
+
+	.signButtonImg {
 		width: 100px;
 	}
 
