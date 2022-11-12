@@ -92,33 +92,34 @@ async def root(req: Request):
 async def root(req: Request, item: MakeItem):
     GITHUB_OAUTH_TOKEN = req.headers['x_github']
     item_dict = item.dict()
-    owner = owner.recipename
-    recipename = item_dict.recipename
+    owner = item_dict['owner']
+    recipename = item_dict['recipename']
     
     recipe_repo_detail_json = get_recipe_repo_detail(owner, recipename)
     content_data = recipe_repo_detail_json['content']
     
-    return {"content_data": content_data}  
+    return {"content_data": recipe_repo_detail_json}  
 
 
 @app.post("/post_new_recipe_repo")
 async def root(req: Request, item: MakeItem):
     GITHUB_OAUTH_TOKEN = req.headers['x_github']
     item_dict = item.dict()
-    recipename = item_dict.recipename
-    mddata = mddata.recipename
+    
+    recipename = item_dict['recipename']
+    mddata = item_dict['mddata']
     status_code = make_new_recipe_file(recipename, mddata)
  
     return {"status_code":status_code} 
 
-@app.post("/post_new_recipe_repo")
+@app.post("/post_update_recipe_repo")
 async def root(req: Request, item: UpdateItem):
     GITHUB_OAUTH_TOKEN = req.headers['x_github']
     item_dict = item.dict()
 
-    owner = owner.recipename
-    recipename = item_dict.recipename
-    mddata = mddata.recipename
+    owner = item_dict['owner']
+    recipename = item_dict['recipename']
+    mddata = item_dict['mddata']
 
     status_code = update_recipe_file(owner, recipename, mddata)
 
