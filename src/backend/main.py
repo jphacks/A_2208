@@ -38,6 +38,8 @@ default_app = firebase_admin.initialize_app()
 origins = [
     "http://localhost:3000",
     "http://localhost",
+    "https://jphacks.github.io/A_2208/",
+
 ]
 
 app.add_middleware(
