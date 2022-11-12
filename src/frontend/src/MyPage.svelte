@@ -24,9 +24,6 @@
 					>
 				</form>
 			</div>
-			<div class="row3 col2" id="calenderWindow">
-				カレンダーもしくは草
-			</div>
 			<div id="myRecipeListWindow">
 				<div>
 					<table>
@@ -162,35 +159,6 @@
 		color: #6091d3; /*文字色*/
 		background: #d9d9d9;
 		border-radius: 10px; /*角の丸み*/
-	}
-	.recipeContainer {
-		/* 画面配置と中身の配置 */
-		display: grid;
-		grid-template-columns: 1fr auto 1fr;
-		grid-template-rows: repeat(3, 1fr);
-		width: 85%;
-		margin-left: auto;
-		margin-right: auto;
-	}
-	.date {
-		grid-column: 1;
-		grid-row: 1;
-	}
-	.recipeName {
-		grid-column: 1;
-		grid-row: 2;
-	}
-	.requiredTime {
-		grid-column: 1;
-		grid-row: 3;
-	}
-	.photo {
-		grid-column: 2;
-		grid-row: auto;
-	}
-	.detail {
-		grid-column: 3;
-		grid-row: auto;
 	}
 
 	.row2 {
