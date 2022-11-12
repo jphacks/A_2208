@@ -24,50 +24,46 @@
 					>
 				</form>
 			</div>
-			<div id="myRecipeListWindow">
-				<div>
-					{#each sampleRecipeInfos as Recipe}
-						<table>
-							{#each Recipe.IngredientInfos as Food}
-								{#if Food.placeholderFood === Recipe.IngredientInfos[0].placeholderFood}
-									<tr>
-										<td
-											rowspan={Recipe.IngredientInfoLength}
-											><h>{Recipe.Name}</h></td
-										>
-										<td class="row1 col1">
-											<div class="item">
-												<h>{Food.placeholderFood}</h>
-											</div>
-										</td>
-										<td class="row1 col2">
-											<div class="item">
-												<h>{Food.placeholderQuantity}</h
-												>
-											</div>
-										</td>
-									</tr>
-								{/if}
-								{#if Food.placeholderFood !== Recipe.IngredientInfos[0].placeholderFood}
-									<tr>
-										<td class="row1 col1">
-											<div class="item">
-												<h>{Food.placeholderFood}</h>
-											</div>
-										</td>
-										<td class="row1 col2">
-											<div class="item">
-												<h>{Food.placeholderQuantity}</h
-												>
-											</div>
-										</td>
-									</tr>
-								{/if}
-							{/each}
-						</table>
-					{/each}
+
+			{#each sampleRecipeInfos as Recipe}
+				<div id="myRecipeListWindow">
+					<table>
+						{#each Recipe.IngredientInfos as Food}
+							{#if Food.placeholderFood === Recipe.IngredientInfos[0].placeholderFood}
+								<tr>
+									<td rowspan={Recipe.IngredientInfoLength}
+										><h>{Recipe.Name}</h></td
+									>
+									<td class="row1 col1">
+										<div class="item">
+											<h>{Food.placeholderFood}</h>
+										</div>
+									</td>
+									<td class="row1 col2">
+										<div class="item">
+											<h>{Food.placeholderQuantity}</h>
+										</div>
+									</td>
+								</tr>
+							{/if}
+							{#if Food.placeholderFood !== Recipe.IngredientInfos[0].placeholderFood}
+								<tr>
+									<td class="row1 col1">
+										<div class="item">
+											<h>{Food.placeholderFood}</h>
+										</div>
+									</td>
+									<td class="row1 col2">
+										<div class="item">
+											<h>{Food.placeholderQuantity}</h>
+										</div>
+									</td>
+								</tr>
+							{/if}
+						{/each}
+					</table>
 				</div>
-			</div>
+			{/each}
 		</main>
 	</div>
 </div>
