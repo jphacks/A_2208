@@ -1,11 +1,12 @@
 <script lang="ts">
 	// Import the functions you need from the SDKs you need
-	
+
 	import { initializeApp } from "firebase/app";
 	import { getAnalytics } from "firebase/analytics";
 	import {
 		getAuth,
 		signInWithPopup,
+		signOut,
 		GithubAuthProvider,
 	} from "firebase/auth";
 	// TODO: Add SDKs for Firebase products that you want to use
@@ -26,6 +27,7 @@
 	// Initialize Firebase
 	const app = initializeApp(firebaseConfig);
 	const analytics = getAnalytics(app);
+	let isLogined: boolean = false;
 
 	const provider = new GithubAuthProvider();
 	provider.addScope("repo");
@@ -33,22 +35,36 @@
 		allow_signup: "false",
 	});
 	const auth = getAuth();
-	
-	function login() 
-	{
-		signInWithPopup(auth, provider)
-		.then((result) => {
-			const credential = GithubAuthProvider.credentialFromResult(result);
-			const token = credential.accessToken;
 
-			const user = result.user;
+	function login() {
+		signInWithPopup(auth, provider)
+			.then((result) => {
+				isLogined = true;
+				const credential =
+					GithubAuthProvider.credentialFromResult(result);
+				const token = credential.accessToken;
+
+				const user = result.user;
+			})
+			.catch((error) => {
+				isLogined = false;
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				const email = error.customData.email;
+				const credential =
+					GithubAuthProvider.credentialFromError(error);
+			});
+	}
+
+	function logout() {
+		signOut(auth)
+		.then(() => {
+			console.log("logout!!");
+			isLogined = false;
 		})
 		.catch((error) => {
-			const errorCode = error.code;
-			const errorMessage = error.message;
-			const email = error.customData.email;
-			const credential = GithubAuthProvider.credentialFromError(error);
-		});
+			console.log("error")
+		})
 	}
 </script>
 
@@ -83,28 +99,41 @@
 			</div>
 		</header>
 		<main class="row2 col1">
-			<div id="welcomArea">
+			{#if !isLogined}
+				<div id="welcomArea">
+					<div id="signButtons">
+						<button class="signButton" type="button">
+							<img
+								id="signUpButton"
+								class="signButtonImg"
+								src="./img/signup.png"
+								alt=""
+							/></button
+						>
+						<button class="signButton" on:click={login}
+							><img
+								id="signInButton"
+								class="signButtonImg"
+								src="./img/signin.png"
+								alt=""
+							/></button
+						>
+					</div>
+					<img src="./img/toplogo.png" alt="" id="toplogo" />
+				</div>
+			{/if}
+			{#if isLogined}
 				<div id="signButtons">
-					<button class="signButton"
-					on:click={login}
-						><img
-							id="signUpButton"
+					<button class="signButton" on:click={logout}>
+						<img
+							id="signInButton"
 							class="signButtonImg"
 							src="./img/signup.png"
 							alt=""
 						/></button
 					>
-					<button class="signButton"
-						><img
-							id="signInButton"
-							class="signButtonImg"
-							src="./img/signin.png"
-							alt=""
-						/></button
-					>
 				</div>
-				<img src="./img/toplogo.png" alt="" id="toplogo" />
-			</div>
+			{/if}
 			<div id="searchWindow">
 				<link
 					href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
