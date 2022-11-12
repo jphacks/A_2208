@@ -83,21 +83,26 @@
 			<div />
 			<div />
 			<div />
-			<div class="headerIcon" id="recipeCreateButtonPanel">
-				<button class="headerButton">
-					<img
-						id="recipeCreateImage"
-						src=".\img\recipecreate.png"
-						alt=""
-					/>
-				</button>
-			</div>
-			<div class="headerIcon" id="noticeButtonPanel">
-				<button class="headerButton">
-					<img id="noticeImage" src=".\img\notice.png" alt="" />
-				</button>
-			</div>
-		</header>
+			{#if isLogined}
+				<div class="headerIcon" id="recipeCreateButtonPanel">
+					<button class="headerButton">
+						<img
+							id="recipeCreateImage"
+							src=".\img\recipecreate.png"
+							alt=""
+						/>
+					</button>
+				</div>
+				<div class="headerIcon" id="noticeButtonPanel">
+					<button class="headerButton">
+						<img id="noticeImage" src=".\img\notice.png" alt="" />
+					</button>
+				</div>
+			{/if}
+			{#if !isLogined}
+				<div />
+			{/if}
+			</header>
 		<main class="row2 col1">
 			{#if !isLogined}
 				<div id="welcomArea">
