@@ -1,5 +1,7 @@
 // exportされていない型・関数・クラスは内部用です。
 
+import type { IngredientInfo } from "./Constants";
+
 /**
  * 構文解析中の状態を定義します。
  */
@@ -429,7 +431,7 @@ export class GraphHandler {
         return result;
     }
 
-    public toMermaidString(): string {
+    private toMermaidString(): string {
         let result = "flowchart TB\n";
 
         for (let i = 0; i < this.nodes.length; i++) {
@@ -489,6 +491,31 @@ export class GraphHandler {
             result += ")"
             result += "\n";
         }
+        return result;
+    }
+
+    public toMarmaidDocument(title: string, Ingredients: IngredientInfo[]): string {
+        if (title == undefined || Ingredients.length < 1 ||
+            Ingredients.filter(x => x == undefined || x.name == undefined || x.quantity == undefined).length > 0) {
+            return null;
+        }
+
+        let result = "";
+        result += `# ${title}\n`;
+        result += "\n";
+        result += "## 必要な材料\n";
+        result += "\n";
+        result += "|名前|量|\n"
+        result += "|:-:|:-:|\n";
+        Ingredients.forEach(item => result += `|${item.name.replace("\n", "")}|${item.quantity.replace("\n", "")}|\n`);
+        result += "\n";
+
+        result += "## フローチャート\n";
+        result += "\n";
+        result += "```mermaid\n";
+        result += this.toMermaidString();
+        result += "```\n";
+
         return result;
     }
 

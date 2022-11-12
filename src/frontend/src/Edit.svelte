@@ -7,8 +7,8 @@
 	import { sample, defaultIngredientInfos } from "./Constants";
 	import type { IngredientInfo } from "./Constants";
 	import { downloadData } from "./Utilities";
-	export
 
+	let recipeTitle: string;
 	let ingredientInfos = defaultIngredientInfos;
 
 	function addIngredientInfo() {
@@ -40,9 +40,7 @@
 	}
 
 	function deleteIngredientInfo(target: IngredientInfo) {
-		ingredientInfos = ingredientInfos.filter(item =>
-			item !== target
-		)
+		ingredientInfos = ingredientInfos.filter((item) => item !== target);
 	}
 
 	// end 食材と分量関係
@@ -95,7 +93,15 @@
 	}
 
 	function handleDownload() {
-		downloadData(handler.toMermaidString(), "recipe.md", "text/plain");
+		const document = handler.toMarmaidDocument(
+			recipeTitle,
+			ingredientInfos
+		);
+		if (document === null) {
+			alert("レシピが完成されていません");
+			return;
+		}
+		downloadData(document, "recipe.md", "text/plain");
 		pop();
 	}
 
@@ -168,7 +174,7 @@
 			}
 		);
 
-		console.log(handler.toMermaidString());
+		console.log(handler.toMarmaidDocument(recipeTitle, ingredientInfos));
 		console.log(handler.toInternalMermaidString());
 	}
 
@@ -186,17 +192,17 @@
 	});
 </script>
 
-
 <!--スクリーンサイズに固定する要素(モーダル・下付き要素の実装に使用する)-->
 <div id="screen">
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
 	<div id="content">
-		<Header isLogined={false}></Header>
+		<Header isLogined={false} />
 		<main class="row2 col1">
 			<div id="metadataRegisterPanel" class="row1 col1">
 				<h2>レシピ名</h2>
 				<textarea
 					placeholder="例）おうちで簡単に作れる！エンジニア向けのおいしいカレー"
+					bind:value={recipeTitle}
 				/>
 			</div>
 
@@ -229,7 +235,7 @@
 									<textarea
 										class="ingredientInput"
 										placeholder={"例）" +
-												item.placeholderQuantity}
+											item.placeholderQuantity}
 										bind:value={item.quantity}
 									/>
 								</td>
@@ -382,7 +388,7 @@
 		background: #1a475a;
 		color: #ffffff;
 	}
-	::placeholder{
+	::placeholder {
 		font-family: "Stick";
 	}
 	#content textarea :focus{
