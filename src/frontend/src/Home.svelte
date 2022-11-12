@@ -66,6 +66,9 @@
 		background: transparent;
 		border: transparent;
 	}
+	.row1 {
+		background: #9c9c9c;
+	}
 	#recipeCreateImage{
 		width: 200px;
 	}

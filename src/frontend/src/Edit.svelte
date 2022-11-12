@@ -188,7 +188,7 @@
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
 	<!--  -->
 	<div id="content">
-		<header class="row1 col1"><!-- display gridを使用している場合。適宜変更*/-->
+		<header class="row1 col1">
 			<img id="logo" src="./img/cookingitlogo.png" alt="" />
 			<div id="buttonsMargin">
 				<button class="headerButton">
@@ -460,7 +460,7 @@
 	}
 
 	#ingredientsTable .ingredientInput {
-		background-color: #99584d; /*もう少し明るく */
+		background-color:  #346b83; /*もう少し明るく */
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
 		border-bottom-right-radius: 10px;
@@ -469,7 +469,7 @@
 	}
 	#ingredientsTable .ingredientInput:focus {
 		border-color: #ff6a4d;
-		background-color: #ff9985;
+		background-color: #6E9AAD;
 	}
 
 	#flowChartPreviewPanel {

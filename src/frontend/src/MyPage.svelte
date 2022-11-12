@@ -23,18 +23,38 @@
 					<button id="searchButton"><img id="searchIcon" src=".\img\searchIcon.png" alt=""></button>
 				</form>
 			</div>
-			<div id="calenderWindow">
+			<div class="row3 col2" id="calenderWindow">
 				カレンダーもしくは草
 
 			</div>
-			<div id="myRecipeListWindow">
-				<!-- このウィンドウが作成したレシピ分だけ出てくる。ach文？ -->
+			<div  id="myRecipeListWindow">
+				<!-- このウィンドウが作成したレシピ分だけ出てくる。each文？ -->
 				<div class="recipeContainer">
-					<div class="date">日付</div>
-					<div class="recipeName">レシピ名</div>
-					<div class="requiredTime">所要時間の目安</div>
-					<div class="photo">写真</div>
-					<div class="detail">詳細説明</div>
+					<div class="date">
+						日付
+						<!-- 投稿日時と連携 -->
+
+					</div>
+					<div class="recipeName">
+						レシピ名
+						<!-- 編集画面のレシピ名を取得 -->
+					
+					</div>
+					<div class="requiredTime">
+						所要時間の目安
+						<!-- いらないというか出来ない気がする -->
+					
+					</div>
+					<div class="photo">
+						写真
+						<!-- 入るか入らないかわからない -->
+
+					</div>
+					<div class="detail">
+						詳細説明
+						
+					
+					</div>
 				</div>
 
 
@@ -62,6 +82,10 @@
 		padding: 0px;
 	}
 
+	#content{
+		font-family: "Stick";
+	}
+
 	#content header {
 		display: flex;
 		padding: 6px;
@@ -76,6 +100,10 @@
 
 		background: transparent;
 		border: transparent;
+	}
+
+	.row2.col1{
+		background: #9c9c9c;
 	}
 
 
