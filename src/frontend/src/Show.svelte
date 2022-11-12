@@ -1,16 +1,15 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-	import { pop } from "svelte-spa-router";
 	import Header from "./Header.svelte";
 	import { GraphHandler } from "./GraphHandler";
 	import mermaid from "mermaid";
-	import { sample } from "./Constants";
-	import { downloadData } from "./Utilities";
-	export
+	import { sample, defaultIngredientInfos } from "./Constants";
 
+	let recipeTitle: string;
+	let ingredientInfos = defaultIngredientInfos;
 
 	const handler = new GraphHandler();
-
+    
 	function Render(graph: string) {
 		handler.parse(graph);
 
@@ -24,7 +23,7 @@
 			}
 		);
 
-		console.log(handler.toMermaidString());
+		console.log(handler.toMarmaidDocument(recipeTitle, ingredientInfos));
 		console.log(handler.toInternalMermaidString());
 	}
 
@@ -42,14 +41,12 @@
 	});
 </script>
 
-
 <!--スクリーンサイズに固定する要素(モーダル・下付き要素の実装に使用する)-->
 <div id="screen">
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
 	<div id="content">
-		<Header isLogined={false}></Header>
+		<Header isLogined={false} />
 		<main class="row2 col1">
-
 			<div id="flowChartPreviewPanel" class="row3 col1">
 				<h2>レシピのフローチャート</h2>
 
@@ -91,9 +88,11 @@
 		width: 100%;
 		font-family: "Stick";
 	}
-
-	::placeholder{
+	::placeholder {
 		font-family: "Stick";
+	}
+	#content textarea :focus {
+		background: #457285;
 	}
 
 	#content main {
@@ -110,9 +109,8 @@
 		border-bottom: solid 3px rgb(14, 13, 11);
 	}
 
-
 	#flowChartPreviewPanel {
-		background-color: #577699;
+		background-color: #778899;
 	}
 
 	#mermaidPreviewPanel {
@@ -134,6 +132,7 @@
 	.row3 {
 		grid-row: 3;
 	}
+
 	.col1 {
 		grid-column: 1;
 	}
