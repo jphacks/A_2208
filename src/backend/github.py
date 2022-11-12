@@ -36,11 +36,13 @@ def make_repo(recipe_name):
 
     response = requests.post('https://api.github.com/user/repos', headers=headers, data=data)
 
-def make_recipe_file(recipename, mddata):
-    if "CookinGit-recipe-"+recipename in get_recipe_repo_list():
-        commit_message = "first commit"
-    else:
-        commit_message = "update commit"
+def make_new_recipe_file(recipename, mddata):
+    recipe_repo_list = get_recipe_repo_list()
+
+    if "CookinGit-recipe-"+recipename in recipe_repo_list:
+        update_recipe_file(recipename, mddata)
+        
+    commit_message = "first commit"
 
     github_user_name = get_user_data()
     repo = "CookinGit-recipe-"+recipename
@@ -49,16 +51,33 @@ def make_recipe_file(recipename, mddata):
     headers = {
         'Accept': 'application/vnd.github+json',
         'Authorization': 'Bearer '+GITHUB_OAUTH_TOKEN,
-        'Content-Type': 'application/x-www-form-urlencoded',
     }
 
     contents_data = mddata
 
-    data = '{"message":"'+commit_message+'","content":"'+contents_data+contents_data+'"}'
+    data = '{"message":"'+commit_message+'","content":"'+contents_data+'"}'
+
 
     response = requests.put('https://api.github.com/repos/'+github_user_name+'/'+repo+'/contents/'+path, headers=headers, data=data)
     print("Status Code", response.status_code)
 
+def update_recipe_file(owner, recipename, mddata):
+    recipe_repo_detail_json = recipe_repo_detail(owner, recipename)
+    recipe_repo_sha = recipe_repo_detail_json['sha']
+
+    repo = "CookinGit-recipe-"+recipename
+    path = repo+".md"
+
+    headers = {
+    'Accept': 'application/vnd.github+json',
+    'Authorization': 'Bearer '+GITHUB_OAUTH_TOKEN,
+    'Content-Type': 'application/x-www-form-urlencoded',
+    }
+
+    contents_data = mddata
+    data = '{"message":"update commit","content":"'+contents_data+'","sha":"'+recipe_repo_sha+'"}'
+
+    response = requests.put('https://api.github.com/repos/'+owner+'/'+repo+'/contents/'+path, headers=headers, data=data)
 
 
 
@@ -78,19 +97,34 @@ def get_recipe_repo_list():
         if "CookinGit-recipe-" in repo_name:
             recipe_repo_list.append(repo_name)
 
-    print(recipe_repo_list)
     return recipe_repo_list
 
 
 
 
 
-def recipe_repo_detail():
-    # リポジトリからファイルのリストを取得
-    a = 1
+def recipe_repo_detail(owner, recipename):
+    # リポジトリからファイルを取得
+    headers = {
+    'Accept': 'application/vnd.github+json',
+    'Authorization': 'Bearer '+GITHUB_OAUTH_TOKEN,
+    }
+
+    
+    repo = "CookinGit-recipe-"+recipename
+    path = repo+".md"
+
+    response = requests.get('https://api.github.com/repos/'+owner+'/'+repo+'/contents/'+path, headers=headers)
+
+    recipe_repo_detail_json = response.json()
+
+    # print(response.json()['sha'])
+    # print(response.json()['content'])
+
+    return recipe_repo_detail_json
 
 
 
-
-
-make_recipe_file("test1", "bXkgbmV3IGZpbGUgY29udGVudHM=")
+# make_new_recipe_file("test1", "bXkgbmV3IGZpbGUgY29udGVudHM=")
+# recipe_repo_detail("kake-r", "test1")
+# update_recipe_file("kake-r", "test1", "bXkgdXBkYXRlZCBmaWxlIGNvbnRlbnRz")
