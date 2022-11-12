@@ -47,6 +47,30 @@
 	<div id="content">
 		<Header isLogined={false} />
 		<main class="row2 col1">
+			<h1>{recipeTitle}</h1>
+			<div id="ingredientsRegisterPanel" class="row2 col1">
+				<h2>材料・分量</h2>
+				<table id="ingredientsTable">
+					<thead>
+						<tr>
+							<td class="col1">材料・調味料</td>
+							<td class="col2">分量</td>
+						</tr>
+					</thead>
+					<tbody>
+						{#each ingredientInfos as item}
+							<tr>
+								<td class="row1 col1">
+									<h>{item.name}</h>
+								</td>
+								<td class="row1 col2">
+									<h>{item.quantity}</h>
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
 			<div id="flowChartPreviewPanel" class="row3 col1">
 				<h2>レシピのフローチャート</h2>
 
