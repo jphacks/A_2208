@@ -3,11 +3,13 @@
     import Home from "./Home.svelte";
     import Edit from "./Edit.svelte";
     import MyPage from "./MyPage.svelte";
+    import Show from "./Show.svelte";
 
     const routes = {
         '/': Home,
         '/edit': Edit,
         '/mypage': MyPage,
+        '/show' : Show,
         '*': Home
     }
 </script>
