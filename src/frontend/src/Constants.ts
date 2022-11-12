@@ -73,3 +73,22 @@ export const defaultIngredientInfos: IngredientInfo[] = [
         quantity: undefined,
     }
 ];
+
+export type RecipeInfo = {
+    Name: string;
+    IngredientInfos: IngredientInfo[];
+    IngredientInfoLength: number;
+};
+
+export const sampleRecipeInfos: RecipeInfo[] = [
+    {
+        Name: "カレー",
+        IngredientInfos: defaultIngredientInfos,
+        IngredientInfoLength: defaultIngredientInfos.length,
+    },
+    {
+        Name: "お吸い物",
+        IngredientInfos: defaultIngredientInfos,
+        IngredientInfoLength: defaultIngredientInfos.length,
+    }
+]
