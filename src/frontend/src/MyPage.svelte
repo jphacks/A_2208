@@ -27,7 +27,7 @@
 
 			{#each sampleRecipeInfos as Recipe}
 				<div id="myRecipeListWindow">
-					<table>
+					<table border={2}>
 						{#each Recipe.IngredientInfos as Food}
 							{#if Food.placeholderFood === Recipe.IngredientInfos[0].placeholderFood}
 								<tr>
@@ -87,6 +87,15 @@
 	#content {
 		font-family: "Stick";
 	}
+	#myRecipeListWindow table{
+		border-collapse: collapse;
+		border-color: #c5bdbd;
+		width: 100%;
+		height: auto;
+		width: auto;
+		grid-row: 2;
+		grid-column: 2;
+	}
 
 	.row2.col1 {
 		background: #9c9c9c;
@@ -125,20 +134,6 @@
 		display: block;
 		width: 20px;
 	}
-	#calenderWindow {
-		display: block;
-		padding-bottom: 20px;
-		width: 85%;
-		height: 200px;
-		margin-top: 20px;
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 20px;
-		font-weight: bold;
-		color: #6091d3; /*文字色*/
-		background: #d9d9d9;
-		border-radius: 10px; /*角の丸み*/
-	}
 	#myRecipeListWindow {
 		/* 仮のかたち */
 		text-align: center; /* 見やすさ調整 */
@@ -153,6 +148,9 @@
 		color: #6091d3; /*文字色*/
 		background: #d9d9d9;
 		border-radius: 10px; /*角の丸み*/
+		display: grid;
+		grid-template-columns: 0.05fr 5fr 0.05fr;
+		grid-template-rows: 0.05fr 5fr 0.05fr;
 	}
 
 	.row2 {
