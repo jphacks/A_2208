@@ -86,6 +86,21 @@ async def root(req: Request):
     recipe_repo_list = get_recipe_repo_list()
     return {"recipe_repo_list": recipe_repo_list}  
 
+
+#存在しないレシピを取ろうとすると壊れる
+@app.get("/get_recipe_file")
+async def root(req: Request, item: MakeItem):
+    GITHUB_OAUTH_TOKEN = req.headers['x_github']
+    item_dict = item.dict()
+    owner = owner.recipename
+    recipename = item_dict.recipename
+    
+    recipe_repo_detail_json = get_recipe_repo_detail(owner, recipename)
+    content_data = recipe_repo_detail_json['content']
+    
+    return {"content_data": content_data}  
+
+
 @app.post("/post_new_recipe_repo")
 async def root(req: Request, item: MakeItem):
     GITHUB_OAUTH_TOKEN = req.headers['x_github']

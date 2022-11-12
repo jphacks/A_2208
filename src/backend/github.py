@@ -137,8 +137,7 @@ def get_recipe_repo_detail(owner, recipename):
 
     return recipe_repo_detail_json
 
-def aaa():
-    print(GITHUB_OAUTH_TOKEN)
+
 
 # make_new_recipe_file("test1", "bXkgbmV3IGZpbGUgY29udGVudHM=")
 # get_recipe_repo_detail("kake-r", "test1")
