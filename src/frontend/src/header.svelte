@@ -6,6 +6,9 @@
 	function toCreateRecipe() {
 		push("/edit");
 	}
+	function toMyPage() {
+		push("/mypage");
+	}
 </script>
 
 <header class="row1 col1">
@@ -26,8 +29,8 @@
 			</button>
 		</div>
 		<div class="headerIcon" id="noticeButtonPanel">
-			<button class="headerButton">
-				<img id="noticeImage" src=".\img\notice.png" alt="" />
+			<button class="headerButton" on:click={toMyPage}>
+				<img id="noticeImage" src=".\img\mypage.png" alt="" />
 			</button>
 		</div>
 	{:else}

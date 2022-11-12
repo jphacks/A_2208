@@ -80,7 +80,7 @@
 <div id="screen">
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
 	<div id="content">
-		<Header {isLogined} />
+		<Header isLogined={isLogined}/>
 		<main class="row2 col1">
 			{#if !isLogined}
 				<div id="welcomArea">
