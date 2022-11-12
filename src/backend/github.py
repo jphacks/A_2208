@@ -90,7 +90,8 @@ def update_recipe_file(owner, recipename, mddata):
     data = '{"message":"update commit","content":"'+contents_data+'","sha":"'+recipe_repo_sha+'"}'
 
     response = requests.put('https://api.github.com/repos/'+owner+'/'+repo+'/contents/'+path, headers=headers, data=data)
-
+    status_code = response.status_code
+    return status_code
 
 
 def get_recipe_repo_list():

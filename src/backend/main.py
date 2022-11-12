@@ -14,7 +14,6 @@ from github import (
     make_repo,
     make_new_recipe_file,
     update_recipe_file,
-    aaa,
 )
 
 # from db import crud, database, models, schemas
@@ -97,7 +96,18 @@ async def root(req: Request, item: MakeItem):
  
     return {"status_code":status_code} 
 
+@app.post("/post_new_recipe_repo")
+async def root(req: Request, item: UpdateItem):
+    GITHUB_OAUTH_TOKEN = req.headers['x_github']
+    item_dict = item.dict()
 
+    owner = owner.recipename
+    recipename = item_dict.recipename
+    mddata = mddata.recipename
+
+    status_code = update_recipe_file(owner, recipename, mddata)
+
+    return {"status_code":status_code} 
 
 
 
