@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+	import { pop } from "svelte-spa-router";
+	import Header from "./Header.svelte";
 	import { GraphHandler, Node } from "./GraphHandler";
 	import mermaid from "mermaid";
 	import { sample, defaultIngredientInfos } from "./Constants";
 	import type { IngredientInfo } from "./Constants";
 	import { downloadData } from "./Utilities";
+	export
 
 	let ingredientInfos = defaultIngredientInfos;
 
@@ -93,6 +96,7 @@
 
 	function handleDownload() {
 		downloadData(handler.toMermaidString(), "recipe.md", "text/plain");
+		pop();
 	}
 
 	globalThis["__handle_click"] = (nodeId) => {
@@ -187,9 +191,7 @@
 <div id="screen">
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
 	<div id="content">
-		<header class="row1 col1">
-			<img id="logo" src="./img/cookingitlogo.png" alt="" />
-		</header>
+		<Header isLogined={false}></Header>
 		<main class="row2 col1">
 			<div id="metadataRegisterPanel" class="row1 col1">
 				<h2>レシピ名</h2>

@@ -95,8 +95,7 @@
 					</div>
 					<img src="./img/toplogo.png" alt="" id="toplogo" />
 				</div>
-			{/if}
-			{#if isLogined}
+			{:else}
 				<div id="signButtons">
 					<button class="signButton" on:click={logout}>
 						<img

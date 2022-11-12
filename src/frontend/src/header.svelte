@@ -1,19 +1,23 @@
 <!-- htmlのheader要素にコピぺ -->
 <script lang="ts">
+	import { push } from "svelte-spa-router";
 	let isLogined: boolean = false;
-	export {isLogined}
+	export { isLogined };
+	function toCreateRecipe() {
+push("/edit");
+	}
 </script>
 
 <header class="row1 col1">
 	<img class="headerIcon" id="logo" src="./img/cookingitlogo.png" alt="" />
-	<div />
+<div />
 	<div />
 	<div />
 	<div />
 	<div />
 	{#if isLogined}
 		<div class="headerIcon" id="recipeCreateButtonPanel">
-			<button class="headerButton">
+			<button class="headerButton" on:click={toCreateRecipe}>
 				<img
 					id="recipeCreateImage"
 					src=".\img\recipecreate.png"
