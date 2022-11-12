@@ -6,8 +6,10 @@
 	import {
 		getAuth,
 		signInWithPopup,
+		getRedirectResult,
 		signOut,
 		GithubAuthProvider,
+		signInWithRedirect,
 	} from "firebase/auth";
 	// TODO: Add SDKs for Firebase products that you want to use
 	// https://firebase.google.com/docs/web/setup#available-libraries
@@ -41,7 +43,7 @@
 		} else {
 			isLogined = false;
 		}
-	})
+	});
 
 	function login() {
 		signInWithPopup(auth, provider)
@@ -65,32 +67,34 @@
 
 	function logout() {
 		signOut(auth)
-		.then(() => {
-			console.log("logout!!");
-			isLogined = false;
-		})
-		.catch((error) => {
-			console.log("error")
-		})
+			.then(() => {
+				console.log("logout!!");
+				isLogined = false;
+			})
+			.catch((error) => {
+				console.log("error");
+			});
 	}
 </script>
 
 <div id="screen">
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
 	<div id="content">
-		<Header isLogined={isLogined} />
+		<Header {isLogined} />
 		<main class="row2 col1">
 			{#if !isLogined}
 				<div id="welcomArea">
 					<div id="signButtons">
 						<button class="signButton" type="button">
-							<img
-								id="signUpButton"
-								class="signButtonImg"
-								src="./img/signup.png"
-								alt=""
-							/></button
-						>
+							<a href="https://github.com" target="_brank"
+								><img
+									id="signUpButton"
+									class="signButtonImg"
+									src="./img/signup.png"
+									alt=""
+								/></a
+							>
+						</button>
 						<button class="signButton" on:click={login}
 							><img
 								id="signInButton"
@@ -106,9 +110,9 @@
 				<div id="signButtons">
 					<button class="signButton" on:click={logout}>
 						<img
-							id="signInButton"
+							id="signOutButton"
 							class="signButtonImg"
-							src="./img/signup.png"
+							src="./img/signout.png"
 							alt=""
 						/></button
 					>
