@@ -239,7 +239,7 @@
 										bind:value={item.quantity}
 									/>
 								</td>
-								<td>
+								<td class="row1 col3">
 									<button
 										id="ingridientsDeleteButton"
 										on:click={() =>
@@ -471,7 +471,7 @@
 	#ingredientsTable tr {
 		display: grid;
 		grid-template-rows: auto;
-		grid-template-columns: 55% 35% auto;
+		grid-template-columns: 3fr 2fr auto;
 	}
 
 	#ingredientsTable .ingredientInput {
