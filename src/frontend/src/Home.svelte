@@ -1,32 +1,124 @@
 <script lang="ts">
+	// Import the functions you need from the SDKs you need
+	import Header from "./Header.svelte"
+	import { initializeApp } from "firebase/app";
+	import { getAnalytics } from "firebase/analytics";
+	import {
+		getAuth,
+		signInWithPopup,
+		signOut,
+		GithubAuthProvider,
+	} from "firebase/auth";
+	// TODO: Add SDKs for Firebase products that you want to use
+	// https://firebase.google.com/docs/web/setup#available-libraries
+
+	// Your web app's Firebase configuration
+	// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+	const firebaseConfig = {
+		apiKey: "AIzaSyBJfWSAq6qXpzlNZwj4kuH_D160oGxg_8A",
+		authDomain: "shimesaba-project.firebaseapp.com",
+		projectId: "shimesaba-project",
+		storageBucket: "shimesaba-project.appspot.com",
+		messagingSenderId: "655635703052",
+		appId: "1:655635703052:web:b1dfac187d4f7afa105529",
+		measurementId: "G-41TW8J27DH",
+	};
+
+	// Initialize Firebase
+	const app = initializeApp(firebaseConfig);
+	const analytics = getAnalytics(app);
+	let isLogined: boolean = false;
+
+	const provider = new GithubAuthProvider();
+	provider.addScope("repo");
+	provider.setCustomParameters({
+		allow_signup: "false",
+	});
+	const auth = getAuth();
+
+	function login() {
+		signInWithPopup(auth, provider)
+			.then((result) => {
+				isLogined = true;
+				const credential =
+					GithubAuthProvider.credentialFromResult(result);
+				const token = credential.accessToken;
+
+				const user = result.user;
+			})
+			.catch((error) => {
+				isLogined = false;
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				const email = error.customData.email;
+				const credential =
+					GithubAuthProvider.credentialFromError(error);
+			});
+	}
+
+	function logout() {
+		signOut(auth)
+		.then(() => {
+			console.log("logout!!");
+			isLogined = false;
+		})
+		.catch((error) => {
+			console.log("error")
+		})
+	}
 </script>
 
 <div id="screen">
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
 	<div id="content">
-		<header class="row1 col1"><!-- display gridを使用している場合。適宜変更*/-->
-			<img id="logo" src="./img/cookingitlogo.png" alt="" />
-			<div id="buttonsMargin">
-				<button class="headerButton">
-					<img id="recipeCreateImage" src=".\img\recipecreate.png" alt="">
-				</button>
-				<button class="headerButton">
-					<img id="noticeImage" src=".\img\notice.png" alt="">
-				</button>
-			</div>
-		</header>
+		<Header isLogined={isLogined} />
 		<main class="row2 col1">
-			<div id="welcomArea">
-				<div id="signinAndSignup">
-					<button>sign up</button>
-					<button>sign in</button>
+			{#if !isLogined}
+				<div  id="welcomArea">
+					<div class="row3 col1" id="signButtons">
+						<button class="signButton" type="button">
+							<img
+								id="signUpButton"
+								class="signButtonImg"
+								src="./img/signup.png"
+								alt=""
+							/></button
+						>
+						<button class="signButton" on:click={login}
+							><img
+								id="signInButton"
+								class="signButtonImg"
+								src="./img/signin.png"
+								alt=""
+							/></button
+						>
+					</div>
+					<img src="./img/toplogo.png" alt="" id="toplogo" />
 				</div>
-				<img src="./img/toplogo.png" alt="" id="toplogo">
-			</div>
+			{:else}
+				<div id="signButtons">
+					<button class="signButton" on:click={logout}>
+						<img
+							id="signInButton"
+							class="signButtonImg"
+							src="./img/signup.png"
+							alt=""
+						/></button
+					>
+				</div>
+			{/if}
 			<div id="searchWindow">
-				<form id="searchBox" method="get">
-					<input placeholder="料理を検索" />
-					<input type="submit" value="検索" />
+				<link
+					href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+					rel="stylesheet"
+				/>
+				<form method="get" action="#" class="search_container">
+					<input
+						type="text"
+						size="25"
+						placeholder="　キーワード検索"
+					/>
+					<input type="submit" value="&#xf002" />
 				</form>
 			</div>
 			<div id="timelineWindow">
@@ -51,38 +143,103 @@
 		padding: 0px;
 	}
 
-	#content header {
-		display: flex;
-		padding: 6px;
-		background-color: #D9D9D9;
-	}
-	#buttonsMargin{
-		margin-top: 15px;
+	#signButtons {
 		text-align: right;
 		margin-left: auto;
+		padding: 15px;
 	}
-	.headerButton{
 
+	.signButton {
+		width: 100px;
 		background: transparent;
-		border: transparent;
+		border: none;
 	}
-	.row1 {
-		background: #9c9c9c;
-	}
-	#recipeCreateImage{
-		width: 200px;
-	}
-	#noticeImage{
-		width: 200px;
-		height: 50px;
-	}
-	#logo {
-		width: auto;
-		height: 5rem;
+
+	.signButtonImg {
+		width: 100px;
 	}
 
 	#toplogo {
 		width: 70%;
 	}
+	.row3.col1{
+		display: grid;
+		grid-template-columns: repeat(8,1fr);
+	}
+	#signUpButton{
+		grid-column: 7;
+	}
 
+	.search_container {
+		position: relative;
+		box-sizing: border-box;
+		display: block;
+		padding: 3px 10px;
+		border-radius: 20px;
+		height: 2.2em;
+		width: 250px;
+		overflow: hidden;
+		background: #3879d9;
+	}
+	.search_container input[type="text"] {
+		border: none;
+		height: 2em;
+		background: #3879d9;
+	}
+	.search_container input[type="text"]:focus {
+		outline: 0;
+	}
+	.search_container input[type="submit"] {
+		cursor: pointer;
+		font-family: FontAwesome;
+		font-size: 1.3em;
+		border: none;
+		background: none;
+		color: #fff;
+		position: absolute;
+		height: 2.5em;
+		right: 8px;
+		top: -10px;
+		outline: none;
+	}
+	.search_container ::-webkit-input-placeholder {
+		color: #fff;
+	}
+		/*shorthands*/
+
+		.row1 {
+		grid-row: 1;
+	}
+
+	.row2 {
+		grid-row: 2;
+	}
+
+	.row3 {
+		grid-row: 3;
+	}
+
+	.row4 {
+		grid-row: 4;
+	}
+
+	.row5 {
+		grid-row: 5;
+	}
+
+	.col1 {
+		grid-column: 1;
+	}
+
+	.col2 {
+		grid-column: 2;
+	}
+
+	.col3 {
+		grid-column: 3;
+	}
+
+	.col4 {
+		grid-column: 4;
+	}
 </style>
