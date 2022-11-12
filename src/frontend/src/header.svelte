@@ -28,9 +28,9 @@
 				/>
 			</button>
 		</div>
-		<div class="headerIcon" id="noticeButtonPanel">
+		<div class="headerIcon" id="myPageButtonPanel">
 			<button class="headerButton" on:click={toMyPage}>
-				<img id="noticeImage" src=".\img\mypage.png" alt="" />
+				<img id="myPageImage" src=".\img\mypage.png" alt="" />
 			</button>
 		</div>
 	{:else}
@@ -53,7 +53,7 @@
 		grid-row: 2;
 		grid-column: 7;
 	}
-	#noticeButtonPanel {
+	#myPageButtonPanel {
 		display: grid;
 		grid-row: 2;
 		grid-column: 8;
@@ -71,8 +71,8 @@
 		width: 200px;
 	}
 
-	#noticeImage {
-		width: 180px;
+	#myPageImage {
+		width: 200px;
 		height: 50px;
 	}
 
