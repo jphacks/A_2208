@@ -61,10 +61,14 @@
 						{#each ingredientInfos as item}
 							<tr>
 								<td class="row1 col1">
-									<h>{item.name}</h>
+									<div class="item">
+										<h>{item.name}</h>
+									</div>
 								</td>
 								<td class="row1 col2">
-									<h>{item.quantity}</h>
+									<div class="item">
+										<h>{item.quantity}</h>
+									</div>
 								</td>
 							</tr>
 						{/each}
@@ -131,6 +135,33 @@
 		color: #ffffff;
 		border-top: solid 3px #9c9c9c;
 		border-bottom: solid 3px rgb(14, 13, 11);
+	}
+
+	#ingredientsTable thead tr {
+		background: #716664;
+		font-size: 1.3rem;
+		color: #ffffff;
+		border-top: solid 3px #9c9c9c;
+		border-bottom: solid 3px rgb(14, 13, 11);
+	}
+
+	#ingredientsTable tr {
+		display: grid;
+		grid-template-rows: auto;
+		grid-template-columns: 50% 50% auto;
+	}
+
+	
+
+	#ingredientsTable .item {
+		width: 90%;
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+		border-bottom-right-radius: 10px;
+		border-bottom-left-radius: 10px;
+		padding: 10px 10px;
+		margin: 10px 10px;
+		background-color: #457285;
 	}
 
 	#flowChartPreviewPanel {
