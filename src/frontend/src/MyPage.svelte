@@ -26,17 +26,15 @@
 			</div>
 			<div id="myRecipeListWindow">
 				<div>
-					<table>
-						<tr>
-							<th>レシピ名</th>
-							<th>材料</th>
-							<th>分量</th>
-						</tr>
-						{#each sampleRecipeInfos as Recipe}
+					{#each sampleRecipeInfos as Recipe}
+						<table>
 							{#each Recipe.IngredientInfos as Food}
 								{#if Food.placeholderFood === Recipe.IngredientInfos[0].placeholderFood}
 									<tr>
-										<td rowspan={Recipe.IngredientInfoLength}><h>{Recipe.Name}</h></td>
+										<td
+											rowspan={Recipe.IngredientInfoLength}
+											><h>{Recipe.Name}</h></td
+										>
 										<td class="row1 col1">
 											<div class="item">
 												<h>{Food.placeholderFood}</h>
@@ -51,23 +49,23 @@
 									</tr>
 								{/if}
 								{#if Food.placeholderFood !== Recipe.IngredientInfos[0].placeholderFood}
-								<tr>
-									<td class="row1 col1">
-										<div class="item">
-											<h>{Food.placeholderFood}</h>
-										</div>
-									</td>
-									<td class="row1 col2">
-										<div class="item">
-											<h>{Food.placeholderQuantity}</h
-											>
-										</div>
-									</td>
-								</tr>
+									<tr>
+										<td class="row1 col1">
+											<div class="item">
+												<h>{Food.placeholderFood}</h>
+											</div>
+										</td>
+										<td class="row1 col2">
+											<div class="item">
+												<h>{Food.placeholderQuantity}</h
+												>
+											</div>
+										</td>
+									</tr>
 								{/if}
 							{/each}
-						{/each}
-					</table>
+						</table>
+					{/each}
 				</div>
 			</div>
 		</main>
