@@ -1,6 +1,6 @@
 <script lang="ts">
 	// Import the functions you need from the SDKs you need
-	import Header from "./Header.svelte"
+	import Header from "./Header.svelte";
 	import { initializeApp } from "firebase/app";
 	import { getAnalytics } from "firebase/analytics";
 	import {
@@ -35,6 +35,13 @@
 		allow_signup: "false",
 	});
 	const auth = getAuth();
+	auth.onAuthStateChanged((user) => {
+		if (user) {
+			isLogined = true;
+		} else {
+			isLogined = false;
+		}
+	})
 
 	function login() {
 		signInWithPopup(auth, provider)

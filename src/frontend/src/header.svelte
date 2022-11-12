@@ -4,13 +4,13 @@
 	let isLogined: boolean = false;
 	export { isLogined };
 	function toCreateRecipe() {
-push("/edit");
+		push("/edit");
 	}
 </script>
 
 <header class="row1 col1">
 	<img class="headerIcon" id="logo" src="./img/cookingitlogo.png" alt="" />
-<div />
+	<div />
 	<div />
 	<div />
 	<div />

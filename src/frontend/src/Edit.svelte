@@ -384,16 +384,6 @@
 		font-family: "Stick";
 	}
 
-	#content header {
-		padding: 6px;
-		background-color: #919386;
-	}
-
-	#logo {
-		width: auto;
-		height: 5rem;
-	}
-
 	#content main {
 		display: grid;
 		grid-template-rows: repeat(5, auto);
