@@ -240,10 +240,16 @@
 									/>
 								</td>
 								<td>
-									<button id="ingridientsDeleteButton"
-										on:click={() => deleteIngredientInfo(item)}
+									<button
+										id="ingridientsDeleteButton"
+										on:click={() =>
+											deleteIngredientInfo(item)}
 									>
-										<img id="delButton" src=".\img\del.png" alt="">
+										<img
+											id="delButton"
+											src=".\img\del.png"
+											alt=""
+										/>
 									</button>
 								</td>
 							</tr>
@@ -252,7 +258,15 @@
 				</table>
 
 				<div id="addIngredientInfoList">
-					<button id="addIngredientButton" on:click={addIngredientInfo}><img id="addIngredientImage" src=".\img\addIngredient.png" alt=""></button>
+					<button
+						id="addIngredientButton"
+						on:click={addIngredientInfo}
+						><img
+							id="addIngredientImage"
+							src=".\img\addIngredient.png"
+							alt=""
+						/></button
+					>
 					<!-- <button on:click={saveIngredientInfo}>保存する</button> -->
 				</div>
 			</div>
@@ -320,19 +334,34 @@
 					<div id="nodeTypeButtonPanel" class="row1 col2">
 						<div class="nodeTypeButton row1 col1">
 							<button on:click={enterAddNodeStartMode}>
-								<img src="./img/start.png" alt="" />
+								{#if nodeType === "{"}
+									<img src="./img/startPushed.png" alt="" />
+								{:else}
+									<img src="./img/start.png" alt="" />
+								{/if}
 							</button>
 						</div>
 
 						<div class="nodeTypeButton row1 col2">
 							<button on:click={enterAddNodeProcedureMode}>
-								<img src="./img/procudure.png" alt="" />
+								{#if nodeType === "["}
+									<img src="./img/procedurePushed.png" alt="" />
+								{:else}
+									<img src="./img/procedure.png" alt="" />
+								{/if}
 							</button>
 						</div>
 
 						<div class="nodeTypeButton row1 col3">
 							<button on:click={enterAddNodeDecisionMode}>
-								<img src="./img/decision.png" alt="" />
+								{#if nodeType === "[/"}
+									<img
+										src="./img/decisionPushed.png"
+										alt=""
+									/>
+								{:else}
+									<img src="./img/decision.png" alt="" />
+								{/if}
 							</button>
 						</div>
 					</div>
@@ -346,7 +375,13 @@
 			</div>
 			<div id="ioPanel" class="row5 col1">
 				<h3>ファイル入出力</h3>
-				<button id="downloadButton" on:click={handleDownload}><img id="downloadImage" src=".\img\downLoad.png" alt=""></button>
+				<button id="downloadButton" on:click={handleDownload}
+					><img
+						id="downloadImage"
+						src=".\img\downLoad.png"
+						alt=""
+					/></button
+				>
 			</div>
 		</main>
 	</div>
@@ -391,10 +426,10 @@
 	::placeholder {
 		font-family: "Stick";
 	}
-	#content textarea :focus{
+	#content textarea :focus {
 		background: #457285;
 	}
-	#content input{
+	#content input {
 		background: #1a475a;
 		color: #ffffff;
 	}
@@ -425,7 +460,7 @@
 		background-color: #9c9c9c;
 	}
 
-	#ingredientsTable thead tr{
+	#ingredientsTable thead tr {
 		background: #716664;
 		font-size: 1.3rem;
 		color: #ffffff;
@@ -437,8 +472,6 @@
 		display: grid;
 		grid-template-rows: auto;
 		grid-template-columns: 55% 35% auto;
-
-
 	}
 
 	#ingredientsTable .ingredientInput {
@@ -451,24 +484,23 @@
 	#ingredientsTable .ingredientInput:focus {
 		background-color: #457285;
 	}
-	#ingridientsDeleteButton{
+	#ingridientsDeleteButton {
 		background: transparent;
 		border: transparent;
 	}
-	#delButton{
+	#delButton {
 		height: 50px;
 	}
-	#addIngredientButton{
+	#addIngredientButton {
 		display: grid;
-		grid-template-columns: repeat(3,1fr);
+		grid-template-columns: repeat(3, 1fr);
 		background: transparent;
 		border: transparent;
 	}
-	#addIngredientImage{
+	#addIngredientImage {
 		display: grid;
 		grid-column: 2;
 	}
-
 
 	#flowChartPreviewPanel {
 		background-color: #778899;
@@ -531,13 +563,13 @@
 		grid-template-rows: 1fr auto 1fr;
 		grid-template-columns: auto;
 	}
-	#downloadButton{
+	#downloadButton {
 		background: #9c9c9c;
 		border: transparent;
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
 	}
-	#downloadImage{
+	#downloadImage {
 		grid-column: 2;
 	}
 
