@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+	import { pop } from "svelte-spa-router";
+	import Header from "./Header.svelte";
 	import { GraphHandler, Node } from "./GraphHandler";
 	import mermaid from "mermaid";
 	import { sample, defaultIngredientInfos } from "./Constants";
 	import type { IngredientInfo } from "./Constants";
 	import { downloadData } from "./Utilities";
+	export
 
 	let ingredientInfos = defaultIngredientInfos;
 
@@ -93,6 +96,7 @@
 
 	function handleDownload() {
 		downloadData(handler.toMermaidString(), "recipe.md", "text/plain");
+		pop();
 	}
 
 	globalThis["__handle_click"] = (nodeId) => {
@@ -187,9 +191,7 @@
 <div id="screen">
 	<!--縦にスクロールするコンテンツ要素(可変長)-->
 	<div id="content">
-		<header class="row1 col1">
-			<img id="logo" src="./img/cookingitlogo.png" alt="" />
-		</header>
+		<Header isLogined={false}></Header>
 		<main class="row2 col1">
 			<div id="metadataRegisterPanel" class="row1 col1">
 				<h2>レシピ名</h2>
@@ -232,10 +234,10 @@
 									/>
 								</td>
 								<td>
-									<button
+									<button id="ingridientsDeleteButton"
 										on:click={() => deleteIngredientInfo(item)}
 									>
-										削除する
+										<img id="delButton" src=".\img\del.png" alt="">
 									</button>
 								</td>
 							</tr>
@@ -244,7 +246,7 @@
 				</table>
 
 				<div id="addIngredientInfoList">
-					<button on:click={addIngredientInfo}>ボックスを追加</button>
+					<button id="addIngredientButton" on:click={addIngredientInfo}><img id="addIngredientImage" src=".\img\addIngredient.png" alt=""></button>
 					<!-- <button on:click={saveIngredientInfo}>保存する</button> -->
 				</div>
 			</div>
@@ -338,7 +340,7 @@
 			</div>
 			<div id="ioPanel" class="row5 col1">
 				<h3>ファイル入出力</h3>
-				<button on:click={handleDownload}>レシピを保存する</button>
+				<button id="downloadButton" on:click={handleDownload}><img id="downloadImage" src=".\img\downLoad.png.png" alt=""></button>
 			</div>
 		</main>
 	</div>
@@ -376,6 +378,19 @@
 
 	#content textarea {
 		resize: none;
+		font-family: sans-serif;
+		background: #1a475a;
+		color: #ffffff;
+	}
+	::placeholder{
+		font-family: "Stick";
+	}
+	#content textarea :focus{
+		background: #457285;
+	}
+	#content input{
+		background: #1a475a;
+		color: #ffffff;
 	}
 
 	#content header {
@@ -414,7 +429,7 @@
 		background-color: #9c9c9c;
 	}
 
-	#ingredientsTable thead tr td {
+	#ingredientsTable thead tr{
 		background: #716664;
 		font-size: 1.3rem;
 		color: #ffffff;
@@ -425,11 +440,12 @@
 	#ingredientsTable tr {
 		display: grid;
 		grid-template-rows: auto;
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: 55% 35% auto;
+
+
 	}
 
 	#ingredientsTable .ingredientInput {
-		background-color: #99584d; /*もう少し明るく */
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
 		border-bottom-right-radius: 10px;
@@ -437,14 +453,24 @@
 		color: #ffffff;
 	}
 	#ingredientsTable .ingredientInput:focus {
-		border-color: #ff6a4d;
-		background-color: #ff9985;
+		background-color: #457285;
+	}
+	#ingridientsDeleteButton{
+		background: transparent;
+		border: transparent;
+	}
+	#delButton{
+		height: 50px;
 	}
 	#addIngredientButton{
-		background-color: #9c9c9c;
-		display: block;
-		height: 50px;
-		width: fit-content;
+		display: grid;
+		grid-template-columns: repeat(3,1fr);
+		background: transparent;
+		border: transparent;
+	}
+	#addIngredientImage{
+		display: grid;
+		grid-column: 2;
 	}
 
 
@@ -508,6 +534,15 @@
 		display: grid;
 		grid-template-rows: 1fr auto 1fr;
 		grid-template-columns: auto;
+	}
+	#downloadButton{
+		background: #9c9c9c;
+		border: transparent;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+	}
+	#downloadImage{
+		grid-column: 2;
 	}
 
 	/*shorthands*/
