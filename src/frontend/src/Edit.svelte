@@ -403,7 +403,7 @@
 			</div>
 			<div id="ioPanel" class="row5 col1">
 				<h3>ファイル入出力</h3>
-				<button id="downloadButton" on:click={postMD}
+				<button id="downloadButton" on:click={handleDownload}
 					><img
 						id="downloadImage"
 						src=".\img\downLoad.png"
