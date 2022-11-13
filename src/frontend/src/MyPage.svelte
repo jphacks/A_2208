@@ -2,6 +2,15 @@
 	import Header from "./Header.svelte";
 	import { sampleRecipeInfos, IngredientInfo, RecipeInfo } from "./Constants";
 	let index: number;
+
+	function callAPI(token: string) {
+		const xhr = new XMLHttpRequest();
+		xhr.open("GET", "http://localhost:8000/get_recipe_repo_list")
+		xhr.setRequestHeader("x_github", token)
+		
+	}
+
+
 </script>
 
 <div id="screen">

@@ -2,7 +2,7 @@
 	// Import the functions you need from the SDKs you need
 	import Header from "./Header.svelte";
 	import { initializeApp } from "firebase/app";
-	import { getAnalytics } from "firebase/analytics";
+	import { getAnalytics, setUserId } from "firebase/analytics";
 	import {
 		getAuth,
 		signInWithPopup,
@@ -11,6 +11,9 @@
 		GithubAuthProvider,
 		signInWithRedirect,
 	} from "firebase/auth";
+
+	import {userToken} from "./Store"
+
 	// TODO: Add SDKs for Firebase products that you want to use
 	// https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -52,6 +55,7 @@
 				const credential =
 					GithubAuthProvider.credentialFromResult(result);
 				const token = credential.accessToken;
+				userToken.set(token);
 
 				const user = result.user;
 			})

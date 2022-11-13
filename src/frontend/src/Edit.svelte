@@ -7,6 +7,7 @@
 	import { sample, defaultIngredientInfos } from "./Constants";
 	import type { IngredientInfo } from "./Constants";
 	import { downloadData } from "./Utilities";
+	import { userToken } from "./Store";
 
 	let recipeTitle: string;
 	let ingredientInfos = defaultIngredientInfos;
@@ -190,6 +191,30 @@
 
 		Render(sample);
 	});
+
+	function base64Encode(...parts) {
+		return new Promise((resolve) => {
+			const reader = new FileReader();
+			reader.onload = () => {
+				const offset = reader.result.indexOf(",") + 1;
+				resolve(reader.result.slice(offset));
+			};
+			reader.readAsDataURL(new Blob(parts));
+		});
+	}
+
+	function postMD() {
+		const xhr = new XMLHttpRequest();
+		xhr.open("POST", "http://localhost:8000/post_new_recipe_repo");
+		xhr.setRequestHeader("x_github", $userToken);
+		xhr.setRequestHeader("content-type", "application/json");
+		xhr.send(
+			JSON.stringify({
+				recipename: recipeTitle,
+				mddata: base64Encode(handler.toMarmaidDocument(recipeTitle, ingredientInfos))
+			})
+		);
+	}
 </script>
 
 <!--スクリーンサイズに固定する要素(モーダル・下付き要素の実装に使用する)-->
@@ -345,7 +370,10 @@
 						<div class="nodeTypeButton row1 col2">
 							<button on:click={enterAddNodeProcedureMode}>
 								{#if nodeType === "["}
-									<img src="./img/procedurePushed.png" alt="" />
+									<img
+										src="./img/procedurePushed.png"
+										alt=""
+									/>
 								{:else}
 									<img src="./img/procedure.png" alt="" />
 								{/if}
@@ -375,7 +403,7 @@
 			</div>
 			<div id="ioPanel" class="row5 col1">
 				<h3>ファイル入出力</h3>
-				<button id="downloadButton" on:click={handleDownload}
+				<button id="downloadButton" on:click={postMD}
 					><img
 						id="downloadImage"
 						src=".\img\downLoad.png"
